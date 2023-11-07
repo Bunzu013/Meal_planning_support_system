@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import project.mealPlan.entity.Filter;
-import project.mealPlan.entity.Ingredient;
 import project.mealPlan.repository.FilterRepository;
 
 import java.util.ArrayList;
