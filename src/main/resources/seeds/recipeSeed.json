@@ -1,0 +1,815 @@
+[
+    {
+        "recipeName": "Spaghetti Bolognese",
+        "notes": "1. Heat olive oil in a large skillet over medium heat.\n2. Add chopped onion and minced garlic; sauté until onion is translucent.\n3. Add ground beef and cook until browned; break it up into small pieces.\n4. Stir in crushed tomatoes, dried basil, dried oregano, salt, and black pepper. Simmer for 15-20 minutes.\n5. While the sauce is simmering, cook the spaghetti according to package instructions.\n6. Serve the Bolognese sauce over cooked spaghetti.",
+        "file" : null,
+        "ingredients": [
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "ground beef"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "onion (chopped)"
+            },
+            {
+                "unitName": "clove",
+                "quantity": 2.0,
+                "ingredientName": "garlic (minced)"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "can",
+                "quantity": 1.0,
+                "ingredientName": "crushed tomatoes (28 oz)"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "dried basil"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "dried oregano"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "spaghetti"
+            }
+        ],
+        "calories": 450,
+        "categories": ["Italian", "Pasta", "Meat"],
+        "filters": ["Gluten-Free", "Keto", "Low Carb"]
+    },
+    {
+        "recipeName": "Tomato Soup",
+        "notes": "1. Heat olive oil in a large pot over medium heat.\n2. Add chopped onion and minced garlic; sauté until onion is translucent.\n3. Add canned tomatoes, vegetable broth, sugar, dried basil, dried oregano, salt, and black pepper. Bring to a boil.\n4. Reduce the heat to low, cover, and simmer for 20-25 minutes.\n5. Use an immersion blender to puree the soup until smooth. Alternatively, let the soup cool slightly and blend in batches in a countertop blender.\n6. Return the soup to the pot and stir in heavy cream.\n7. Simmer for an additional 5 minutes to heat through.\n8. Taste and adjust the seasoning with salt and pepper, if needed.\n9. Serve hot, garnished with fresh basil leaves or croutons if desired.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "onion (chopped)"
+            },
+            {
+                "unitName": "clove",
+                "quantity": 2.0,
+                "ingredientName": "garlic (minced)"
+            },
+            {
+                "unitName": "can",
+                "quantity": 1.0,
+                "ingredientName": "canned tomatoes (28 oz)"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 4.0,
+                "ingredientName": "vegetable broth"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "sugar"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "dried basil"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "dried oregano"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.5,
+                "ingredientName": "heavy cream"
+            }
+        ],
+        "calories": 250,
+        "categories": ["Soup"],
+        "filters": ["Vegetarian", "Gluten-Free"]
+    },
+    {
+        "recipeName": "Lasagne",
+        "notes": "1. Preheat your oven to 375°F (190°C).\n2. In a large skillet, cook ground beef until browned. Drain excess fat.\n3. Stir in chopped onions and garlic and cook until fragrant.\n4. Add crushed tomatoes, tomato paste, sugar, dried basil, dried oregano, salt, and black pepper. Simmer for 15-20 minutes.\n5. In a baking dish, layer the meat sauce, lasagne noodles, and cheese. Repeat until all ingredients are used up.\n6. Bake in the preheated oven for 30-35 minutes until bubbly and golden.\n7. Let it rest for 10 minutes before serving.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "ground beef"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "onion (chopped)"
+            },
+            {
+                "unitName": "clove",
+                "quantity": 2.0,
+                "ingredientName": "garlic (minced)"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "can",
+                "quantity": 1.0,
+                "ingredientName": "crushed tomatoes (28 oz)"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "tomato paste"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "sugar"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "dried basil"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "dried oregano"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "lasagne noodles"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 2.0,
+                "ingredientName": "mozzarella cheese (shredded)"
+            }
+        ],
+        "calories": 550,
+        "categories": ["Italian", "Pasta", "Meat"],
+        "filters": ["Gluten-Free"]
+    },
+    {
+        "recipeName": "Margherita Pizza",
+        "notes": "1. Preheat your oven to the highest temperature (usually around 500°F or 260°C).\n2. Roll out pizza dough to your desired thickness on a floured surface.\n3. Spread pizza sauce over the dough, leaving a border for the crust.\n4. Arrange fresh mozzarella slices and fresh basil leaves on top.\n5. Drizzle with olive oil and season with salt and pepper.\n6. Bake in the preheated oven for 10-12 minutes, or until the crust is golden and the cheese is bubbly and slightly browned.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "portion",
+                "quantity": 1.0,
+                "ingredientName": "pizza dough"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "pizza sauce"
+            },
+            {
+                "unitName": "ounces",
+                "quantity": 8.0,
+                "ingredientName": "fresh mozzarella cheese"
+            },
+            {
+                "unitName": "handful",
+                "quantity": 1.0,
+                "ingredientName": "fresh basil leaves"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "black pepper"
+            }
+        ],
+        "calories": 350,
+        "categories": ["Italian", "Pizza"],
+        "filters": ["Vegetarian", "Low Carb"]
+    },
+    {
+        "recipeName": "Chicken Alfredo",
+        "notes": "1. Cook fettuccine pasta according to package instructions.\n2. Season chicken breasts with salt and black pepper.\n3. In a large skillet, heat olive oil over medium-high heat. Add chicken and cook until no longer pink and fully cooked.\n4. Remove chicken from the skillet and slice it into thin strips.\n5. In the same skillet, melt butter and add minced garlic. Cook until fragrant.\n6. Stir in heavy cream and grated Parmesan cheese. Cook until the sauce thickens.\n7. Add cooked pasta and sliced chicken to the skillet. Toss to combine.\n8. Season with additional salt and black pepper if needed.\n9. Serve hot, garnished with chopped parsley.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "fettuccine pasta"
+            },
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "chicken breasts"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "butter"
+            },
+            {
+                "unitName": "clove",
+                "quantity": 2.0,
+                "ingredientName": "garlic (minced)"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "heavy cream"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "Parmesan cheese (grated)"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "parsley (chopped, for garnish)"
+            }
+        ],
+        "calories": 600,
+        "categories": ["Italian", "Pasta"],
+        "filters": ["Keto", "Low Carb"]
+    },
+    {
+        "recipeName": "Eggplant Parmesan",
+        "notes": "1. Preheat your oven to 375°F (190°C).\n2. Slice eggplants into 1/2-inch thick rounds.\n3. Dip eggplant slices in beaten eggs, then coat with breadcrumbs and grated Parmesan cheese.\n4. In a large skillet, heat olive oil over medium-high heat. Fry eggplant slices until golden brown on both sides.\n5. Spread marinara sauce in the bottom of a baking dish.\n6. Place fried eggplant slices on top of the sauce, then add mozzarella cheese and more sauce.\n7. Repeat the layers until all ingredients are used up.\n8. Bake in the preheated oven for 30-35 minutes, or until the cheese is bubbly and slightly browned.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "medium",
+                "quantity": 2.0,
+                "ingredientName": "eggplants"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "eggs (beaten)"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "breadcrumbs"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "Parmesan cheese (grated)"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 2.0,
+                "ingredientName": "marinara sauce"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 2.0,
+                "ingredientName": "mozzarella cheese (shredded)"
+            }
+        ],
+        "calories": 450,
+        "categories": ["Italian"],
+        "filters": ["Vegetarian", "Gluten-Free"]
+    },
+    {
+        "recipeName": "Shrimp Scampi",
+        "notes": "1. Cook linguine pasta according to package instructions.\n2. In a large skillet, melt butter over medium heat. Add minced garlic and red pepper flakes; cook for 1-2 minutes.\n3. Add shrimp and cook until they turn pink, about 2-3 minutes per side. Remove shrimp and set aside.\n4. Pour in white wine, lemon juice, and chicken broth. Simmer for a few minutes to reduce.\n5. Return the cooked shrimp to the skillet, add chopped parsley, and toss to combine.\n6. Serve over cooked linguine.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "linguine pasta"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 4.0,
+                "ingredientName": "butter"
+            },
+            {
+                "unitName": "clove",
+                "quantity": 4.0,
+                "ingredientName": "garlic (minced)"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "red pepper flakes"
+            },
+            {
+                "unitName": "pound",
+                "quantity": 1.0,
+                "ingredientName": "shrimp (peeled and deveined)"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.5,
+                "ingredientName": "white wine"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "lemon juice"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.5,
+                "ingredientName": "chicken broth"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "parsley (chopped)"
+            }
+        ],
+        "calories": 400,
+        "categories": ["Italian", "Seafood", "Pasta"],
+        "filters": ["Low Carb"]
+    },
+    {
+        "recipeName": "Scrambled Tofu",
+        "notes": "1. Heat a skillet over medium heat and add a bit of oil.\n2. Crumble firm tofu into the skillet and cook for a few minutes.\n3. Add chopped bell peppers, onions, and spinach and cook until vegetables are tender.\n4. Season with turmeric, cumin, salt, and black pepper.\n5. Cook for another 2-3 minutes until everything is heated through.\n6. Serve hot with a sprinkle of nutritional yeast, if desired.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "firm tofu (crumbled)"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "oil"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.25,
+                "ingredientName": "diced bell peppers"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.25,
+                "ingredientName": "diced onions"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.25,
+                "ingredientName": "fresh spinach"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "turmeric"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "cumin"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.25,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.25,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "nutritional yeast (optional, for garnish)"
+            }
+        ],
+        "calories": 250,
+        "categories": ["Breakfast", "Brunch"],
+        "filters": ["Vegetarian"]
+    },
+    {
+        "recipeName": "Pancakes",
+        "notes": "1. In a bowl, whisk together flour, sugar, baking powder, and salt.\n2. In another bowl, mix milk, egg, and melted butter.\n3. Combine the wet and dry ingredients, stirring until just mixed.\n4. Heat a griddle or skillet over medium-high heat and lightly grease it.\n5. Pour 1/4 cup of batter onto the griddle for each pancake.\n6. Cook until bubbles form on the surface, then flip and cook until golden brown.\n7. Serve with maple syrup and your choice of toppings.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "all-purpose flour"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "sugar"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "baking powder"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "milk"
+            },
+            {
+                "unitName": "large",
+                "quantity": 1.0,
+                "ingredientName": "egg"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "butter (melted)"
+            }
+        ],
+        "calories": 350,
+        "categories": ["Breakfast", "Brunch"],
+        "filters": ["Vegetarian"]
+    },
+    {
+        "recipeName": "Greek Yogurt Parfait",
+        "notes": "1. In a glass or bowl, start with a layer of Greek yogurt.\n2. Add a layer of fresh mixed berries (strawberries, blueberries, raspberries, etc.).\n3. Sprinkle granola on top for a crunchy texture.\n4. Drizzle honey over the parfait for sweetness.\n5. Repeat the layers as desired.\n6. Serve immediately as a healthy breakfast or snack.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "Greek yogurt"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.5,
+                "ingredientName": "mixed berries"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "granola"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "honey"
+            }
+        ],
+        "calories": 250,
+        "categories": ["Breakfast", "Snack"],
+        "filters": ["Vegetarian"]
+    },
+    {
+        "recipeName": "Avocado Toast",
+        "notes": "1. Toast your bread to your desired level of crispiness.\n2. Mash a ripe avocado and spread it onto the toasted bread.\n3. Drizzle with olive oil and sprinkle with salt, pepper, and red pepper flakes.\n4. Top with sliced cherry tomatoes and fresh basil leaves.\n5. Serve as a simple and delicious breakfast or snack.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "slice",
+                "quantity": 2.0,
+                "ingredientName": "whole-grain bread"
+            },
+            {
+                "unitName": "medium",
+                "quantity": 1.0,
+                "ingredientName": "ripe avocado"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "red pepper flakes"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.5,
+                "ingredientName": "cherry tomatoes (sliced)"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "fresh basil leaves"
+            }
+        ],
+        "calories": 320,
+        "categories": ["Breakfast", "Snack"],
+        "filters": ["Vegetarian"]
+    },
+    {
+        "recipeName": "Omelet",
+        "notes": "1. In a heated skillet, melt butter or heat oil over medium heat.\n2. Crack the eggs into a bowl and whisk them with a fork or a whisk. Add salt, pepper, and dried herbs, and mix well.\n3. Add chopped bell peppers, onions, and tomatoes to the eggs and stir.\n4. Pour the egg mixture into the heated skillet. Cook the omelet over medium heat for about 2-3 minutes or until the bottom is set and the top is slightly runny.\n5. Sprinkle shredded cheese over half of the omelet and gently fold it in half.\n6. Continue cooking for another 1-2 minutes or until the cheese melts, and the omelet turns golden.\n7. Transfer the omelet to a plate and serve immediately.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "large",
+                "quantity": 2.0,
+                "ingredientName": "eggs"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "butter or oil"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.5,
+                "ingredientName": "shredded cheese (your choice)"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.25,
+                "ingredientName": "diced bell peppers"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.25,
+                "ingredientName": "diced onions"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 0.25,
+                "ingredientName": "diced tomatoes"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.25,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.25,
+                "ingredientName": "dried herbs (e.g., parsley, chives)"
+            }
+        ],
+        "calories": 300,
+        "categories": ["Breakfast", "Brunch"],
+        "filters": ["Vegetarian"]
+    },
+    {
+        "recipeName": "Pan-Seared Lemon Fish",
+        "notes": "1. Season the fish fillets with salt, pepper, and lemon zest. Let them sit for 5 minutes.\n2. In a large skillet, heat olive oil over medium-high heat.\n3. Place the seasoned fish fillets in the skillet, skin side down, and cook for 3-4 minutes until the skin is crispy and golden.\n4. Carefully flip the fish fillets using a spatula and cook for an additional 2-3 minutes, or until the fish is cooked through and flakes easily with a fork.\n5. Remove the fish from the skillet and set aside on a plate.\n6. In the same skillet, add butter and garlic. Sauté for about 1 minute until the garlic becomes fragrant.\n7. Pour in the lemon juice and white wine (if using) and simmer for 2-3 minutes until the sauce reduces slightly.\n8. Return the cooked fish to the skillet and spoon the lemon butter sauce over it.\n9. Garnish with fresh chopped parsley.\n10. Serve the pan-seared lemon butter fish hot with your choice of side dishes.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "fillet",
+                "quantity": 4.0,
+                "ingredientName": "fish fillets (such as cod, tilapia, or trout)"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "zest",
+                "quantity": 1.0,
+                "ingredientName": "lemon zest"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "butter"
+            },
+            {
+                "unitName": "clove",
+                "quantity": 2.0,
+                "ingredientName": "garlic, minced"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "fresh lemon juice"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 2.0,
+                "ingredientName": "white wine (optional)"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "fresh parsley, chopped (for garnish)"
+            }
+        ],
+        "calories": 350,
+        "categories": ["Seafood", "Main Course"],
+        "filters": []
+    },
+    {
+        "recipeName": "Margherita Pizza",
+        "notes": "1. Preheat your oven to 475°F (245°C) and place a pizza stone or baking sheet inside to heat.\n2. Roll out your pizza dough on a floured surface to your desired thickness.\n3. Transfer the rolled-out dough onto parchment paper for easy transfer to the hot pizza stone or baking sheet.\n4. Spread a thin layer of tomato sauce evenly over the dough, leaving a small border for the crust.\n5. Sprinkle shredded mozzarella cheese evenly over the tomato sauce.\n6. Tear fresh basil leaves and scatter them over the cheese.\n7. Drizzle a bit of olive oil over the top of the pizza.\n8. Season with salt and freshly ground black pepper to taste.\n9. Carefully transfer the parchment paper with the pizza onto the hot pizza stone or baking sheet in the preheated oven.\n10. Bake for about 10-12 minutes or until the crust is golden brown and the cheese is bubbling and slightly browned.\n11. Remove from the oven and let it cool for a minute.\n12. Slice your Margherita Pizza, serve hot, and enjoy!",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "portion",
+                "quantity": 1.0,
+                "ingredientName": "pizza dough"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.0,
+                "ingredientName": "tomato sauce"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 1.5,
+                "ingredientName": "shredded mozzarella cheese"
+            },
+            {
+                "unitName": "handful",
+                "quantity": 1.0,
+                "ingredientName": "fresh basil leaves"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "olive oil"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "pinch",
+                "quantity": 1.0,
+                "ingredientName": "black pepper"
+            }
+        ],
+        "calories": 300,
+        "categories": ["Pizza"],
+        "filters": ["Vegetarian"]
+    },
+    {
+        "recipeName": "Classic Steak",
+        "notes": "1. Remove the steak from the refrigerator and let it sit at room temperature for about 30 minutes before cooking.\n2. Preheat your grill or stovetop skillet to high heat.\n3. Season both sides of the steak generously with salt and freshly ground black pepper.\n4. If desired, rub the steak with a bit of olive oil to prevent sticking and enhance flavor.\n5. Place the steak on the hot grill or skillet and sear for about 4-5 minutes on each side for medium-rare, adjusting the time for your preferred level of doneness.\n6. Use a meat thermometer to check the internal temperature; 135°F (57°C) for medium-rare, 145°F (63°C) for medium, and 160°F (71°C) for medium-well.\n7. Once done, remove the steak from the grill or skillet and let it rest for about 5 minutes to allow the juices to redistribute.\n8. Slice the steak against the grain, and serve hot.\n9. Optionally, you can garnish with fresh herbs or a pat of butter for extra flavor.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "steak",
+                "quantity": 1.0,
+                "ingredientName": "steak (e.g., ribeye, sirloin, or filet mignon)"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "salt"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 0.5,
+                "ingredientName": "black pepper"
+            },
+            {
+                "unitName": "tablespoon",
+                "quantity": 1.0,
+                "ingredientName": "olive oil (optional)"
+            }
+        ],
+        "calories": 400,
+        "categories": ["Steak"],
+        "filters": ["Gluten-Free"]
+    },
+    {
+        "recipeName": "Classic French Fries",
+        "notes": "1. Begin by washing and peeling (optional) potatoes. You can use russet or Yukon Gold potatoes for the best results.\n2. Cut the potatoes into even-sized strips or sticks, about 1/4 to 1/2 inch wide.\n3. Place the cut potatoes in a large bowl of cold water and let them soak for about 30 minutes. This helps remove excess starch and makes the fries crispier.\n4. Drain the potatoes and pat them dry with a clean kitchen towel or paper towels.\n5. Preheat a deep fryer or a large, deep skillet with vegetable oil to 350°F (175°C).\n6. Carefully add the dried potato strips to the hot oil in batches, ensuring not to overcrowd the fryer or skillet. Fry for about 2-3 minutes per batch or until the fries are golden brown and crispy.\n7. Using a slotted spoon or a wire mesh strainer, remove the fries from the hot oil and place them on a plate lined with paper towels to drain excess oil.\n8. While the fries are still hot, season them with salt to taste.\n9. Serve the classic French fries hot and enjoy them with your favorite dipping sauce, such as ketchup or mayonnaise.",
+        "file": null,
+        "ingredients": [
+            {
+                "unitName": "potatoes",
+                "quantity": 4.0,
+                "ingredientName": "potatoes (russet or Yukon Gold)"
+            },
+            {
+                "unitName": "cup",
+                "quantity": 2.0,
+                "ingredientName": "vegetable oil (for frying)"
+            },
+            {
+                "unitName": "teaspoon",
+                "quantity": 1.0,
+                "ingredientName": "salt (or to taste)"
+            }
+        ],
+        "calories": 300,
+        "categories": [
+            "Appetizer",
+            "Side Dish"
+        ],
+        "filters": [
+            "Vegetarian",
+            "Gluten-Free"
+        ]
+    }
+
+
+]

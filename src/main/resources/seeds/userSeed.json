@@ -1,0 +1,18 @@
+[
+    {
+        "name": "test",
+        "surname": "user",
+        "email": "test@gmail.com",
+        "password": "123456789",
+        "phoneNumber": "123456789",
+        "phonePrefix": "+48"
+    },
+    {
+        "name": "ADMIN",
+        "surname": "admin",
+        "email": "admin@gmail.com",
+        "password": "123456780",
+        "phoneNumber": "100000001",
+        "phonePrefix": "+48"
+    }
+]
