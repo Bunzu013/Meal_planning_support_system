@@ -162,13 +162,16 @@ public class UserService implements UserDetailsService {
             User user = userRepository.findUserByName("test");
             if (hide != null) {
                 if (user.getHiddenCalories() == hide)
-                    return new ResponseEntity<>("Calorie visibility is already set this way ", HttpStatus.OK);
+                    return new ResponseEntity<>
+                            ("Calorie visibility is already set this way ", HttpStatus.OK);
                 user.setHiddenCalories(hide);
                 userRepository.save(user);
             }
-            return new ResponseEntity<>("Calories visibility changed successfully", HttpStatus.OK);
+            return new ResponseEntity<>
+                    ("Calories visibility changed successfully", HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing calories visibility");
+            return new ResponseEntity<>
+                    ("Error changing calories visibility ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

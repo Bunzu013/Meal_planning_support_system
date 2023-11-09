@@ -452,7 +452,7 @@ public class RecipeService {
             else{
                 allRecipes = recipeRepository.findAll();
             }
-            if(hideAllergens == true && user.getUserAllergenInredients() != null
+            if(hideAllergens && user.getUserAllergenInredients() != null
                     && !user.getUserAllergenInredients().isEmpty())
             {
                 List<Ingredient> userAllergens = user.getUserAllergenInredients();

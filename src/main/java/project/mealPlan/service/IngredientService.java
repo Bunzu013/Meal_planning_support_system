@@ -112,9 +112,11 @@ public class IngredientService {
                 if (!userAllergens.contains(ingredient)) {
                     user.getUserAllergenInredients().add(ingredient);
                     userRepository.save(user);
-                    return ResponseEntity.status(HttpStatus.OK).body("Ingredient added to allergens");
+                    return new ResponseEntity<>
+                            ("Ingredient added to allergens", HttpStatus.OK);
                 } else {
-                    return new ResponseEntity<>("Ingredient is already in allergens list", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>
+                            ("Ingredient is already in allergens list", HttpStatus.BAD_REQUEST);
                 }
             }
             return new ResponseEntity<>("Ingredient not found", HttpStatus.NOT_FOUND);
@@ -131,14 +133,17 @@ public class IngredientService {
                 if (userAllergens.contains(ingredient)) {
                     user.getUserAllergenInredients().remove(ingredient);
                     userRepository.save(user);
-                    return ResponseEntity.status(HttpStatus.OK).body("Ingredient removed from allergens");
+                    return new ResponseEntity<>
+                            ("Ingredient removed from allergens", HttpStatus.OK);
                 } else {
-                    return new ResponseEntity<>("This ingredient is not in the list", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>
+                            ("This ingredient is not in the list", HttpStatus.BAD_REQUEST);
                 }
             }
             return new ResponseEntity<>("Ingredient not found", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>("Error deleting from user allergen ingredients",HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>
+                    ("Error deleting from user allergen ingredients",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
