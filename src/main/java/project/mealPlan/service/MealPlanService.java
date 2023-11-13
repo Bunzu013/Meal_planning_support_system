@@ -37,7 +37,6 @@ public class MealPlanService {
             Integer recipeId = (Integer) mealData.get("recipeId");
             Integer weekDayId = (Integer) mealData.get("weekDayId");
             Integer mealId = (Integer) mealData.get("mealId");
-
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             MealPlan mealPlan = user.getMealPlan();
             WeekDay weekDay = weekDayRepository.findByWeekDayId(weekDayId);
@@ -118,14 +117,10 @@ public class MealPlanService {
             MealPlan mealPlan = user.getMealPlan();
             if (mealPlan != null) {
                 List<MealPlan_Meal> mealPlanMeals = mealPlan.getMealPlanMeals();
-
                 Map<String, List<Map<String, Object>>> mealsByWeekDay = new HashMap<>();
-
                 for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
                     String weekDayName = mealPlanMeal.getWeekDay().getWeekDayName();
-
                     mealsByWeekDay.putIfAbsent(weekDayName, new ArrayList<>());
-
                     Map<String, Object> mealDetails = new HashMap<>();
                     mealDetails.put("mealId", mealPlanMeal.getMeal().getMealId());
 
@@ -166,7 +161,6 @@ public class MealPlanService {
                             if (shoppingList.containsKey(ingredientName)) {
                                 List<Map<String, Object>> existingIngredients = shoppingList.get(ingredientName);
                                 boolean ingredientUpdated = false;
-
                                 for (Map<String, Object> existingIngredient : existingIngredients) {
                                     if (ingredientUnit != null && ingredientUnit.equals(existingIngredient.get("unit"))) {
                                         Double existingQuantity = (Double) existingIngredient.get("quantity");

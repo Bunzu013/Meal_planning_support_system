@@ -106,7 +106,7 @@ public class UserService implements UserDetailsService {
             userInfo.put("hiddenCalories", user.getHiddenCalories());
 
             List<String> preferredIngredients = new ArrayList<>();
-            for (Ingredient ingredient : user.getUserPreferedIngredients()) {
+            for (Ingredient ingredient : user.getUserPreferredIngredients()) {
                 preferredIngredients.add(ingredient.getIngredientName());
             }
             userInfo.put("userPreferredIngredients", preferredIngredients);

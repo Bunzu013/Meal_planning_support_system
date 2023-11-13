@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
@@ -45,13 +44,13 @@ public class RecipeService {
             for (String categoryName : categoryNames) {
                 Category existingCategory = categoryRepository.findByRecipeCategoryName(categoryName);
                 if (existingCategory != null) {
-                    newRecipe.addCategory(existingCategory);
+                    newRecipe.getRecipeCategories().add(existingCategory);
                 }
             }
             for (String filterName : filterNames) {
                 Filter existingFilter = filterRepository.findByRecipeFilterName(filterName);
                 if (existingFilter != null) {
-                    newRecipe.addFilter(existingFilter);
+                    newRecipe.getRecipeFilters().add(existingFilter);
                 }
             }
             List<Recipe_Ingredient> recipeIngredients = new ArrayList<>();
@@ -114,23 +113,23 @@ public class RecipeService {
             for (String categoryName : categoryNames) {
                 Category existingCategory = categoryRepository.findByRecipeCategoryName(categoryName);
                 if (existingCategory != null) {
-                    newRecipe.addCategory(existingCategory);
+                    newRecipe.getRecipeCategories().add(existingCategory);
                 }
                 else{
                     Category newCategory = new Category(categoryName);
                     categoryRepository.save(newCategory);
-                    newRecipe.addCategory(newCategory);
+                    newRecipe.getRecipeCategories().add(newCategory);
                 }
             }
             for (String filterName : filterNames) {
                 Filter existingFilter = filterRepository.findByRecipeFilterName(filterName);
                 if (existingFilter != null) {
-                    newRecipe.addFilter(existingFilter);
+                    newRecipe.getRecipeFilters().add(existingFilter);
                 }
                 else{
                     Filter newFilter = new Filter(filterName);
                     filterRepository.save(newFilter);
-                    newRecipe.addFilter(newFilter);
+                    newRecipe.getRecipeFilters().add(newFilter);
                 }
             }
             List<Recipe_Ingredient> recipeIngredients = new ArrayList<>();
@@ -188,12 +187,12 @@ public class RecipeService {
             if(calories != null) {
                 newRecipe.setCalories(calories);
             }
-            MultipartFile file = (MultipartFile) recipeInput.get("file");
+          /*  MultipartFile file = (MultipartFile) recipeInput.get("file");
             if (file != null) {
                 byte[] imageData = ImageUtilService.compressImage(file.getBytes());
                 newRecipe.setRecipeImageData(imageData);
                 newRecipe.setRecipeImageName(file.getOriginalFilename());
-            }
+            }*/
             recipeRepository.save(newRecipe);
 
             return ResponseEntity.status(HttpStatus.OK).body(newRecipe.getRecipeId());
@@ -344,11 +343,12 @@ public class RecipeService {
                         .body("Uploaded file is not an image");
             }
             byte[] imageData = ImageUtilService.compressImage(file.getBytes());
+            //byte[] imageData = file.getBytes();
             recipe.setRecipeImageData(imageData);
             recipe.setRecipeImageName(file.getOriginalFilename());
             recipeRepository.save(recipe);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Image uploaded and compressed successfully.");
+                    .body("Image uploaded and compressed successfully." + recipeId + " " +file.getOriginalFilename());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error uploading and compressing image.");
@@ -367,6 +367,7 @@ public class RecipeService {
                 recipeInfo.put("recipeName", recipe.getRecipeName());
                 if(recipe.getRecipeImageData() != null) {
                     byte[] imageData = ImageUtilService.decompressImage(recipe.getRecipeImageData());
+                   // byte[] imageData = recipe.getRecipeImageData();
                     String base64ImageData = Base64.getEncoder().encodeToString(imageData);
                     recipeInfo.put("imageData", base64ImageData);
                 }
@@ -427,7 +428,68 @@ public class RecipeService {
             return new ResponseEntity<>("Error receiving recipe data",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    public ResponseEntity<?> getRecipesByCategoriesAndFilters(
+            List<Category> categories, List<Filter> filters, Integer type, boolean hideAllergens
+    ) {
+        try {
+            List<Recipe> allRecipes = new ArrayList<>();
+            User user = userRepository.findUserByName("test");
+            if (type == 1) { // favourite recipes
+                allRecipes = user.getUserFavouriteRecipes();
+            } else if (type == 2) { // user recipes
+                allRecipes = user.getUserRecipes();
+            } else if (type == 3) { // preferred ingredients
+                List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
+                if (preferredIngredients != null && !preferredIngredients.isEmpty()) {
+                    allRecipes = allRecipes.stream()
+                            .filter(recipe -> recipe.getRecipeIngredients().stream()
+                                    .anyMatch(ri -> preferredIngredients.contains(ri.getIngredient())))
+                            .collect(Collectors.toList());
+                }
+            } else {
+                allRecipes = recipeRepository.findAll();
+            }
 
+            if (hideAllergens && user.getUserAllergenIngredients() != null
+                    && !user.getUserAllergenIngredients().isEmpty()) {
+                List<Ingredient> userAllergens = user.getUserAllergenIngredients();
+                allRecipes = allRecipes.stream()
+                        .filter(recipe -> recipe.getRecipeIngredients().stream()
+                                .noneMatch(ri -> userAllergens.contains(ri.getIngredient())))
+                        .collect(Collectors.toList());
+            }
+
+            List<Map<String, Object>> recipesData = allRecipes.stream()
+                    .map(recipe -> {
+                        Map<String, Object> recipeData = new HashMap<>();
+                        recipeData.put("recipeId", recipe.getRecipeId());
+                        recipeData.put("recipeName", recipe.getRecipeName());
+
+                        if (recipe.getRecipeImageData() != null) {
+                            try {
+                                byte[] imageData = ImageUtilService.decompressImage(recipe.getRecipeImageData());
+                                String base64ImageData = Base64.getEncoder().encodeToString(imageData);
+                                recipeData.put("imageData", base64ImageData);
+                            } catch (Exception e) {
+                                recipeData.put("imageData", null);
+                            }
+                        } else {
+                            recipeData.put("imageData", null);
+                        }
+
+                        return recipeData;
+                    })
+                    .collect(Collectors.toList());
+
+            if (recipesData.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(recipesData);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+/*
     public ResponseEntity<?> getRecipesByCategoriesAndFilters(
             List<Category> categories, List<Filter> filters, Integer type, boolean hideAllergens
     ) {
@@ -441,7 +503,7 @@ public class RecipeService {
                 allRecipes = user.getUserRecipes();
             }
             if(type == 3) { //preferred ingredients
-                List<Ingredient> preferredIngredients = user.getUserPreferedIngredients();
+                List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
                 if (preferredIngredients != null && !preferredIngredients.isEmpty()) {
                     allRecipes = allRecipes.stream()
                             .filter(recipe -> recipe.getRecipeIngredients().stream()
@@ -452,10 +514,10 @@ public class RecipeService {
             else{
                 allRecipes = recipeRepository.findAll();
             }
-            if(hideAllergens && user.getUserAllergenInredients() != null
-                    && !user.getUserAllergenInredients().isEmpty())
+            if(hideAllergens && user.getUserAllergenIngredients() != null
+                    && !user.getUserAllergenIngredients().isEmpty())
             {
-                List<Ingredient> userAllergens = user.getUserAllergenInredients();
+                List<Ingredient> userAllergens = user.getUserAllergenIngredients();
                 allRecipes = allRecipes.stream()
                         .filter(recipe -> recipe.getRecipeIngredients().stream()
                                 .noneMatch(ri -> userAllergens.contains(ri.getIngredient())))
@@ -478,8 +540,8 @@ public class RecipeService {
                         recipeData.put("recipeId", recipe.getRecipeId());
                         recipeData.put("recipeName", recipe.getRecipeName());
                         if(recipe.getRecipeImageData() != null) {
-                            byte[] imageData = ImageUtilService
-                                    .decompressImage(recipe.getRecipeImageData());
+                           byte[] imageData = ImageUtilService.decompressImage(recipe.getRecipeImageData());
+                            //byte[] imageData = recipe.getRecipeImageData();
                             String base64ImageData = Base64.getEncoder().encodeToString(imageData);
                             recipeData.put("imageData", base64ImageData);
                         }
@@ -493,7 +555,7 @@ public class RecipeService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }
+    }*/
     public ResponseEntity<?> addToFavourites(Integer recipeId) {
         try {
             User user = userRepository.findUserByName("test");

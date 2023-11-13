@@ -49,7 +49,7 @@ public class userController {
         }
     }
     @PostMapping("/updateUserData")
-    public ResponseEntity<?> editUserData(@RequestBody Map<String,Object> userInfo) {
+    public ResponseEntity<?> editUserData(@RequestBody Map<String, Object> userInfo) {
         try {
             return userService.editUserData(userInfo);
         } catch (BadCredentialsException ex) {
@@ -68,7 +68,7 @@ public class userController {
     public ResponseEntity<?> addRecipeImage(@RequestParam Integer recipeId,
                                             @RequestParam("file") MultipartFile file) {
         try {
-            return  recipeService.addRecipeImage(recipeId,file);
+            return recipeService.addRecipeImage(recipeId, file);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding image");
         }
@@ -89,7 +89,6 @@ public class userController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
         }
     }
-
     @PostMapping("/addToPreferred")
     public ResponseEntity<?> addIngredientToPreferred(@RequestParam Integer ingredientId) {
         try {
@@ -170,7 +169,7 @@ public class userController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PostMapping("/addNewMeal")
+   /* @PostMapping("/addNewMeal")
     public ResponseEntity<?> addNewMeal() {
         try {
             Meal newMeal = new Meal();
@@ -179,8 +178,7 @@ public class userController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
+    }*/
     @PostMapping("/addRecipeToMeal")
     public ResponseEntity<?> addRecipeToMeal(
             @RequestBody Map<String, Object> recipeData) {
@@ -190,19 +188,19 @@ public class userController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-@PostMapping("/addRecipeToMealAndMealPlan")
-    public ResponseEntity<?> addRecipeToMealAndMealPlan(@RequestBody  Map<String, Object> mealData) {
-    try {
-        return mealPlanService.addRecipeToMealAndMealPlan(mealData);
-    } catch (Exception e) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-}
-    @PostMapping("/deleteRecipeFromMealAndMealPlan")
-    public ResponseEntity<?> addRecipeToMealAndMealPlan(@RequestParam Integer mealId,@RequestParam Integer recipeId) {
+    @PostMapping("/addRecipeToMealAndMealPlan")
+    public ResponseEntity<?> addRecipeToMealAndMealPlan(@RequestBody Map<String, Object> mealData) {
         try {
-            return mealPlanService.removeRecipeFromMeal(mealId,recipeId);
+            return mealPlanService.addRecipeToMealAndMealPlan(mealData);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/deleteRecipeFromMealAndMealPlan")
+    public ResponseEntity<?> deleteRecipeToMealAndMealPlan(@RequestParam Integer mealId,
+                                                           @RequestParam Integer recipeId) {
+        try {
+            return mealPlanService.removeRecipeFromMeal(mealId, recipeId);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -215,9 +213,8 @@ public class userController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PostMapping("/generateShoppingList")
-    public ResponseEntity<?> generateShoppingList () {
+    public ResponseEntity<?> generateShoppingList() {
         try {
             return mealPlanService.generateShoppingList();
         } catch (Exception e) {
@@ -225,15 +222,26 @@ public class userController {
         }
     }
     @PostMapping("/shoppingListStatus")
-    public ResponseEntity<?> shoppingListStatus (@RequestParam boolean change) {
+    public ResponseEntity<?> shoppingListStatus(@RequestParam boolean change) {
         try {
             return mealPlanService.shoppingListStatus(change);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/getShoppingListStatus")
+    public ResponseEntity<?> getShoppingListStatus()
+    {
+        try {
+            User user = userRepository.findUserByName("test");
+
+            return new ResponseEntity<> (user.getMealPlan().getShoppingListStatus(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PostMapping("/hideCalories")
-    public ResponseEntity<?> hideCalories (@RequestParam Boolean hide) {
+    public ResponseEntity<?> hideCalories(@RequestParam Boolean hide) {
         try {
             return userService.hideCalories(hide);
         } catch (Exception e) {

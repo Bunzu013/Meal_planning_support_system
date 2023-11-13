@@ -27,10 +27,10 @@ public class IngredientService {
             User user = userRepository.findUserByName("test");
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
-                List<Ingredient> userPreferredIngredients = user.getUserPreferedIngredients();
+                List<Ingredient> userPreferredIngredients = user.getUserPreferredIngredients();
 
                 if (!userPreferredIngredients.contains(ingredient)) {
-                    user.addPreferedIngredient(ingredient);
+                    user.getUserPreferredIngredients().add(ingredient);
                     userRepository.save(user);
                     return new ResponseEntity<>
                             ("Ingredient added to preferred", HttpStatus.OK);
@@ -49,9 +49,9 @@ public class IngredientService {
             User user = userRepository.findUserByName("test");
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
-                List<Ingredient> userPreferredIngredients = user.getUserPreferedIngredients();
+                List<Ingredient> userPreferredIngredients = user.getUserPreferredIngredients();
                 if (userPreferredIngredients.contains(ingredient)) {
-                    user.getUserPreferedIngredients().remove(ingredient);
+                    user.getUserPreferredIngredients().remove(ingredient);
                     userRepository.save(user);
                     return ResponseEntity.status(HttpStatus.OK).body("Ingredient removed from preferred");
                 } else {
@@ -70,7 +70,7 @@ public class IngredientService {
         try {
             User user = userRepository.findUserByName("test");
             List<Map<String,Object>> ingredientInfoList = new ArrayList<>();
-            List<Ingredient> preferredIngredients = user.getUserPreferedIngredients();
+            List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
             for(Ingredient ingredient : preferredIngredients)
             {
                 Map<String,Object> ingredientInfo = new HashMap<>();
@@ -107,10 +107,10 @@ public class IngredientService {
             User user = userRepository.findUserByName("test");
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
-                List<Ingredient> userAllergens = user.getUserAllergenInredients();
+                List<Ingredient> userAllergens = user.getUserAllergenIngredients();
 
                 if (!userAllergens.contains(ingredient)) {
-                    user.getUserAllergenInredients().add(ingredient);
+                    user.getUserAllergenIngredients().add(ingredient);
                     userRepository.save(user);
                     return new ResponseEntity<>
                             ("Ingredient added to allergens", HttpStatus.OK);
@@ -129,9 +129,9 @@ public class IngredientService {
             User user = userRepository.findUserByName("test");
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
-                List<Ingredient> userAllergens = user.getUserAllergenInredients();
+                List<Ingredient> userAllergens = user.getUserAllergenIngredients();
                 if (userAllergens.contains(ingredient)) {
-                    user.getUserAllergenInredients().remove(ingredient);
+                    user.getUserAllergenIngredients().remove(ingredient);
                     userRepository.save(user);
                     return new ResponseEntity<>
                             ("Ingredient removed from allergens", HttpStatus.OK);
@@ -152,7 +152,7 @@ public class IngredientService {
         try {
             User user = userRepository.findUserByName("test");
             List<Map<String,Object>> ingredientInfoList = new ArrayList<>();
-            List<Ingredient> allergenIngredients = user.getUserAllergenInredients();
+            List<Ingredient> allergenIngredients = user.getUserAllergenIngredients();
             for(Ingredient ingredient : allergenIngredients)
             {
                 Map<String,Object> ingredientInfo = new HashMap<>();

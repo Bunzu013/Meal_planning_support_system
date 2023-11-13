@@ -17,7 +17,7 @@ public class MealPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mealPlanId;
 
-    @Column(nullable = true)
+    @Column
     private Boolean shoppingListStatus = false;
 
     @OneToOne(mappedBy = "mealPlan", cascade = CascadeType.ALL)

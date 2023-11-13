@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class InitializationStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
     private boolean operationsExecuted = false;
 

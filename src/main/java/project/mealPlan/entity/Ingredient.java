@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,13 +22,13 @@ public class Ingredient {
     @NotNull(message = "Ingredient name is required")
     private String ingredientName;
 
-    @Column(nullable = true)
+    @Column
     private Boolean commonAllergen = false;
 
-    @ManyToMany(mappedBy = "userPreferedIngredients")
-    List<User> preferedByUser;
+    @ManyToMany(mappedBy = "userPreferredIngredients")
+    List<User> preferredByUser;
 
-    @ManyToMany(mappedBy = "userAllergenInredients")
+    @ManyToMany(mappedBy = "userAllergenIngredients")
     List<User> userAllergen;
 
     @OneToMany(mappedBy = "ingredient")

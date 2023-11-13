@@ -25,7 +25,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.*;
+
 import org.springframework.web.multipart.MultipartFile;
 import project.mealPlan.service.RecipeService;
 import project.mealPlan.service.UnitService;
@@ -34,7 +35,6 @@ import project.mealPlan.service.UserService;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class DatabaseSeeder implements ApplicationRunner {
@@ -179,21 +179,62 @@ public class DatabaseSeeder implements ApplicationRunner {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding data");
         }
     }
+/*
+    @Transactional
+    public ResponseEntity<?> addImagesFile() {
+        try {
+            File imgFolder = ResourceUtils.getFile("classpath:images");
+            File[] imageFilesArray = imgFolder.listFiles();
+            if (imageFilesArray != null && imageFilesArray.length > 0) {
+                Arrays.sort(imageFilesArray, Comparator.comparing(File::getName));
+                List<File> imageFiles = new ArrayList<>(List.of(imageFilesArray));
+                for (int i = 0; i < imageFiles.size(); i++) {
+                    Integer recipeId = i + 1; // Numeracja od 1
+                    String fileName = String.valueOf(i + 1);
+                    File imageFile = imageFiles.get(i);
+                    byte[] imageData = Files.readAllBytes(imageFile.toPath());
+                    MultipartFile multipartFile = new MockMultipartFile("file", fileName, "image/jpg", imageData);
+
+                    System.out.println("Sprawdzanie " + fileName + "    " + recipeId);
+                    System.out.println("Path: " + imageFile.getAbsolutePath());
+
+                    ResponseEntity<?> response = recipeService.addRecipeImage(recipeId, multipartFile);
+                    System.out.println("Response: " + response);
+                }
+                return ResponseEntity.status(HttpStatus.CREATED).body("Images added successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No images found in the 'img' directory.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding images: " + e.getMessage());
+        }
+    }*/
 
     @Transactional
     public ResponseEntity<?> addImagesFile() {
         try {
             File imgFolder = ResourceUtils.getFile("classpath:images");
-            File[] imageFiles = imgFolder.listFiles();
+            File[] imageFilesArray = imgFolder.listFiles();
 
-            if (imageFiles != null) {
-                for (int i = 0; i < imageFiles.length; i++) {
-                    Integer recipeId = i + 1; // Numeracja od 1
-                    String fileName = String.valueOf(i + 1);
-                    File imageFile = imageFiles[i];
+            if (imageFilesArray != null && imageFilesArray.length > 0) {
+                Arrays.sort(imageFilesArray, Comparator.comparing(File::getName));
+                List<File> imageFiles = new ArrayList<>(List.of(imageFilesArray));
+
+                for (File imageFile : imageFiles) {
+                    String fileName = imageFile.getName();
+                    // Usuń rozszerzenie pliku (np. ".jpg") i pozostaw tylko cyfry
+                    String recipeNumber = fileName.replaceAll("[^\\d]", "");
+                    Integer recipeId = Integer.parseInt(recipeNumber);
+
                     byte[] imageData = Files.readAllBytes(imageFile.toPath());
                     MultipartFile multipartFile = new MockMultipartFile("file", fileName, "image/jpg", imageData);
+
+                    System.out.println("Sprawdzanie " + fileName + "    " + recipeId);
+                    System.out.println("Path: " + imageFile.getAbsolutePath());
+
                     ResponseEntity<?> response = recipeService.addRecipeImage(recipeId, multipartFile);
+                    System.out.println("Response: " + response);
                 }
                 return ResponseEntity.status(HttpStatus.CREATED).body("Images added successfully");
             } else {
@@ -204,6 +245,7 @@ public class DatabaseSeeder implements ApplicationRunner {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding images: " + e.getMessage());
         }
     }
+
 
 
 }
