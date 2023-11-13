@@ -179,38 +179,6 @@ public class DatabaseSeeder implements ApplicationRunner {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding data");
         }
     }
-/*
-    @Transactional
-    public ResponseEntity<?> addImagesFile() {
-        try {
-            File imgFolder = ResourceUtils.getFile("classpath:images");
-            File[] imageFilesArray = imgFolder.listFiles();
-            if (imageFilesArray != null && imageFilesArray.length > 0) {
-                Arrays.sort(imageFilesArray, Comparator.comparing(File::getName));
-                List<File> imageFiles = new ArrayList<>(List.of(imageFilesArray));
-                for (int i = 0; i < imageFiles.size(); i++) {
-                    Integer recipeId = i + 1; // Numeracja od 1
-                    String fileName = String.valueOf(i + 1);
-                    File imageFile = imageFiles.get(i);
-                    byte[] imageData = Files.readAllBytes(imageFile.toPath());
-                    MultipartFile multipartFile = new MockMultipartFile("file", fileName, "image/jpg", imageData);
-
-                    System.out.println("Sprawdzanie " + fileName + "    " + recipeId);
-                    System.out.println("Path: " + imageFile.getAbsolutePath());
-
-                    ResponseEntity<?> response = recipeService.addRecipeImage(recipeId, multipartFile);
-                    System.out.println("Response: " + response);
-                }
-                return ResponseEntity.status(HttpStatus.CREATED).body("Images added successfully");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No images found in the 'img' directory.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding images: " + e.getMessage());
-        }
-    }*/
-
     @Transactional
     public ResponseEntity<?> addImagesFile() {
         try {
