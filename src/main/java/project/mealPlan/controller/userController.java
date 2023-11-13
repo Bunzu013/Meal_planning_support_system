@@ -1,23 +1,14 @@
 package project.mealPlan.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import project.mealPlan.configuration.JwtTokenUtil;
 import project.mealPlan.entity.*;
-import project.mealPlan.repository.MealPlanRepository;
 import project.mealPlan.repository.MealRepository;
-import project.mealPlan.repository.RoleRepository;
 import project.mealPlan.repository.UserRepository;
 import project.mealPlan.service.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.management.relation.Role;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 @RestController
@@ -26,8 +17,6 @@ public class userController {
     @Autowired
     private UserService userService;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     private RecipeService recipeService;
     @Autowired
     private UserRepository userRepository;
@@ -35,8 +24,6 @@ public class userController {
     private IngredientService ingredientService;
     @Autowired
     private MealService mealService;
-    @Autowired
-    private MealRepository mealRepository;
     @Autowired
     private MealPlanService mealPlanService;
 

@@ -1,19 +1,15 @@
 package project.mealPlan.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.mealPlan.configuration.JwtTokenUtil;
 import project.mealPlan.entity.Category;
 import project.mealPlan.entity.Filter;
 import project.mealPlan.repository.CategoryRepository;
 import project.mealPlan.repository.FilterRepository;
 import project.mealPlan.service.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class infoController {

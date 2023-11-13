@@ -1,11 +1,9 @@
 package project.mealPlan.seeder;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
@@ -13,26 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 import project.mealPlan.entity.InitializationStatus;
 import project.mealPlan.entity.Unit;
 import project.mealPlan.entity.User;
 import project.mealPlan.entity.WeekDay;
 import project.mealPlan.repository.*;
-
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-
-import org.springframework.web.multipart.MultipartFile;
 import project.mealPlan.service.RecipeService;
-import project.mealPlan.service.UnitService;
 import project.mealPlan.service.UserService;
-
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
@@ -42,20 +31,8 @@ public class DatabaseSeeder implements ApplicationRunner {
     private ObjectMapper objectMapper;
     @Autowired
     private ResourceLoader resourceLoader;
-
     @Autowired
     private RecipeService recipeService;
-    @Autowired
-    private RecipeRepository recipeRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private FilterRepository filterRepository;
-
-    @Autowired
-    private IngredientRepository ingredientRepository;
     @Autowired
     private UserService userService;
     @Autowired
@@ -68,7 +45,6 @@ public class DatabaseSeeder implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         InitializationStatus status = initializationStatusRepository.findById(1L).orElse(new InitializationStatus());
-
         if (!status.isOperationsExecuted()) {
             try {
                 addUserFile();
@@ -78,10 +54,8 @@ public class DatabaseSeeder implements ApplicationRunner {
                 addImagesFile();
                 status.setOperationsExecuted(true);
                 initializationStatusRepository.save(status);
-
                 System.out.println("Data added successfully");
             } catch (IOException e) {
-
                 System.err.println("Error adding data");
             }
         }
@@ -184,25 +158,16 @@ public class DatabaseSeeder implements ApplicationRunner {
         try {
             File imgFolder = ResourceUtils.getFile("classpath:images");
             File[] imageFilesArray = imgFolder.listFiles();
-
             if (imageFilesArray != null && imageFilesArray.length > 0) {
                 Arrays.sort(imageFilesArray, Comparator.comparing(File::getName));
                 List<File> imageFiles = new ArrayList<>(List.of(imageFilesArray));
-
                 for (File imageFile : imageFiles) {
                     String fileName = imageFile.getName();
-                    // Usuń rozszerzenie pliku (np. ".jpg") i pozostaw tylko cyfry
                     String recipeNumber = fileName.replaceAll("[^\\d]", "");
                     Integer recipeId = Integer.parseInt(recipeNumber);
-
                     byte[] imageData = Files.readAllBytes(imageFile.toPath());
                     MultipartFile multipartFile = new MockMultipartFile("file", fileName, "image/jpg", imageData);
-
-                    System.out.println("Sprawdzanie " + fileName + "    " + recipeId);
-                    System.out.println("Path: " + imageFile.getAbsolutePath());
-
-                    ResponseEntity<?> response = recipeService.addRecipeImage(recipeId, multipartFile);
-                    System.out.println("Response: " + response);
+                    recipeService.addRecipeImage(recipeId, multipartFile);
                 }
                 return ResponseEntity.status(HttpStatus.CREATED).body("Images added successfully");
             } else {
