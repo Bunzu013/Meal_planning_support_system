@@ -188,4 +188,16 @@ public class MealPlanService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
+    public ResponseEntity<?> shoppingListStatus() {
+        try {
+            User user = userRepository.findUserByName("test");
+            if(user != null) {
+                return new ResponseEntity<>(user.getMealPlan().getShoppingListStatus(), HttpStatus.OK);
+            }
+            else return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>
+                    ("Error receiving shopping list status ", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

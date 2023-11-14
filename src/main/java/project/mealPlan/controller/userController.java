@@ -226,7 +226,7 @@ public class userController {
     public ResponseEntity<?> getShoppingListStatus()
     {
         try {
-           return userService.shoppingListStatus();
+           return mealPlanService.shoppingListStatus();
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
