@@ -441,6 +441,7 @@ public class RecipeService {
                 case 2: // Preferred ingredients
                     List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
                     if (preferredIngredients != null && !preferredIngredients.isEmpty()) {
+                        allRecipes = recipeRepository.findAll();
                         allRecipes = allRecipes.stream()
                                 .filter(recipe -> recipe.getRecipeIngredients().stream()
                                         .anyMatch(ri -> preferredIngredients.contains(ri.getIngredient())))
