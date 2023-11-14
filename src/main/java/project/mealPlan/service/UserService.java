@@ -174,7 +174,18 @@ public class UserService implements UserDetailsService {
                     ("Error changing calories visibility ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    public ResponseEntity<?> shoppingListStatus() {
+        try {
+            User user = userRepository.findUserByName("test");
+          if(user != null) {
+              return new ResponseEntity<>(user.getMealPlan().getShoppingListStatus(), HttpStatus.OK);
+          }
+          else return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>
+                    ("Error receiving shopping list status ", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     public ResponseEntity<?> updateResetPasswordToken(String token, String email) {
         try {
             User user = userRepository.findUserByName("test");

@@ -14,4 +14,6 @@ public interface MealPlan_MealRepository extends JpaRepository<MealPlan_Meal, In
     void deleteByMeal(Meal meal);
 
     MealPlan_Meal findByMealAndMealPlan(Meal meal, MealPlan mealPlan);
+
+    List<MealPlan_Meal> findByMeal(Meal meal);
 }

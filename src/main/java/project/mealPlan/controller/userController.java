@@ -156,21 +156,27 @@ public class userController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-   /* @PostMapping("/addNewMeal")
-    public ResponseEntity<?> addNewMeal() {
+   @PostMapping("/addNewMeal")
+    public ResponseEntity<?> addNewMeal(@RequestParam Integer weekDayId) {
         try {
-            Meal newMeal = new Meal();
-            mealRepository.save(newMeal);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return mealService.addNewMeal(weekDayId);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
     @PostMapping("/addRecipeToMeal")
     public ResponseEntity<?> addRecipeToMeal(
             @RequestBody Map<String, Object> recipeData) {
         try {
             return mealService.addRecipeToMeal(recipeData);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @DeleteMapping("/deleteMeal")
+    public ResponseEntity<?> deleteMeal(@RequestParam Integer mealId) {
+        try {
+            return mealService.deleteMeal(mealId);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -187,7 +193,7 @@ public class userController {
     public ResponseEntity<?> deleteRecipeToMealAndMealPlan(@RequestParam Integer mealId,
                                                            @RequestParam Integer recipeId) {
         try {
-            return mealPlanService.removeRecipeFromMeal(mealId, recipeId);
+            return mealService.removeRecipeFromMeal(mealId, recipeId);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -220,9 +226,7 @@ public class userController {
     public ResponseEntity<?> getShoppingListStatus()
     {
         try {
-            User user = userRepository.findUserByName("test");
-
-            return new ResponseEntity<> (user.getMealPlan().getShoppingListStatus(), HttpStatus.OK);
+           return userService.shoppingListStatus();
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
