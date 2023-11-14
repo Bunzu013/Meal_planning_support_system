@@ -434,85 +434,25 @@ public class RecipeService {
         try {
             List<Recipe> allRecipes = new ArrayList<>();
             User user = userRepository.findUserByName("test");
-            if (type == 1) { // favourite recipes
-                allRecipes = user.getUserFavouriteRecipes();
-            } else if (type == 2) { // user recipes
-                allRecipes = user.getUserRecipes();
-            } else if (type == 3) { // preferred ingredients
-                List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
-                if (preferredIngredients != null && !preferredIngredients.isEmpty()) {
-                    allRecipes = allRecipes.stream()
-                            .filter(recipe -> recipe.getRecipeIngredients().stream()
-                                    .anyMatch(ri -> preferredIngredients.contains(ri.getIngredient())))
-                            .collect(Collectors.toList());
-                }
-            } else {
-                allRecipes = recipeRepository.findAll();
-            }
-
-            if (hideAllergens && user.getUserAllergenIngredients() != null
-                    && !user.getUserAllergenIngredients().isEmpty()) {
-                List<Ingredient> userAllergens = user.getUserAllergenIngredients();
-                allRecipes = allRecipes.stream()
-                        .filter(recipe -> recipe.getRecipeIngredients().stream()
-                                .noneMatch(ri -> userAllergens.contains(ri.getIngredient())))
-                        .collect(Collectors.toList());
-            }
-
-            List<Map<String, Object>> recipesData = allRecipes.stream()
-                    .map(recipe -> {
-                        Map<String, Object> recipeData = new HashMap<>();
-                        recipeData.put("recipeId", recipe.getRecipeId());
-                        recipeData.put("recipeName", recipe.getRecipeName());
-
-                        if (recipe.getRecipeImageData() != null) {
-                            try {
-                                byte[] imageData = ImageUtilService.decompressImage(recipe.getRecipeImageData());
-                                String base64ImageData = Base64.getEncoder().encodeToString(imageData);
-                                recipeData.put("imageData", base64ImageData);
-                            } catch (Exception e) {
-                                recipeData.put("imageData", null);
-                            }
-                        } else {
-                            recipeData.put("imageData", null);
-                        }
-
-                        return recipeData;
-                    })
-                    .collect(Collectors.toList());
-
-            if (recipesData.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(recipesData);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-/*
-    public ResponseEntity<?> getRecipesByCategoriesAndFilters(
-            List<Category> categories, List<Filter> filters, Integer type, boolean hideAllergens
-    ) {
-        try {
-            List<Recipe> allRecipes = new ArrayList<>();
-            User user = userRepository.findUserByName("test");
-            if(type == 1){ //favourite recipes
-                allRecipes = user.getUserFavouriteRecipes();
-            }
-            if(type == 2) { //user recipes
-                allRecipes = user.getUserRecipes();
-            }
-            if(type == 3) { //preferred ingredients
-                List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
-                if (preferredIngredients != null && !preferredIngredients.isEmpty()) {
-                    allRecipes = allRecipes.stream()
-                            .filter(recipe -> recipe.getRecipeIngredients().stream()
-                                    .anyMatch(ri -> preferredIngredients.contains(ri.getIngredient())))
-                            .collect(Collectors.toList());
-                }
-            }
-            else{
-                allRecipes = recipeRepository.findAll();
+            switch (type) {
+                case 1: // Favourite recipes
+                    allRecipes = user.getUserFavouriteRecipes();
+                    break;
+                case 2: // Preferred ingredients
+                    List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
+                    if (preferredIngredients != null && !preferredIngredients.isEmpty()) {
+                        allRecipes = allRecipes.stream()
+                                .filter(recipe -> recipe.getRecipeIngredients().stream()
+                                        .anyMatch(ri -> preferredIngredients.contains(ri.getIngredient())))
+                                .collect(Collectors.toList());
+                        break;
+                    }
+                case 3: // User recipes
+                    allRecipes = user.getUserRecipes();
+                    break;
+                default:
+                    allRecipes = recipeRepository.findAll();
+                    break;
             }
             if(hideAllergens && user.getUserAllergenIngredients() != null
                     && !user.getUserAllergenIngredients().isEmpty())
@@ -544,6 +484,8 @@ public class RecipeService {
                             //byte[] imageData = recipe.getRecipeImageData();
                             String base64ImageData = Base64.getEncoder().encodeToString(imageData);
                             recipeData.put("imageData", base64ImageData);
+                        }else{
+                            recipeData.put("imageData", null);
                         }
                         return recipeData;
                     }).collect(Collectors.toList());
@@ -555,7 +497,7 @@ public class RecipeService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }*/
+    }
     public ResponseEntity<?> addToFavourites(Integer recipeId) {
         try {
             User user = userRepository.findUserByName("test");
