@@ -445,8 +445,7 @@ public class RecipeService {
                                 .filter(recipe -> recipe.getRecipeIngredients().stream()
                                         .anyMatch(ri -> preferredIngredients.contains(ri.getIngredient())))
                                 .collect(Collectors.toList());
-                        break;
-                    }
+                    }break;
                 case 3: // User recipes
                     allRecipes = user.getUserRecipes();
                     break;
