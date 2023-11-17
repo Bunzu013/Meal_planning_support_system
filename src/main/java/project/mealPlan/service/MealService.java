@@ -38,18 +38,23 @@ public class MealService {
                         if (!meal.getMealRecipes().contains(recipe)) {
                             meal.getMealRecipes().add(recipe);
                             mealRepository.save(meal);
-                            return ResponseEntity.status(HttpStatus.OK).body("Recipe added to meal");
+                            return ResponseEntity.status(HttpStatus.OK)
+                                    .body("Recipe added to meal");
                         } else {
-                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Recipe already exists in the meal");
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                    .body("Recipe already exists in the meal");
                         }
                     }else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No recipe found");
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body("No recipe found");
                     }
                 }else{
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No meal found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("No meal found");
                 }
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("An error occurred");
             }
         }
 
@@ -57,7 +62,8 @@ public class MealService {
         try {
             Meal meal = mealRepository.findByMealId(mealId);
             if (meal != null) {
-                List<MealPlan_Meal> mealPlanMeals = mealPlanMealRepository.findByMeal(meal);
+                List<MealPlan_Meal> mealPlanMeals =
+                        mealPlanMealRepository.findByMeal(meal);
                 for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
                     mealPlanMeal.setMealPlan(null);
                     mealPlanMeal.setWeekDay(null);
@@ -67,10 +73,12 @@ public class MealService {
                 mealRepository.delete(meal);
                 return ResponseEntity.status(HttpStatus.OK).body("Meal deleted");
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No meal found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No meal found");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred");
         }
     }
 
@@ -101,17 +109,19 @@ public class MealService {
             Meal meal = mealRepository.findByMealId(mealId);
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             if (meal == null || recipe == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Meal or recipe not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Meal or recipe not found");
             }
             if (!meal.getMealRecipes().contains(recipe)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Meal doesn't contain this recipe");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Meal doesn't contain this recipe");
             }
             meal.getMealRecipes().remove(recipe);
             mealRepository.save(meal);
             if (meal.getMealRecipes().isEmpty()) {
                 User user = userRepository.findUserByName("test");
-                MealPlan_Meal mealPlanMeal = mealPlanMealRepository.findByMealAndMealPlan(meal, user.getMealPlan());
-
+                MealPlan_Meal mealPlanMeal = mealPlanMealRepository
+                        .findByMealAndMealPlan(meal, user.getMealPlan());
                 if (mealPlanMeal != null) {
                     mealPlanMeal.setWeekDay(null);
                     mealPlanMeal.setMealPlan(null);

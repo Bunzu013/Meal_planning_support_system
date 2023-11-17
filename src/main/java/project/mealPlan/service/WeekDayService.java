@@ -25,6 +25,7 @@ public class WeekDayService {
             for(WeekDay weekDay : weekDays)
             {
                 Map<String,Object> weekDayInfo = new HashMap<>();
+                weekDayInfo.put("weekDayId", weekDay.getWeekDayId());
                 weekDayInfo.put("weekDayName", weekDay.getWeekDayName());
                 allWeekDaysList.add(weekDayInfo);
             }

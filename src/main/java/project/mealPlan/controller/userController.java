@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import project.mealPlan.entity.*;
-import project.mealPlan.repository.MealRepository;
 import project.mealPlan.repository.UserRepository;
 import project.mealPlan.service.*;
 import java.util.*;
@@ -39,6 +37,14 @@ public class userController {
     public ResponseEntity<?> editUserData(@RequestBody Map<String, Object> userInfo) {
         try {
             return userService.editUserData(userInfo);
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+    @PostMapping("/updatePassword")
+    public ResponseEntity<?> editPassword(@RequestBody Map<String, Object> data) {
+        try {
+            return userService.editPassword(data);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -173,7 +179,7 @@ public class userController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @DeleteMapping("/deleteMeal")
+    @PostMapping("/deleteMeal")
     public ResponseEntity<?> deleteMeal(@RequestParam Integer mealId) {
         try {
             return mealService.deleteMeal(mealId);

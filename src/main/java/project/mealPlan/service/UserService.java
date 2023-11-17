@@ -77,8 +77,6 @@ public class UserService implements UserDetailsService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding user");
         }
     }
-
-
     public ResponseEntity<String> login(User user) {
         try {
             User existingUser = userRepository.findUserByEmail(user.getEmail());
@@ -123,9 +121,7 @@ public class UserService implements UserDetailsService {
     }
     public  ResponseEntity<?> editUserData(Map<String, Object> userInfo) {
         try {
-
             User user = userRepository.findUserByName("test");
-
             if (userInfo.get("userName") != null) {
                 String userName = (String) userInfo.get("userName");
                 user.setName(userName);
@@ -133,14 +129,6 @@ public class UserService implements UserDetailsService {
             if (userInfo.get("userSurname") != null) {
                 String surname = (String) userInfo.get("userSurname");
                 user.setSurname(surname);
-            }
-            if (userInfo.get("password") != null) {
-                String hashedPassword = passwordEncoder.encode((String) userInfo.get("password"));
-                user.setPassword(hashedPassword);
-            }
-            if (userInfo.get("email") != null) {
-                String email = (String) userInfo.get("email");
-                user.setEmail(email);
             }
             if (userInfo.get("phoneNumber") != null) {
                 Integer phoneNumber = (Integer) userInfo.get("phoneNumber");
@@ -154,6 +142,41 @@ public class UserService implements UserDetailsService {
             return new ResponseEntity<>("User data updated successfully", HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user data");
+        }
+    }
+    public ResponseEntity<String> editPassword(Map<String, Object> data) {
+        try {
+            if (data.get("oldPassword") != null) {
+                String oldPassword = (String) data.get("oldPassword");
+                User user = userRepository.findUserByName("test");
+                if (user == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body("User not found");
+                }
+                if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body("Incorrect password");
+                }
+                if (data.get("newPassword") != null) {
+                    String newPassword = (String) data.get("newPassword");
+                    if (oldPassword.equals(newPassword)) {
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("New password must be different");
+                    }
+                    String hashedPassword = passwordEncoder.encode(newPassword);
+                    user.setPassword(hashedPassword);
+                    userRepository.save(user);
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .body("Password changed successfully");
+                } else {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("New password cannot be null");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Old password cannot be null");
+            }
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -203,7 +226,6 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Reset password link has expired.");
         }
-
         try {
             String hashedPassword = passwordEncoder.encode(newPassword);
             user.setPassword(hashedPassword);

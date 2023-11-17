@@ -92,7 +92,7 @@ public class IngredientService {
             for(Ingredient ingredient : ingredients)
             {
                 Map<String,Object> ingredientInfo = new HashMap<>();
-                ingredientInfo.put("ingredientID", ingredient.getIngredientId());
+                ingredientInfo.put("ingredientId", ingredient.getIngredientId());
                 ingredientInfo.put("ingredientName", ingredient.getIngredientName());
                 ingredientInfoList.add(ingredientInfo);
             }
