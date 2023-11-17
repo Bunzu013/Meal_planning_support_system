@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
 import project.mealPlan.seeder.DatabaseSeeder;
+import project.mealPlan.service.CategoryService;
+import project.mealPlan.service.FilterService;
 import project.mealPlan.service.RecipeService;
+import project.mealPlan.service.WeekDayService;
 
 import java.util.Map;
 
@@ -29,6 +32,12 @@ public class adminController {
     WeekDayRepository weekDayRepository;
     @Autowired
     RecipeService recipeService;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    WeekDayService weekDayService;
+    @Autowired
+    FilterService filterService;
 /*
     @PostMapping("/seeder")
     public ResponseEntity<?> seeder() {
@@ -112,4 +121,55 @@ public class adminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PostMapping("/addNewCategory")
+    public ResponseEntity<?> addNewCategory(@RequestBody Map<String, Object> categoryInput) {
+        try {
+            return categoryService.addNewCategory(categoryInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updateCategory")
+    public ResponseEntity<?> updateCategory(@RequestBody Map<String, Object> categoryInput) {
+        try {
+            return categoryService.updateCategory(categoryInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/deleteCategory")
+    public ResponseEntity<?> deleteCategory(@RequestBody Map<String, Object> categoryInput) {
+        try {
+            return categoryService.deleteCategory(categoryInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/addNewFilter")
+    public ResponseEntity<?> addNewFilter(@RequestBody Map<String, Object> filterInput) {
+        try {
+            return filterService.addNewFilter(filterInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updateFilter")
+    public ResponseEntity<?> updateFilter(@RequestBody Map<String, Object> filterInput) {
+        try {
+            return filterService.updateFilter(filterInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/deleteFilter")
+    public ResponseEntity<?> deleteFilter(@RequestBody Map<String, Object> filterInput) {
+        try {
+            return  filterService.deleteFilter(filterInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

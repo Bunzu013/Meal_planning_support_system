@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface FilterRepository extends JpaRepository<Filter, Integer> {
     Filter findByRecipeFilterName(String recipeFilterName);
+
+    Filter findByRecipeFilterId(Integer filterId);
 }
 
 

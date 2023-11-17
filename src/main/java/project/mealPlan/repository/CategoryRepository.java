@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Category findByRecipeCategoryName(String recipeCategoryName);
+        Category findByRecipeCategoryId(Integer categoryId);
 }
 
