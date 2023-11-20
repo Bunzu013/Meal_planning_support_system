@@ -66,24 +66,23 @@ public class User {
     @Column
     private Timestamp resetPasswordValidityTime;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     private List<Ingredient> userPreferredIngredients;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     private List<Ingredient> userAllergenIngredients;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     private List<Recipe> userFavouriteRecipes;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Recipe> userRecipes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mealPlanId")
     private MealPlan mealPlan;
 
-   @ElementCollection(targetClass = UserRole.class)
- //   @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany
     private List<UserRole> roles;
 
     public User(String name, String surname, String email, String password, Integer phoneNumber, Integer phonePrefix) {
@@ -95,5 +94,15 @@ public class User {
         this.phonePrefix = phonePrefix;
         this.mealPlan = new MealPlan();
     }
-
+    public String getRolesAsString() {
+        if (roles != null && !roles.isEmpty()) {
+            StringBuilder rolesString = new StringBuilder();
+            for (UserRole role : roles) {
+                rolesString.append(role.getAuthority());
+            }
+            // Remove the trailing comma and space
+            return rolesString.substring(0, rolesString.length() - 2);
+        }
+        return "No roles";
+    }
 }

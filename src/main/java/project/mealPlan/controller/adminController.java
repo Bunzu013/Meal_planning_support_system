@@ -30,6 +30,8 @@ public class adminController {
     IngredientService ingredientService;
     @Autowired
     UnitService unitService;
+    @Autowired
+    UserService userService;
     /*
     @PostMapping("/seeder")
     public ResponseEntity<?> seeder() {
@@ -175,6 +177,22 @@ public class adminController {
     public ResponseEntity<?> deleteUnit(@RequestBody Map<String, Object> unitInput) {
         try {
             return unitService.deleteUnit(unitInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> userInput) {
+        try {
+            return userService.deleteUser(userInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/blockUser")
+    public ResponseEntity<?> blockUser(@RequestBody Map<String, Object> userInput) {
+        try {
+            return userService.blockUser(userInput);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -1,5 +1,6 @@
 package project.mealPlan.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import project.mealPlan.configuration.JwtTokenUtil;
 import project.mealPlan.entity.*;
-import project.mealPlan.repository.RoleRepository;
-import project.mealPlan.repository.UserRepository;
+import project.mealPlan.repository.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Calendar;
 
@@ -28,6 +32,14 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    MealRepository mealRepository;
+    @Autowired
+    MealPlan_MealRepository mealPlan_mealRepository;
+    @Autowired
+    MealPlanRepository mealPlanRepository;
+@Autowired
+MealService mealService;
 
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder,JwtTokenUtil jwtTokenUtil ) {
@@ -83,6 +95,12 @@ public class UserService implements UserDetailsService {
             if (existingUser == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: user not found");
             }
+            LocalDateTime currentTimestamp = LocalDateTime.now();
+            Timestamp timestampResult = Timestamp.valueOf(currentTimestamp);
+            Timestamp block = existingUser.getBlockedTo();
+            if(block != null  && block.after(timestampResult)){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User blocked till: " + block);
+            }
             if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: incorrect password");
             }
@@ -96,24 +114,30 @@ public class UserService implements UserDetailsService {
         try {
             User user = userRepository.findUserByName("test");
             Map<String, Object> userInfo = new HashMap<>();
-            userInfo.put("userName", user.getName());
-            userInfo.put("userSurname", user.getSurname());
-            userInfo.put("email", user.getEmail());
-            userInfo.put("phoneNumber", user.getPhoneNumber());
-            userInfo.put("phonePrefix", user.getPhonePrefix());
-            userInfo.put("hiddenCalories", user.getHiddenCalories());
+            if(user != null) {
+                userInfo.put("userName", user.getName());
+                userInfo.put("userSurname", user.getSurname());
+                userInfo.put("email", user.getEmail());
+                userInfo.put("phoneNumber", user.getPhoneNumber());
+                userInfo.put("phonePrefix", user.getPhonePrefix());
+                userInfo.put("hiddenCalories", user.getHiddenCalories());
 
-            List<String> preferredIngredients = new ArrayList<>();
-            for (Ingredient ingredient : user.getUserPreferredIngredients()) {
-                preferredIngredients.add(ingredient.getIngredientName());
+                ObjectMapper objectMapper = new ObjectMapper();
+                userInfo.put("role", objectMapper.writeValueAsString(user.getRoles()));
+                List<String> preferredIngredients = new ArrayList<>();
+                for (Ingredient ingredient : user.getUserPreferredIngredients()) {
+                    preferredIngredients.add(ingredient.getIngredientName());
+                }
+                userInfo.put("userPreferredIngredients", preferredIngredients);
+                List<String> favouriteRecipes = new ArrayList<>();
+                for (Recipe recipe : user.getUserFavouriteRecipes()) {
+                    favouriteRecipes.add(recipe.getRecipeName());
+                }
+                userInfo.put("userFavouriteRecipes", favouriteRecipes);
             }
-            userInfo.put("userPreferredIngredients", preferredIngredients);
-
-            List<String> favouriteRecipes = new ArrayList<>();
-            for (Recipe recipe : user.getUserFavouriteRecipes()) {
-                favouriteRecipes.add(recipe.getRecipeName());
+            else{
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found");
             }
-            userInfo.put("userFavouriteRecipes", favouriteRecipes);
             return new ResponseEntity<>(userInfo, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error getting user data");
@@ -235,6 +259,60 @@ public class UserService implements UserDetailsService {
             return ResponseEntity.status(HttpStatus.OK).body("Password changed successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing password");
+        }
+    }
+    @Transactional
+    public ResponseEntity<?> deleteUser(Map<String, Object> userInput) {
+        try {
+            String email = (String) userInput.get("email");
+            User user = userRepository.findUserByEmail(email);
+            if (user != null) {
+                List<Recipe> userRecipes = user.getUserRecipes();
+                User admin = userRepository.findUserByName("ADMIN");
+                for (Recipe recipe : userRecipes) {
+                    recipe.setUser(admin);
+                }
+                MealPlan mealplan = user.getMealPlan();
+                List<MealPlan_Meal> mealPlanMeals = mealplan.getMealPlanMeals();
+                for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
+                    mealPlanMeal.setWeekDay(null);
+                    mealPlanMeal.setMealPlan(null);
+                    Meal meal = mealPlanMeal.getMeal();
+                    mealPlanMeal.setMeal(null);
+                    mealService.deleteMeal(meal.getMealId());
+                    mealPlan_mealRepository.delete(mealPlanMeal);
+                }
+                mealPlanRepository.delete(mealplan);
+                user.getUserFavouriteRecipes().clear();
+                user.getRoles().clear();
+                user.getUserAllergenIngredients().clear();
+                user.getUserPreferredIngredients().clear();
+                userRepository.delete(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user not found");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("User deleted");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting user");
+        }
+    }
+    @Transactional
+    public ResponseEntity<?> blockUser(Map<String, Object> userInput) {
+        try {
+            String email = (String) userInput.get("email");
+            User user = userRepository.findUserByEmail(email);
+            if(user == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user not found");
+            }
+            LocalDateTime currentTimestamp = LocalDateTime.now();
+            LocalDateTime newTimestamp = currentTimestamp.plusMonths(2);
+            Timestamp timestampResult = Timestamp.valueOf(newTimestamp);
+            user.setBlockedTo(timestampResult);
+            userRepository.save(user);
+           // System.out.println("    " + user.getBlockedTo());
+            return ResponseEntity.status(HttpStatus.OK).body("User blocked");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error blocking user");
         }
     }
 }

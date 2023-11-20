@@ -57,7 +57,7 @@ public class MealService {
                         .body("An error occurred");
             }
         }
-
+@Transactional
     public ResponseEntity<?> deleteMeal(Integer mealId) {
         try {
             Meal meal = mealRepository.findByMealId(mealId);
