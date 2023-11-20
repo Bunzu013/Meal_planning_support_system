@@ -226,7 +226,7 @@ public class IngredientService {
                     return new ResponseEntity<>("No ingredient found", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             }
-            return new ResponseEntity<>("Error deleting filter", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error deleting ingredient", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
