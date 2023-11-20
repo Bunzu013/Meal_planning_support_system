@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import project.mealPlan.entity.Ingredient;
-import project.mealPlan.entity.User;
+import project.mealPlan.entity.*;
 import project.mealPlan.repository.IngredientRepository;
+import project.mealPlan.repository.Recipe_IngredientRepository;
 import project.mealPlan.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -21,6 +21,8 @@ public class IngredientService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    Recipe_IngredientRepository  recipe_IngredientRepository ;
 
     public ResponseEntity<?> addToPreferred(Integer ingredientId) {
         try {
@@ -163,6 +165,70 @@ public class IngredientService {
             return ResponseEntity.ok(ingredientInfoList);
         } catch (Exception e) {
             return new ResponseEntity<>("Error receiving user allergen ingredients list",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<?> addNewIngredient(Map<String, Object> ingredientInput)
+    {
+        try {
+            String ingredient = (String) ingredientInput.get("ingredientName");
+            if(ingredientRepository.findByIngredientName(ingredient) == null){
+                Ingredient newIngredient = new Ingredient(ingredient);
+                ingredientRepository.save(newIngredient);
+                return new ResponseEntity<>("New ingredient added", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Ingredient already exists", HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    public ResponseEntity<?> updateIngredient(Map<String, Object> ingredientInput)
+    {
+        try {
+            Integer ingredientId = (Integer) ingredientInput.get("ingredientId");
+            String ingredientName = (String) ingredientInput.get("ingredientName");
+            if(ingredientRepository.findByIngredientName(ingredientName) == null) {
+                if (ingredientId != null) {
+                    Ingredient ingredientUpdate = ingredientRepository.findByIngredientId(ingredientId);
+                    if (ingredientUpdate != null) {
+                        ingredientUpdate.setIngredientName(ingredientName);
+                        ingredientRepository.save(ingredientUpdate);
+                        return new ResponseEntity<>("Ingredient updated", HttpStatus.OK);
+                    } else {
+                        return new ResponseEntity<>("No ingredient found", HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                }
+            }else{
+                return new ResponseEntity<>("Ingredient with this name already exists", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<>("Error updating ingredient", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    public ResponseEntity<?> deleteIngredient(Map<String, Object> ingredientInput)
+    {
+        try {
+            Integer ingredientId = (Integer) ingredientInput.get("ingredientId");
+            if (ingredientId != null) {
+                Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
+                if (ingredient != null) {
+                    List<Recipe_Ingredient> recipes = recipe_IngredientRepository.findByIngredient(ingredient) ;
+                    Ingredient ingredientTemp = ingredientRepository.findByIngredientName("deleted");
+                    for (Recipe_Ingredient recipe : recipes) {
+                        recipe.setIngredient(ingredientTemp);
+                        recipe.setUnit(null);
+                        recipe.setQuantity(null);
+                    }
+                    ingredientRepository.delete(ingredient);
+                    return new ResponseEntity<>("ingredient deleted", HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("No ingredient found", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+            return new ResponseEntity<>("Error deleting filter", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
