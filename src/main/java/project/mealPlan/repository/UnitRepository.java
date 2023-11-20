@@ -7,4 +7,6 @@ import project.mealPlan.entity.Unit;
 @Repository
 public interface UnitRepository extends JpaRepository<Unit, Integer> {
     Unit findByUnitName(String yourUnitName);
+
+    Unit findByUnitId(Integer unitId);
 }
