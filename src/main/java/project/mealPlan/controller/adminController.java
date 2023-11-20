@@ -16,13 +16,6 @@ import java.util.Map;
 public class adminController {
     @Autowired
     DatabaseSeeder databaseSeeder;
-
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    IngredientRepository ingredientRepository;
-    @Autowired
-    FilterRepository filterRepository;
     @Autowired
     UnitRepository unitRepository;
     @Autowired
@@ -32,11 +25,11 @@ public class adminController {
     @Autowired
     CategoryService categoryService;
     @Autowired
-    WeekDayService weekDayService;
-    @Autowired
     FilterService filterService;
     @Autowired
     IngredientService ingredientService;
+    @Autowired
+    UnitService unitService;
     /*
     @PostMapping("/seeder")
     public ResponseEntity<?> seeder() {
@@ -156,6 +149,32 @@ public class adminController {
     public ResponseEntity<?> deleteFilter(@RequestBody Map<String, Object> filterInput) {
         try {
             return  filterService.deleteFilter(filterInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/addNewUnit")
+    public ResponseEntity<?> addNewUnit(@RequestBody Map<String, Object> unitInput) {
+        try {
+            return unitService.addNewUnit(unitInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updateUnit")
+    public ResponseEntity<?> updateUnit(@RequestBody Map<String, Object> unitInput) {
+        try {
+            return unitService.updateUnit(unitInput);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/deleteUnit")
+    public ResponseEntity<?> deleteUnit(@RequestBody Map<String, Object> unitInput) {
+        try {
+            return unitService.deleteUnit(unitInput);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
