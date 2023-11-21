@@ -85,6 +85,7 @@ public class User {
     @ManyToMany
     private List<UserRole> roles;
 
+
     public User(String name, String surname, String email, String password, Integer phoneNumber, Integer phonePrefix) {
         this.name = name;
         this.surname = surname;
@@ -93,16 +94,5 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.phonePrefix = phonePrefix;
         this.mealPlan = new MealPlan();
-    }
-    public String getRolesAsString() {
-        if (roles != null && !roles.isEmpty()) {
-            StringBuilder rolesString = new StringBuilder();
-            for (UserRole role : roles) {
-                rolesString.append(role.getAuthority());
-            }
-            // Remove the trailing comma and space
-            return rolesString.substring(0, rolesString.length() - 2);
-        }
-        return "No roles";
     }
 }

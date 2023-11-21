@@ -12,10 +12,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
-import project.mealPlan.entity.InitializationStatus;
-import project.mealPlan.entity.Unit;
-import project.mealPlan.entity.User;
-import project.mealPlan.entity.WeekDay;
+import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -28,29 +25,36 @@ import java.io.IOException;
 @Component
 public class DatabaseSeeder implements ApplicationRunner {
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
     @Autowired
-    private ResourceLoader resourceLoader;
+    ResourceLoader resourceLoader;
     @Autowired
-    private RecipeService recipeService;
+    RecipeService recipeService;
     @Autowired
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private UnitRepository unitRepository;
+    UnitRepository unitRepository;
     @Autowired
-    private WeekDayRepository weekDayRepository;
+    WeekDayRepository weekDayRepository;
     @Autowired
-    private InitializationStatusRepository initializationStatusRepository;
-
+    InitializationStatusRepository initializationStatusRepository;
+    @Autowired
+    IngredientRepository ingredientRepository;
+    @Autowired
+    UserRepository userRepository;
+@Autowired
+   RoleRepository roleRepository;
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         InitializationStatus status = initializationStatusRepository.findById(1L).orElse(new InitializationStatus());
         if (!status.isOperationsExecuted()) {
             try {
                 addUserFile();
+               // setAdmin();
                 addRecipeFile();
                 addWeekDaysFile();
                 addUnitFile();
+                addIngredientFile();
                 addImagesFile();
                 status.setOperationsExecuted(true);
                 initializationStatusRepository.save(status);
@@ -84,6 +88,26 @@ public class DatabaseSeeder implements ApplicationRunner {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding data");
         }
     }
+
+    @Transactional
+    public ResponseEntity<?> setAdmin() {
+        try {
+            User user = userRepository.findUserByName("test");
+            UserRole defaultRole = roleRepository.findByAuthority("ROLE_ADMIN");
+            if (defaultRole == null) {
+                defaultRole = new UserRole("ROLE_ADMIN");
+                roleRepository.save(defaultRole);
+            }
+            user.getRoles().clear();
+            user.setRoles(Collections.singletonList(defaultRole));
+            return ResponseEntity.status(HttpStatus.OK).body("Role added");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user roles");
+        }
+    }
+
+
+
 
     @Transactional
     public ResponseEntity<?> addRecipeFile() throws IOException {
@@ -179,7 +203,28 @@ public class DatabaseSeeder implements ApplicationRunner {
         }
     }
 
-
+    @Transactional
+    public ResponseEntity<?> addIngredientFile() throws IOException {
+        try {
+            Resource resource = resourceLoader.getResource("classpath:seeds/ingredientSeed.json");
+            List<Ingredient> ingredients = null;
+            if (resource.exists()) {
+                File ingredientFile = resource.getFile();
+                ingredients = objectMapper.readValue(
+                        ingredientFile, new TypeReference<List<Ingredient>>() {
+                        }
+                );
+            }
+            if (ingredients != null && !ingredients.isEmpty()) {
+                for (Ingredient ingredient : ingredients) {
+                    ingredientRepository.save(ingredient);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body("Week days added successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding data");
+        }
+    }
 
 }
 

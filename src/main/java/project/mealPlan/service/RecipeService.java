@@ -354,8 +354,6 @@ public class RecipeService {
                     .body("Error uploading and compressing image.");
         }
     }
-
-
     public ResponseEntity<?> getAllRecipes()
     {
         try {
@@ -391,7 +389,7 @@ public class RecipeService {
             if(user.getHiddenCalories() != TRUE) {
                 recipeInfo.put("calories", recipe.getCalories());
             }
-            if(recipe.getRecipeImageName() != null) {
+             if(recipe.getRecipeImageName() != null) {
                 recipeInfo.put("imageName", recipe.getRecipeImageName());
             }
             if (recipe.getRecipeImageData() != null) {
