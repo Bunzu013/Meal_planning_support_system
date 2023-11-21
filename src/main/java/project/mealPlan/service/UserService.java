@@ -1,6 +1,4 @@
 package project.mealPlan.service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import project.mealPlan.configuration.JwtTokenUtil;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Calendar;
-
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -77,10 +72,14 @@ MealService mealService;
                           .body("User with this phone number already exists");
             }
             user.setMealPlan(new MealPlan());
-            List<UserRole> defaultRoles = new ArrayList<>();
             UserRole defaultRole = roleRepository.findByAuthority("ROLE_USER");
-            if (defaultRole != null) { defaultRoles.add(defaultRole);}
-            user.setRoles(defaultRoles);
+            if (defaultRole == null) {
+                defaultRole = new UserRole("ROLE_USER");
+                roleRepository.save(defaultRole);
+                user.setRoles(Collections.singletonList(defaultRole));
+            }else {
+                user.setRoles(Collections.singletonList(defaultRole));
+            }
             String hashedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(hashedPassword);
             userRepository.save(user);
@@ -105,44 +104,54 @@ MealService mealService;
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: incorrect password");
             }
             String token = jwtTokenUtil.generateJwtToken(existingUser);
-            return ResponseEntity.ok(token);
+            // Zwróć token JWT jako część odpowiedzi
+            return ResponseEntity.ok().body(token);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-    public ResponseEntity<?> getUserData() {
-        try {
-            User user = userRepository.findUserByName("test");
-            Map<String, Object> userInfo = new HashMap<>();
-            if(user != null) {
-                userInfo.put("userName", user.getName());
-                userInfo.put("userSurname", user.getSurname());
-                userInfo.put("email", user.getEmail());
-                userInfo.put("phoneNumber", user.getPhoneNumber());
-                userInfo.put("phonePrefix", user.getPhonePrefix());
-                userInfo.put("hiddenCalories", user.getHiddenCalories());
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                userInfo.put("role", objectMapper.writeValueAsString(user.getRoles()));
-                List<String> preferredIngredients = new ArrayList<>();
-                for (Ingredient ingredient : user.getUserPreferredIngredients()) {
-                    preferredIngredients.add(ingredient.getIngredientName());
-                }
-                userInfo.put("userPreferredIngredients", preferredIngredients);
-                List<String> favouriteRecipes = new ArrayList<>();
-                for (Recipe recipe : user.getUserFavouriteRecipes()) {
-                    favouriteRecipes.add(recipe.getRecipeName());
-                }
-                userInfo.put("userFavouriteRecipes", favouriteRecipes);
+    @Transactional
+    public ResponseEntity<?> getUserData(Authentication authentication) {
+                try {
+                    if (authentication == null || !authentication.isAuthenticated()) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+                    }
+
+                    String email = authentication.getName();
+                    User user = userRepository.findUserByEmail(email);
+
+
+                    if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
-            else{
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found");
+
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("userName", user.getName());
+            userInfo.put("userSurname", user.getSurname());
+            userInfo.put("email", user.getEmail());
+            userInfo.put("phoneNumber", user.getPhoneNumber());
+            userInfo.put("phonePrefix", user.getPhonePrefix());
+            userInfo.put("hiddenCalories", user.getHiddenCalories());
+            userInfo.put("roles", user.getRoles());
+            List<String> preferredIngredients = new ArrayList<>();
+            for (Ingredient ingredient : user.getUserPreferredIngredients()) {
+                preferredIngredients.add(ingredient.getIngredientName());
             }
+            userInfo.put("userPreferredIngredients", preferredIngredients);
+
+            List<String> favouriteRecipes = new ArrayList<>();
+            for (Recipe recipe : user.getUserFavouriteRecipes()) {
+                favouriteRecipes.add(recipe.getRecipeName());
+            }
+            userInfo.put("userFavouriteRecipes", favouriteRecipes);
             return new ResponseEntity<>(userInfo, HttpStatus.OK);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error getting user data");
         }
     }
+
     public  ResponseEntity<?> editUserData(Map<String, Object> userInfo) {
         try {
             User user = userRepository.findUserByName("test");

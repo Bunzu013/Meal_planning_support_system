@@ -1,19 +1,25 @@
 package project.mealPlan.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class UserRole implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String authority;
+
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
     public UserRole(String authority) {
         this.authority = authority;
@@ -26,6 +32,4 @@ public class UserRole implements GrantedAuthority {
 }
 /*    ROLE_USER: Standardowa rola przyznawana wszystkim zarejestrowanym użytkownikom.
     ROLE_ADMIN: Rola administratora, która ma pełne uprawnienia w systemie.
-    ROLE_EDITOR: Rola edytora, która ma uprawnienia do edycji treści na stronie.
-    ROLE_MANAGER: Rola menedżera, która może zarządzać innymi użytkownikami.
     ROLE_GUEST: Rola dla niezalogowanych użytkowników, którzy mają ograniczony dostęp do niektórych zasobów.*/

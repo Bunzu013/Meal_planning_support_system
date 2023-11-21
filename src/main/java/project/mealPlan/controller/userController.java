@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.mealPlan.repository.UserRepository;
@@ -26,9 +27,9 @@ public class userController {
     private MealPlanService mealPlanService;
 
     @GetMapping("/getUserData")
-    public ResponseEntity<?> showUserData() {
+    public ResponseEntity<?> showUserData(Authentication authentication) {
         try {
-            return userService.getUserData();
+            return userService.getUserData(authentication);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

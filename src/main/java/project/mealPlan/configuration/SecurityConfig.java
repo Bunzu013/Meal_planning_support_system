@@ -1,11 +1,8 @@
 package project.mealPlan.configuration;
-
-import org.springframework.context.annotation.Lazy;
-import project.mealPlan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,51 +17,53 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    // Enable CORS and disable CSRF
-    http = http.cors().and().csrf().disable();
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-    // Set session management to stateless
-    http = http
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and();
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // Enable CORS and disable CSRF
+        http.cors().and().csrf().disable();
 
-    // Set unauthorized requests exception handler
-    http = http
-            .exceptionHandling()
-            .authenticationEntryPoint(
-                    (request, response, ex) -> {
-                      response.sendError(
-                              HttpServletResponse.SC_UNAUTHORIZED,
-                              ex.getMessage()
-                      );
-                    }
-            )
-            .and();
+        // Set session management to stateless
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    // Endpoint authorization
-    http.authorizeRequests()
-            .anyRequest().permitAll()
-            .and()
-            .csrf().disable();
+        // Set unauthorized requests exception handler
+        http.exceptionHandling().authenticationEntryPoint(
+                (request, response, ex) -> {
+                    response.sendError(
+                            HttpServletResponse.SC_UNAUTHORIZED,
+                            ex.getMessage()
+                    );
+                }
+        );
 
-    // Add JWT token filter
-    http.addFilterBefore(
-            jwtAuthenticationFilter(),
-            UsernamePasswordAuthenticationFilter.class
-    );
-  }
+        // Endpoint authorization
+        http.authorizeRequests()
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable();
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+        // Add JWT token filter
+        http.addFilterBefore(
+                jwtAuthenticationFilter(authenticationManagerBean(), jwtTokenUtil),
+                UsernamePasswordAuthenticationFilter.class
+        );
+    }
 
-  private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-    return new JwtAuthenticationFilter(authenticationManager());
-  }
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+        return new JwtAuthenticationFilter(authenticationManager, jwtTokenUtil);
+    }
 }
