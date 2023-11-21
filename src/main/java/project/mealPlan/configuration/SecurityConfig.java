@@ -51,7 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Endpoint authorization
         http.authorizeRequests()
-                .anyRequest().permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/guest/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
 

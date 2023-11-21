@@ -9,6 +9,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,15 +49,17 @@ public class DatabaseSeeder implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         InitializationStatus status = initializationStatusRepository.findById(1L).orElse(new InitializationStatus());
+        initializationStatusRepository.save(status);
         if (!status.isOperationsExecuted()) {
             try {
                 addUserFile();
-               // setAdmin();
+                addRole();
                 addRecipeFile();
                 addWeekDaysFile();
                 addUnitFile();
                 addIngredientFile();
                 addImagesFile();
+                userService.setAdmin();
                 status.setOperationsExecuted(true);
                 initializationStatusRepository.save(status);
                 System.out.println("Data added successfully");
@@ -90,24 +94,18 @@ public class DatabaseSeeder implements ApplicationRunner {
     }
 
     @Transactional
-    public ResponseEntity<?> setAdmin() {
+    public ResponseEntity<?> addRole() {
         try {
-            User user = userRepository.findUserByName("test");
             UserRole defaultRole = roleRepository.findByAuthority("ROLE_ADMIN");
             if (defaultRole == null) {
                 defaultRole = new UserRole("ROLE_ADMIN");
                 roleRepository.save(defaultRole);
             }
-            user.getRoles().clear();
-            user.setRoles(Collections.singletonList(defaultRole));
             return ResponseEntity.status(HttpStatus.OK).body("Role added");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user roles");
         }
     }
-
-
-
 
     @Transactional
     public ResponseEntity<?> addRecipeFile() throws IOException {
@@ -122,7 +120,7 @@ public class DatabaseSeeder implements ApplicationRunner {
                 );
             }
             if (recipeInputs != null && !recipeInputs.isEmpty()) {
-                for (Map<String, Object> recipeInput : recipeInputs) {
+               for (Map<String, Object> recipeInput : recipeInputs) {
                     recipeService.addRecipeAdmin(recipeInput);
                 }
             }

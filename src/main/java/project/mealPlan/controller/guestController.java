@@ -5,15 +5,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import project.mealPlan.entity.User;
+import project.mealPlan.seeder.DatabaseSeeder;
 import project.mealPlan.service.UserService;
 import org.springframework.mail.javamail.JavaMailSender;
 
 @RestController
 @RequestMapping("/guest")
 public class guestController {
-    private JavaMailSender mailSender;
     @Autowired
     UserService userService;
+
     @PostMapping("/signup")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         try {

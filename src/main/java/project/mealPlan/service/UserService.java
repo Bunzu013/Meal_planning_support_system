@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Calendar;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -55,6 +54,19 @@ MealService mealService;
                 user.getPassword(),
                 user.getRoles()
         );
+    }
+
+    public ResponseEntity<?> foundUser(Authentication authentication) {
+        try {
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+            }
+            String email = authentication.getName();
+            User user = userRepository.findUserByEmail(email);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error finding user");
+        }
     }
 
     public ResponseEntity<?> addUser(User user) {
@@ -104,7 +116,6 @@ MealService mealService;
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: incorrect password");
             }
             String token = jwtTokenUtil.generateJwtToken(existingUser);
-            // Zwróć token JWT jako część odpowiedzi
             return ResponseEntity.ok().body(token);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -113,16 +124,13 @@ MealService mealService;
 
     @Transactional
     public ResponseEntity<?> getUserData(Authentication authentication) {
-                try {
-                    if (authentication == null || !authentication.isAuthenticated()) {
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
-                    }
-
-                    String email = authentication.getName();
-                    User user = userRepository.findUserByEmail(email);
-
-
-                    if (user == null) {
+        try {
+            User user = new User();
+            ResponseEntity<?> responseEntity = foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
 
@@ -133,7 +141,7 @@ MealService mealService;
             userInfo.put("phoneNumber", user.getPhoneNumber());
             userInfo.put("phonePrefix", user.getPhonePrefix());
             userInfo.put("hiddenCalories", user.getHiddenCalories());
-            userInfo.put("roles", user.getRoles());
+           // userInfo.put("roles", user.getRoles());
             List<String> preferredIngredients = new ArrayList<>();
             for (Ingredient ingredient : user.getUserPreferredIngredients()) {
                 preferredIngredients.add(ingredient.getIngredientName());
@@ -152,9 +160,16 @@ MealService mealService;
         }
     }
 
-    public  ResponseEntity<?> editUserData(Map<String, Object> userInfo) {
+    public  ResponseEntity<?> editUserData(Map<String, Object> userInfo,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             if (userInfo.get("userName") != null) {
                 String userName = (String) userInfo.get("userName");
                 user.setName(userName);
@@ -177,11 +192,15 @@ MealService mealService;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user data");
         }
     }
-    public ResponseEntity<String> editPassword(Map<String, Object> data) {
+    public ResponseEntity<String> editPassword(Map<String, Object> data,Authentication authentication) {
         try {
             if (data.get("oldPassword") != null) {
                 String oldPassword = (String) data.get("oldPassword");
-                User user = userRepository.findUserByName("test");
+                User user = new User();
+                ResponseEntity<?> responseEntity = foundUser(authentication);
+                if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                    user = (User) responseEntity.getBody();
+                }
                 if (user == null) {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                             .body("User not found");
@@ -213,9 +232,16 @@ MealService mealService;
         }
     }
 
-    public ResponseEntity<?> hideCalories(Boolean hide) {
+    public ResponseEntity<?> hideCalories(Boolean hide,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             if (hide != null) {
                 if (user.getHiddenCalories() == hide)
                     return new ResponseEntity<>
@@ -231,9 +257,16 @@ MealService mealService;
         }
     }
 
-    public ResponseEntity<?> updateResetPasswordToken(String token, String email) {
+    public ResponseEntity<?> updateResetPasswordToken(String token, String email,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             if (user != null) {
                 user.setResetPasswordLink(token);
                 Calendar calendar = Calendar.getInstance();
@@ -271,7 +304,7 @@ MealService mealService;
         }
     }
     @Transactional
-    public ResponseEntity<?> deleteUser(Map<String, Object> userInput) {
+    public ResponseEntity<?> deleteUser(Map<String, Object> userInput,Authentication authentication) {
         try {
             String email = (String) userInput.get("email");
             User user = userRepository.findUserByEmail(email);
@@ -318,10 +351,36 @@ MealService mealService;
             Timestamp timestampResult = Timestamp.valueOf(newTimestamp);
             user.setBlockedTo(timestampResult);
             userRepository.save(user);
-           // System.out.println("    " + user.getBlockedTo());
             return ResponseEntity.status(HttpStatus.OK).body("User blocked");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error blocking user");
+        }
+    }
+    @Transactional
+    public ResponseEntity<?> setAdmin() {
+        try {
+            User user = userRepository.findUserByEmail("admin@gmail.com");
+            List<UserRole> existingRoles = user.getRoles();
+            System.out.println("Existing Roles: " + existingRoles);
+
+            UserRole roleAdmin = roleRepository.findUserRoleById(2);
+            if (roleAdmin == null) {
+                roleAdmin = new UserRole("ROLE_ADMIN");
+                roleRepository.save(roleAdmin);
+            }
+
+            if (!existingRoles.contains(roleAdmin)) {
+                user.getRoles().clear();
+                user.getRoles().add(roleAdmin);
+                userRepository.save(user);
+            }
+
+            List<UserRole> updatedRoles = user.getRoles();
+            System.out.println("Updated Roles: " + updatedRoles);
+
+            return ResponseEntity.status(HttpStatus.OK).body("Role added");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user roles");
         }
     }
 }

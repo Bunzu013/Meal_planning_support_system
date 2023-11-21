@@ -3,6 +3,7 @@ package project.mealPlan.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.IngredientRepository;
@@ -23,10 +24,19 @@ public class IngredientService {
     UserRepository userRepository;
     @Autowired
     Recipe_IngredientRepository  recipe_IngredientRepository ;
+    @Autowired
+    UserService userService;
 
-    public ResponseEntity<?> addToPreferred(Integer ingredientId) {
+    public ResponseEntity<?> addToPreferred(Integer ingredientId, Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
                 List<Ingredient> userPreferredIngredients = user.getUserPreferredIngredients();
@@ -46,9 +56,16 @@ public class IngredientService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<?>  deleteFromPreferredIngredients(Integer ingredientId) {
+    public ResponseEntity<?>  deleteFromPreferredIngredients(Integer ingredientId,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
                 List<Ingredient> userPreferredIngredients = user.getUserPreferredIngredients();
@@ -67,10 +84,17 @@ public class IngredientService {
                     ("Error deleting from preferred ingredients",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public  ResponseEntity<?> getUserPreferredIngredients()
+    public  ResponseEntity<?> getUserPreferredIngredients(Authentication authentication)
     {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             List<Map<String,Object>> ingredientInfoList = new ArrayList<>();
             List<Ingredient> preferredIngredients = user.getUserPreferredIngredients();
             for(Ingredient ingredient : preferredIngredients)
@@ -104,9 +128,16 @@ public class IngredientService {
         }
     }
 
-    public ResponseEntity<?> addToAllergens(Integer ingredientId) {
+    public ResponseEntity<?> addToAllergens(Integer ingredientId,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
                 List<Ingredient> userAllergens = user.getUserAllergenIngredients();
@@ -126,9 +157,16 @@ public class IngredientService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<?>  deleteFromUserAllergens(Integer ingredientId) {
+    public ResponseEntity<?>  deleteFromUserAllergens(Integer ingredientId,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             Ingredient ingredient = ingredientRepository.findByIngredientId(ingredientId);
             if (ingredient != null) {
                 List<Ingredient> userAllergens = user.getUserAllergenIngredients();
@@ -149,10 +187,17 @@ public class IngredientService {
         }
     }
 
-    public  ResponseEntity<?> getUserAllergens()
+    public  ResponseEntity<?> getUserAllergens(Authentication authentication)
     {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             List<Map<String,Object>> ingredientInfoList = new ArrayList<>();
             List<Ingredient> allergenIngredients = user.getUserAllergenIngredients();
             for(Ingredient ingredient : allergenIngredients)

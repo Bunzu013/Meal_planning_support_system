@@ -3,6 +3,7 @@ package project.mealPlan.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
@@ -14,8 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin")
 public class adminController {
-    @Autowired
-    DatabaseSeeder databaseSeeder;
     @Autowired
     UnitRepository unitRepository;
     @Autowired
@@ -32,16 +31,6 @@ public class adminController {
     UnitService unitService;
     @Autowired
     UserService userService;
-    /*
-    @PostMapping("/seeder")
-    public ResponseEntity<?> seeder() {
-        try {
-             return databaseSeeder.setAdmin();
-            //return ResponseEntity.status(HttpStatus.CREATED).body("ok");
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
 
     @PostMapping("/deleteRecipe")
     public ResponseEntity<?> deleteRecipe(@RequestParam Integer recipeId) {
@@ -182,9 +171,9 @@ public class adminController {
         }
     }
     @PostMapping("/deleteUser")
-    public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> userInput) {
+    public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> userInput, Authentication authentication) {
         try {
-            return userService.deleteUser(userInput);
+            return userService.deleteUser(userInput,authentication);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

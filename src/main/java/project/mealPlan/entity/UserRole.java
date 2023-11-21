@@ -18,9 +18,6 @@ public class UserRole implements GrantedAuthority {
 
     private String authority;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
-
     public UserRole(String authority) {
         this.authority = authority;
     }

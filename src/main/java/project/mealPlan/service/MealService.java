@@ -4,6 +4,7 @@ import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
@@ -25,9 +26,11 @@ public class MealService {
         UserRepository userRepository;
         @Autowired
         MealPlan_MealRepository  mealPlanMealRepository;
+        @Autowired
+        UserService userService;
 
     @Transactional
-        public ResponseEntity<?> addRecipeToMeal(Map<String,Object> recipeData) {
+        public ResponseEntity<?> addRecipeToMeal(Map<String,Object> recipeData,Authentication authentication) {
             try {
                 Integer recipeId = (Integer) recipeData.get("recipeId");
                 Integer mealId = (Integer) recipeData.get("mealId");
@@ -62,8 +65,7 @@ public class MealService {
         try {
             Meal meal = mealRepository.findByMealId(mealId);
             if (meal != null) {
-                List<MealPlan_Meal> mealPlanMeals =
-                        mealPlanMealRepository.findByMeal(meal);
+                List<MealPlan_Meal> mealPlanMeals = mealPlanMealRepository.findByMeal(meal);
                 for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
                     mealPlanMeal.setMealPlan(null);
                     mealPlanMeal.setWeekDay(null);
@@ -83,10 +85,17 @@ public class MealService {
     }
 
 
-    public ResponseEntity<?> addNewMeal(Integer weekDayId) {
+    public ResponseEntity<?> addNewMeal(Integer weekDayId, Authentication authentication) {
         try {
             WeekDay weekDay = weekDayRepository.findByWeekDayId(weekDayId);
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             if (weekDay != null) {
                 Meal meal = new Meal();
                 mealRepository.save(meal);
@@ -104,7 +113,7 @@ public class MealService {
         }
     }
 
-    public ResponseEntity<?> removeRecipeFromMeal(Integer mealId, Integer recipeId) {
+    public ResponseEntity<?> removeRecipeFromMeal(Integer mealId, Integer recipeId,Authentication authentication) {
         try {
             Meal meal = mealRepository.findByMealId(mealId);
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
@@ -119,7 +128,14 @@ public class MealService {
             meal.getMealRecipes().remove(recipe);
             mealRepository.save(meal);
             if (meal.getMealRecipes().isEmpty()) {
-                User user = userRepository.findUserByName("test");
+                User user = new User();
+                ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+                if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                    user = (User) responseEntity.getBody();
+                }
+                if (user == null) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+                }
                 MealPlan_Meal mealPlanMeal = mealPlanMealRepository
                         .findByMealAndMealPlan(meal, user.getMealPlan());
                 if (mealPlanMeal != null) {
@@ -128,7 +144,6 @@ public class MealService {
                     mealPlanMeal.setMeal(null);
                     mealPlanMealRepository.delete(mealPlanMeal);
                 }
-               // mealRepository.delete(meal);
             }
             return ResponseEntity.status(HttpStatus.OK).body("Recipe removed from the meal");
         } catch (Exception e) {
