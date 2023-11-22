@@ -545,7 +545,8 @@ public class RecipeService {
                     .body("Error adding recipe to favorites");
         }
     }
-    public ResponseEntity<?> deleteFromFavourites(Integer recipeId,Authentication authentication) {
+    public ResponseEntity<?> deleteFromFavourites(Integer recipeId,
+                                                  Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.foundUser(authentication);
@@ -555,7 +556,6 @@ public class RecipeService {
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
-
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             if (recipe != null) {
                 List<Recipe> userFavoriteRecipes = user.getUserFavouriteRecipes();
@@ -680,9 +680,9 @@ public class RecipeService {
                     userRepository.save(user);
                 }
             }
-            return ResponseEntity.status(HttpStatus.OK).body("Recipe updated");
+            return ResponseEntity.status(HttpStatus.OK).body("Recipe deleted");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleted recipe");
         }
     }
 }
