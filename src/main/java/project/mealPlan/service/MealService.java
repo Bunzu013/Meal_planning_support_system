@@ -29,7 +29,7 @@ public class MealService {
         UserService userService;
 
     @Transactional
-        public ResponseEntity<?> addRecipeToMeal(Map<String,Object> recipeData,Authentication authentication) {
+        public ResponseEntity<?> addRecipeToMeal(Map<String,Object> recipeData) {
             try {
                 Integer recipeId = (Integer) recipeData.get("recipeId");
                 Integer mealId = (Integer) recipeData.get("mealId");
@@ -84,7 +84,8 @@ public class MealService {
     }
 
 
-    public ResponseEntity<?> addNewMeal(Integer weekDayId, Authentication authentication) {
+    public ResponseEntity<?> addNewMeal(Integer weekDayId,
+                                        Authentication authentication) {
         try {
             WeekDay weekDay = weekDayRepository.findByWeekDayId(weekDayId);
             User user = new User();
@@ -112,7 +113,8 @@ public class MealService {
         }
     }
 
-    public ResponseEntity<?> removeRecipeFromMeal(Integer mealId, Integer recipeId,Authentication authentication) {
+    public ResponseEntity<?> removeRecipeFromMeal(Integer mealId, Integer recipeId,
+                                                  Authentication authentication) {
         try {
             Meal meal = mealRepository.findByMealId(mealId);
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);

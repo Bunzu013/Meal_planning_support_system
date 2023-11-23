@@ -27,7 +27,8 @@ public class IngredientService {
     @Autowired
     UserService userService;
 
-    public ResponseEntity<?> addToPreferred(Integer ingredientId, Authentication authentication) {
+    public ResponseEntity<?> addToPreferred(Integer ingredientId,
+                                            Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.findUser(authentication);
@@ -56,7 +57,8 @@ public class IngredientService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<?>  deleteFromPreferredIngredients(Integer ingredientId,Authentication authentication) {
+    public ResponseEntity<?>  deleteFromPreferredIngredients(Integer ingredientId,
+                                                             Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.findUser(authentication);
@@ -128,7 +130,8 @@ public class IngredientService {
         }
     }
 
-    public ResponseEntity<?> addToAllergens(Integer ingredientId,Authentication authentication) {
+    public ResponseEntity<?> addToAllergens(Integer ingredientId,
+                                            Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.findUser(authentication);
@@ -157,7 +160,8 @@ public class IngredientService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<?>  deleteFromUserAllergens(Integer ingredientId,Authentication authentication) {
+    public ResponseEntity<?>  deleteFromUserAllergens(Integer ingredientId,
+                                                      Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.findUser(authentication);

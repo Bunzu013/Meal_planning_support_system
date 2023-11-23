@@ -44,15 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     );
                 }
         );
-        // Endpoint authorization
+
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/guest/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
-        // Add JWT token filter
         http.addFilterBefore(
                 jwtAuthenticationFilter(authenticationManagerBean(), jwtTokenUtil),
                 UsernamePasswordAuthenticationFilter.class
