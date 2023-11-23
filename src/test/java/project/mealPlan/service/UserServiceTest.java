@@ -27,7 +27,7 @@ public class UserServiceTest {
     private RoleRepository roleRepository;
 
     @Test
-    public void testAddUser_Success() {
+    public void testAddUser_success() {
         User user = new User("John", "Doe", "john.doe@example.com", "password", 123456789, 123);
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         when(userRepository.existsByPhoneNumber(user.getPhoneNumber())).thenReturn(false);
@@ -39,7 +39,7 @@ public class UserServiceTest {
         assertEquals("User created successfully", responseBody);
     }
     @Test
-    public void testLoginUser_NotFound() {
+    public void testLoginUser_notFound() {
         User user = new User("John", "Doe", "john.doe@example.com", "hashedPassword", 123456789, 123);
         when(userRepository.findUserByEmail("john.doe@example.com")).thenReturn(null);
         ResponseEntity<String> response = userService.login(user);
@@ -47,7 +47,7 @@ public class UserServiceTest {
         assertEquals("Login failed: user not found", response.getBody());
     }
     @Test
-    public void testLogin_UserBlocked() {
+    public void testLogin_userBlocked() {
         User user = new User("John", "Doe", "john.doe@example.com", "hashedPassword", 123456789, 123);
         user.setBlockedTo(Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
         when(userRepository.findUserByEmail("john.doe@example.com")).thenReturn(user);
@@ -56,7 +56,7 @@ public class UserServiceTest {
         assertEquals("User blocked till: " + user.getBlockedTo(), response.getBody());
     }
     @Test
-    public void testLogin_IncorrectPassword() {
+    public void testLogin_incorrectPassword() {
         User user = new User("John", "Doe", "john.doe@example.com", "hashedPassword", 123456789, 123);
         when(userRepository.findUserByEmail("john.doe@example.com")).thenReturn(user);
         User userWithIncorrectPassword = new User("John", "Doe", "john.doe@example.com", passwordEncoder.encode("wrongPassword"), 123456789, 123);
