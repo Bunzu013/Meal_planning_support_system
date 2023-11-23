@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import project.mealPlan.entity.Unit;
 import project.mealPlan.repository.UnitRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ class UnitServiceTest {
     private UnitService unitService;
 
     @Test
-    void getAllUnits() {
+    void getAllUnits_success() {
         List<Unit> units = new ArrayList<>();
         units.add(new Unit("Unit1"));
         units.add(new Unit("Unit2"));
@@ -34,10 +33,9 @@ class UnitServiceTest {
     }
 
     @Test
-    void updateUnit() {
+    void updateUnit_success() {
         Integer unitId = 1;
         String unitName = "UpdatedUnit";
-
         Unit existingUnit = new Unit("ExistingUnit");
         when(unitRepository.findByUnitId(unitId)).thenReturn(existingUnit);
         when(unitRepository.findByUnitName(unitName)).thenReturn(null);
