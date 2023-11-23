@@ -56,7 +56,7 @@ MealService mealService;
         );
     }
 
-    public ResponseEntity<?> foundUser(Authentication authentication) {
+    public ResponseEntity<?> findUser(Authentication authentication) {
         try {
             if (authentication == null || !authentication.isAuthenticated()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
@@ -126,7 +126,7 @@ MealService mealService;
     public ResponseEntity<?> getUserData(Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = foundUser(authentication);
+            ResponseEntity<?> responseEntity = findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -163,7 +163,7 @@ MealService mealService;
     public  ResponseEntity<?> editUserData(Map<String, Object> userInfo,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = foundUser(authentication);
+            ResponseEntity<?> responseEntity = findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -197,7 +197,7 @@ MealService mealService;
             if (data.get("oldPassword") != null) {
                 String oldPassword = (String) data.get("oldPassword");
                 User user = new User();
-                ResponseEntity<?> responseEntity = foundUser(authentication);
+                ResponseEntity<?> responseEntity = findUser(authentication);
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     user = (User) responseEntity.getBody();
                 }
@@ -235,7 +235,7 @@ MealService mealService;
     public ResponseEntity<?> hideCalories(Boolean hide,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = foundUser(authentication);
+            ResponseEntity<?> responseEntity = findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -260,7 +260,7 @@ MealService mealService;
     public ResponseEntity<?> updateResetPasswordToken(String token, String email,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = foundUser(authentication);
+            ResponseEntity<?> responseEntity = findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }

@@ -54,33 +54,26 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
-
         if (token != null) {
             Claims claims = Jwts.parser()
                     .setSigningKey(jwtTokenUtil.getSecretKey())
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
-
             String email = String.valueOf(claims.get("email"));
-
             if (email != null) {
                 List<GrantedAuthority> authorities = new ArrayList<>();
                 Object rolesObject = claims.get("roles");
-
                 if (rolesObject instanceof List<?>) {
                     List<?> rolesList = (List<?>) rolesObject;
-
                     for (Object role : rolesList) {
                         if (role instanceof String) {
                             authorities.add(new SimpleGrantedAuthority((String) role));
                         }
                     }
                 }
-
                 return new UsernamePasswordAuthenticationToken(email, null, authorities);
             }
         }
-
         return null;
     }
 }

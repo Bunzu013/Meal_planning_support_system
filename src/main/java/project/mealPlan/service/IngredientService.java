@@ -30,7 +30,7 @@ public class IngredientService {
     public ResponseEntity<?> addToPreferred(Integer ingredientId, Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -59,7 +59,7 @@ public class IngredientService {
     public ResponseEntity<?>  deleteFromPreferredIngredients(Integer ingredientId,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -88,7 +88,7 @@ public class IngredientService {
     {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -131,7 +131,7 @@ public class IngredientService {
     public ResponseEntity<?> addToAllergens(Integer ingredientId,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -160,7 +160,7 @@ public class IngredientService {
     public ResponseEntity<?>  deleteFromUserAllergens(Integer ingredientId,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -191,7 +191,7 @@ public class IngredientService {
     {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }

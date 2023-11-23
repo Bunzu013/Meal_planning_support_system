@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import project.mealPlan.entity.Category;
 import project.mealPlan.entity.Filter;
 import project.mealPlan.entity.Recipe;
 import project.mealPlan.repository.FilterRepository;
 import project.mealPlan.repository.RecipeRepository;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,20 +15,18 @@ import java.util.Map;
 
 @Service
 public class FilterService {
-
-
-@Autowired
+    @Autowired
     FilterRepository filterRepository;
-@Autowired
+    @Autowired
     RecipeRepository recipeRepository;
-    public ResponseEntity<?> getAllFilters()
-    {
+
+    public ResponseEntity<?> getAllFilters() {
         try {
-            List<Map<String,Object>> allFiltersList = new ArrayList<>();
-            List<Filter> filters= filterRepository.findAll();
-            for(Filter filter : filters)
-            {
-                Map<String,Object> filterInfo = new HashMap<>();
+            List<Map<String, Object>> allFiltersList = new ArrayList<>();
+            List<Filter> filters = filterRepository.findAll();
+            for (Filter filter : filters) {
+                Map<String, Object> filterInfo = new HashMap<>();
+                filterInfo.put("filterId", filter.getRecipeFilterId());
                 filterInfo.put("filterName", filter.getRecipeFilterName());
                 allFiltersList.add(filterInfo);
             }
@@ -39,11 +35,11 @@ public class FilterService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<?>  addNewFilter(Map<String, Object> filterInput)
-    {
+
+    public ResponseEntity<?> addNewFilter(Map<String, Object> filterInput) {
         try {
             String filter = (String) filterInput.get("filterName");
-            if(filterRepository.findByRecipeFilterName(filter) == null){
+            if (filterRepository.findByRecipeFilterName(filter) == null) {
                 Filter newFilter = new Filter(filter);
                 filterRepository.save(newFilter);
                 return new ResponseEntity<>("New filter added", HttpStatus.OK);
@@ -53,12 +49,12 @@ public class FilterService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<?> updateFilter(Map<String, Object> filterInput)
-    {
+
+    public ResponseEntity<?> updateFilter(Map<String, Object> filterInput) {
         try {
             Integer filterId = (Integer) filterInput.get("filterId");
             String filterName = (String) filterInput.get("filterName");
-            if(filterRepository.findByRecipeFilterName(filterName) == null) {
+            if (filterRepository.findByRecipeFilterName(filterName) == null) {
                 if (filterId != null) {
                     Filter filterUpdate = filterRepository.findByRecipeFilterId(filterId);
                     if (filterUpdate != null) {
@@ -69,7 +65,7 @@ public class FilterService {
                         return new ResponseEntity<>("No filter found", HttpStatus.INTERNAL_SERVER_ERROR);
                     }
                 }
-            }else{
+            } else {
                 return new ResponseEntity<>("Filter with this name already exists", HttpStatus.INTERNAL_SERVER_ERROR);
             }
             return new ResponseEntity<>("Error updating filter", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -77,8 +73,8 @@ public class FilterService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<?> deleteFilter(Map<String, Object> filterInput)
-    {
+
+    public ResponseEntity<?> deleteFilter(Map<String, Object> filterInput) {
         try {
             Integer filterId = (Integer) filterInput.get("filterId");
             if (filterId != null) {

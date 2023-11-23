@@ -1,6 +1,5 @@
 package project.mealPlan.service;
 
-import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,7 +88,7 @@ public class MealService {
         try {
             WeekDay weekDay = weekDayRepository.findByWeekDayId(weekDayId);
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -129,7 +128,7 @@ public class MealService {
             mealRepository.save(meal);
             if (meal.getMealRecipes().isEmpty()) {
                 User user = new User();
-                ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+                ResponseEntity<?> responseEntity = userService.findUser(authentication);
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     user = (User) responseEntity.getBody();
                 }

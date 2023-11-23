@@ -37,7 +37,7 @@ public class MealPlanService {
     public ResponseEntity<?> addRecipeToMealAndMealPlan(Map<String, Object> mealData,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -96,7 +96,7 @@ public class MealPlanService {
     public ResponseEntity<?> getMealsByWeekDay(Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -136,7 +136,7 @@ public class MealPlanService {
     public ResponseEntity<?> generateShoppingList(Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -198,7 +198,7 @@ public class MealPlanService {
     public ResponseEntity<?> shoppingListStatus(Boolean change,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -222,7 +222,7 @@ public class MealPlanService {
     public ResponseEntity<?> getShoppingListStatus(Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }

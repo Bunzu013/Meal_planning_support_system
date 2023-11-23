@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
@@ -35,6 +34,8 @@ public class RecipeService {
     UserService userService;
     @Autowired
     InitializationStatusRepository initializationStatusRepository;
+    @Autowired
+    MealRepository mealRepository;
 
     @Transactional
     public ResponseEntity<?> addRecipe(Map<String, Object> recipeInput, Authentication authentication) {
@@ -83,7 +84,7 @@ public class RecipeService {
             }
             newRecipe.setRecipeIngredients(recipeIngredients);
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -310,6 +311,7 @@ public class RecipeService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
         }
     }
+    @Transactional
     public ResponseEntity<?> deleteRecipe(Integer recipeId) {
         try {
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
@@ -328,6 +330,11 @@ public class RecipeService {
                 ingredient.setIngredient(null);
                 ingredient.setUnit(null);
                 recipe.getRecipeIngredients().remove(ingredient);
+            }
+            List<Meal> meals = mealRepository.findByMealRecipes(recipe);
+            for(Meal meal : meals){
+                meal.getMealRecipes().remove(recipe);
+                mealRepository.save(meal);
             }
             recipeIngredientRepository.deleteAll(ingredientsToDelete);
             recipeRepository.delete(recipe);
@@ -384,7 +391,7 @@ public class RecipeService {
     public ResponseEntity<?> getRecipeData(Integer recipeId, Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -444,7 +451,7 @@ public class RecipeService {
         try {
             List<Recipe> allRecipes = new ArrayList<>();
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -518,7 +525,7 @@ public class RecipeService {
     public ResponseEntity<?> addToFavourites(Integer recipeId,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -548,7 +555,7 @@ public class RecipeService {
     public ResponseEntity<?> deleteFromFavourites(Integer recipeId,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -580,7 +587,7 @@ public class RecipeService {
     public  ResponseEntity<?> getFavouriteRecipes(Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -611,7 +618,7 @@ public class RecipeService {
     public  ResponseEntity<?> getUserRecipes(Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -641,7 +648,7 @@ public class RecipeService {
     public ResponseEntity<?> updateUserRecipe(Map<String, Object> recipeUpdate,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -661,10 +668,11 @@ public class RecipeService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
         }
     }
+    @Transactional
     public ResponseEntity<?> deleteUserRecipe(Integer recipeId,Authentication authentication) {
         try {
             User user = new User();
-            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
@@ -678,7 +686,9 @@ public class RecipeService {
                     userRecipes.remove(recipe);
                     deleteRecipe(recipeId);
                     userRepository.save(user);
+
                 }
+
             }
             return ResponseEntity.status(HttpStatus.OK).body("Recipe updated");
         } catch (Exception e) {
