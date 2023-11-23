@@ -31,6 +31,7 @@ public class FilterService {
             for(Filter filter : filters)
             {
                 Map<String,Object> filterInfo = new HashMap<>();
+                filterInfo.put("filterId", filter.getRecipeFilterId());
                 filterInfo.put("filterName", filter.getRecipeFilterName());
                 allFiltersList.add(filterInfo);
             }

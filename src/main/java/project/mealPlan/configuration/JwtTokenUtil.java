@@ -18,17 +18,11 @@ public class JwtTokenUtil {
     @Value("${app.jwt.secret:abcdefg}")
     private String SECRET_KEY;
 
-
-
-// ...
-
     public String generateJwtToken(User user) {
         List<String> roleNames = user.getRoles()
                 .stream()
-                .map(UserRole::getAuthority) // Assuming there's a getAuthority() method in UserRole
+                .map(UserRole::getAuthority)
                 .collect(Collectors.toList());
-
-        ObjectMapper objectMapper = new ObjectMapper();
 
         return Jwts.builder()
                 .setSubject(String.format("%s,%s", user.getName(), user.getSurname()))
