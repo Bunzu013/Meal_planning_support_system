@@ -326,21 +326,26 @@ public class RecipeService {
             }
             recipe.getRecipeFilters().clear();
             recipe.getRecipeCategories().clear();
-            List<Recipe_Ingredient> ingredientsToDelete = new ArrayList<>(recipe.getRecipeIngredients());
-            for (Recipe_Ingredient ingredient : ingredientsToDelete) {
+            List<Recipe_Ingredient> ingredientsToDelete = new ArrayList<>();
+            if (recipe.getRecipeIngredients() != null) {
+                ingredientsToDelete.addAll(recipe.getRecipeIngredients());
+            } for (Recipe_Ingredient ingredient : ingredientsToDelete) {
                 ingredient.setIngredient(null);
                 ingredient.setUnit(null);
                 recipe.getRecipeIngredients().remove(ingredient);
             }
-            List<Meal> meals = mealRepository.findByMealRecipes(recipe);
+        List<Meal> meals = mealRepository.findByMealRecipes(recipe);
             for(Meal meal : meals){
                 meal.getMealRecipes().remove(recipe);
                 mealRepository.save(meal);
             }
-            recipeIngredientRepository.deleteAll(ingredientsToDelete);
+            if(ingredientsToDelete != null) {
+                recipeIngredientRepository.deleteAll(ingredientsToDelete);
+            }
             recipeRepository.delete(recipe);
             return ResponseEntity.status(HttpStatus.OK).body("Recipe deleted");
         } catch (Exception e) {
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting recipe");
         }
     }
