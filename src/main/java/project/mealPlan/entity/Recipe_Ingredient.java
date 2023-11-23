@@ -25,11 +25,10 @@ public class Recipe_Ingredient {
     private Ingredient ingredient;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "unitId", nullable = true)
+    @JoinColumn(name = "unitId")
     private Unit unit;
 
-    @Column(nullable = true)
+    @Column
     private Double quantity;
 
-    // ... Constructors, getters, setters ...
 }

@@ -24,7 +24,5 @@ public class WeekDay {
 
     @OneToMany(mappedBy = "weekDay")
     List<MealPlan_Meal> mealsInWeekDay;
-    public WeekDay(String name) {
-        this.weekDayName = name;
-    }
+
 }

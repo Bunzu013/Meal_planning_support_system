@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import project.mealPlan.entity.Filter;
 import project.mealPlan.entity.WeekDay;
 import project.mealPlan.repository.WeekDayRepository;
 
@@ -26,6 +25,7 @@ public class WeekDayService {
             for(WeekDay weekDay : weekDays)
             {
                 Map<String,Object> weekDayInfo = new HashMap<>();
+                weekDayInfo.put("weekDayId", weekDay.getWeekDayId());
                 weekDayInfo.put("weekDayName", weekDay.getWeekDayName());
                 allWeekDaysList.add(weekDayInfo);
             }

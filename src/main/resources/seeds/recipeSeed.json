@@ -12,12 +12,12 @@
             {
                 "unitName": "cup",
                 "quantity": 1.0,
-                "ingredientName": "onion (chopped)"
+                "ingredientName": "onion"
             },
             {
                 "unitName": "clove",
                 "quantity": 2.0,
-                "ingredientName": "garlic (minced)"
+                "ingredientName": "garlic"
             },
             {
                 "unitName": "tablespoon",
@@ -27,7 +27,7 @@
             {
                 "unitName": "can",
                 "quantity": 1.0,
-                "ingredientName": "crushed tomatoes (28 oz)"
+                "ingredientName": "crushed tomatoes"
             },
             {
                 "unitName": "teaspoon",
@@ -72,17 +72,17 @@
             {
                 "unitName": "cup",
                 "quantity": 1.0,
-                "ingredientName": "onion (chopped)"
+                "ingredientName": "onion"
             },
             {
                 "unitName": "clove",
                 "quantity": 2.0,
-                "ingredientName": "garlic (minced)"
+                "ingredientName": "garlic"
             },
             {
                 "unitName": "can",
                 "quantity": 1.0,
-                "ingredientName": "canned tomatoes (28 oz)"
+                "ingredientName": "canned tomatoes"
             },
             {
                 "unitName": "cup",
@@ -137,12 +137,12 @@
             {
                 "unitName": "cup",
                 "quantity": 1.0,
-                "ingredientName": "onion (chopped)"
+                "ingredientName": "onion"
             },
             {
                 "unitName": "clove",
                 "quantity": 2.0,
-                "ingredientName": "garlic (minced)"
+                "ingredientName": "garlic"
             },
             {
                 "unitName": "tablespoon",
@@ -152,7 +152,7 @@
             {
                 "unitName": "can",
                 "quantity": 1.0,
-                "ingredientName": "crushed tomatoes (28 oz)"
+                "ingredientName": "crushed tomatoes"
             },
             {
                 "unitName": "tablespoon",
@@ -192,7 +192,7 @@
             {
                 "unitName": "cup",
                 "quantity": 2.0,
-                "ingredientName": "mozzarella cheese (shredded)"
+                "ingredientName": "mozzarella cheese"
             }
         ],
         "calories": 550,
@@ -217,7 +217,7 @@
             {
                 "unitName": "ounces",
                 "quantity": 8.0,
-                "ingredientName": "fresh mozzarella cheese"
+                "ingredientName": "mozzarella cheese"
             },
             {
                 "unitName": "handful",
@@ -272,7 +272,7 @@
             {
                 "unitName": "clove",
                 "quantity": 2.0,
-                "ingredientName": "garlic (minced)"
+                "ingredientName": "garlic"
             },
             {
                 "unitName": "cup",
@@ -282,7 +282,7 @@
             {
                 "unitName": "cup",
                 "quantity": 1.0,
-                "ingredientName": "Parmesan cheese (grated)"
+                "ingredientName": "Parmesan cheese"
             },
             {
                 "unitName": "pinch",
@@ -297,7 +297,7 @@
             {
                 "unitName": "tablespoon",
                 "quantity": 1.0,
-                "ingredientName": "parsley (chopped, for garnish)"
+                "ingredientName": "parsley"
             }
         ],
         "calories": 600,
@@ -317,7 +317,7 @@
             {
                 "unitName": "cup",
                 "quantity": 1.0,
-                "ingredientName": "eggs (beaten)"
+                "ingredientName": "eggs"
             },
             {
                 "unitName": "cup",
@@ -327,7 +327,7 @@
             {
                 "unitName": "cup",
                 "quantity": 1.0,
-                "ingredientName": "Parmesan cheese (grated)"
+                "ingredientName": "Parmesan cheese"
             },
             {
                 "unitName": "tablespoon",
@@ -342,7 +342,7 @@
             {
                 "unitName": "cup",
                 "quantity": 2.0,
-                "ingredientName": "mozzarella cheese (shredded)"
+                "ingredientName": "mozzarella cheese"
             }
         ],
         "calories": 450,
@@ -367,7 +367,7 @@
             {
                 "unitName": "clove",
                 "quantity": 4.0,
-                "ingredientName": "garlic (minced)"
+                "ingredientName": "garlic"
             },
             {
                 "unitName": "pinch",
@@ -377,7 +377,7 @@
             {
                 "unitName": "pound",
                 "quantity": 1.0,
-                "ingredientName": "shrimp (peeled and deveined)"
+                "ingredientName": "shrimp"
             },
             {
                 "unitName": "cup",
@@ -397,7 +397,7 @@
             {
                 "unitName": "tablespoon",
                 "quantity": 2.0,
-                "ingredientName": "parsley (chopped)"
+                "ingredientName": "parsley"
             }
         ],
         "calories": 400,
@@ -412,7 +412,7 @@
             {
                 "unitName": "cup",
                 "quantity": 1.0,
-                "ingredientName": "firm tofu (crumbled)"
+                "ingredientName": "firm tofu"
             },
             {
                 "unitName": "tablespoon",
@@ -422,12 +422,12 @@
             {
                 "unitName": "cup",
                 "quantity": 0.25,
-                "ingredientName": "diced bell peppers"
+                "ingredientName": "bell peppers"
             },
             {
                 "unitName": "cup",
                 "quantity": 0.25,
-                "ingredientName": "diced onions"
+                "ingredientName": "onions"
             },
             {
                 "unitName": "cup",
@@ -457,7 +457,7 @@
             {
                 "unitName": "tablespoon",
                 "quantity": 1.0,
-                "ingredientName": "nutritional yeast (optional, for garnish)"
+                "ingredientName": "nutritional yeast"
             }
         ],
         "calories": 250,
@@ -502,7 +502,7 @@
             {
                 "unitName": "tablespoon",
                 "quantity": 2.0,
-                "ingredientName": "butter (melted)"
+                "ingredientName": "butter"
             }
         ],
         "calories": 350,
@@ -552,7 +552,7 @@
             {
                 "unitName": "medium",
                 "quantity": 1.0,
-                "ingredientName": "ripe avocado"
+                "ingredientName": "avocado"
             },
             {
                 "unitName": "tablespoon",
@@ -577,7 +577,7 @@
             {
                 "unitName": "cup",
                 "quantity": 0.5,
-                "ingredientName": "cherry tomatoes (sliced)"
+                "ingredientName": "cherry tomatoes"
             },
             {
                 "unitName": "tablespoon",
@@ -607,22 +607,22 @@
             {
                 "unitName": "cup",
                 "quantity": 0.5,
-                "ingredientName": "shredded cheese (your choice)"
+                "ingredientName": "shredded cheese"
             },
             {
                 "unitName": "cup",
                 "quantity": 0.25,
-                "ingredientName": "diced bell peppers"
+                "ingredientName": "bell peppers"
             },
             {
                 "unitName": "cup",
                 "quantity": 0.25,
-                "ingredientName": "diced onions"
+                "ingredientName": "onions"
             },
             {
                 "unitName": "cup",
                 "quantity": 0.25,
-                "ingredientName": "diced tomatoes"
+                "ingredientName": "tomatoes"
             },
             {
                 "unitName": "teaspoon",
@@ -637,7 +637,7 @@
             {
                 "unitName": "teaspoon",
                 "quantity": 0.25,
-                "ingredientName": "dried herbs (e.g., parsley, chives)"
+                "ingredientName": "dried herbs"
             }
         ],
         "calories": 300,
@@ -652,7 +652,7 @@
             {
                 "unitName": "fillet",
                 "quantity": 4.0,
-                "ingredientName": "fish fillets (such as cod, tilapia, or trout)"
+                "ingredientName": "fish fillets"
             },
             {
                 "unitName": "teaspoon",
@@ -682,22 +682,22 @@
             {
                 "unitName": "clove",
                 "quantity": 2.0,
-                "ingredientName": "garlic, minced"
+                "ingredientName": "garlic"
             },
             {
                 "unitName": "tablespoon",
                 "quantity": 2.0,
-                "ingredientName": "fresh lemon juice"
+                "ingredientName": "lemon juice"
             },
             {
                 "unitName": "tablespoon",
                 "quantity": 2.0,
-                "ingredientName": "white wine (optional)"
+                "ingredientName": "white wine"
             },
             {
                 "unitName": "tablespoon",
                 "quantity": 1.0,
-                "ingredientName": "fresh parsley, chopped (for garnish)"
+                "ingredientName": "fresh parsley"
             }
         ],
         "calories": 350,
@@ -722,7 +722,7 @@
             {
                 "unitName": "cup",
                 "quantity": 1.5,
-                "ingredientName": "shredded mozzarella cheese"
+                "ingredientName": "mozzarella cheese"
             },
             {
                 "unitName": "handful",
@@ -751,13 +751,13 @@
     },
     {
         "recipeName": "Classic Steak",
-        "notes": "1. Remove the steak from the refrigerator and let it sit at room temperature for about 30 minutes before cooking.\n2. Preheat your grill or stovetop skillet to high heat.\n3. Season both sides of the steak generously with salt and freshly ground black pepper.\n4. If desired, rub the steak with a bit of olive oil to prevent sticking and enhance flavor.\n5. Place the steak on the hot grill or skillet and sear for about 4-5 minutes on each side for medium-rare, adjusting the time for your preferred level of doneness.\n6. Use a meat thermometer to check the internal temperature; 135°F (57°C) for medium-rare, 145°F (63°C) for medium, and 160°F (71°C) for medium-well.\n7. Once done, remove the steak from the grill or skillet and let it rest for about 5 minutes to allow the juices to redistribute.\n8. Slice the steak against the grain, and serve hot.\n9. Optionally, you can garnish with fresh herbs or a pat of butter for extra flavor.",
+        "notes": "1. Remove the steak  (e.g., ribeye, sirloin, or filet mignon) from the refrigerator and let it sit at room temperature for about 30 minutes before cooking.\n2. Preheat your grill or stovetop skillet to high heat.\n3. Season both sides of the steak generously with salt and freshly ground black pepper.\n4. If desired, rub the steak with a bit of olive oil to prevent sticking and enhance flavor.\n5. Place the steak on the hot grill or skillet and sear for about 4-5 minutes on each side for medium-rare, adjusting the time for your preferred level of doneness.\n6. Use a meat thermometer to check the internal temperature; 135°F (57°C) for medium-rare, 145°F (63°C) for medium, and 160°F (71°C) for medium-well.\n7. Once done, remove the steak from the grill or skillet and let it rest for about 5 minutes to allow the juices to redistribute.\n8. Slice the steak against the grain, and serve hot.\n9. Optionally, you can garnish with fresh herbs or a pat of butter for extra flavor.",
         "file": null,
         "ingredients": [
             {
                 "unitName": "steak",
                 "quantity": 1.0,
-                "ingredientName": "steak (e.g., ribeye, sirloin, or filet mignon)"
+                "ingredientName": "steak"
             },
             {
                 "unitName": "teaspoon",
@@ -772,7 +772,7 @@
             {
                 "unitName": "tablespoon",
                 "quantity": 1.0,
-                "ingredientName": "olive oil (optional)"
+                "ingredientName": "olive oil"
             }
         ],
         "calories": 400,
@@ -781,23 +781,23 @@
     },
     {
         "recipeName": "Classic French Fries",
-        "notes": "1. Begin by washing and peeling (optional) potatoes. You can use russet or Yukon Gold potatoes for the best results.\n2. Cut the potatoes into even-sized strips or sticks, about 1/4 to 1/2 inch wide.\n3. Place the cut potatoes in a large bowl of cold water and let them soak for about 30 minutes. This helps remove excess starch and makes the fries crispier.\n4. Drain the potatoes and pat them dry with a clean kitchen towel or paper towels.\n5. Preheat a deep fryer or a large, deep skillet with vegetable oil to 350°F (175°C).\n6. Carefully add the dried potato strips to the hot oil in batches, ensuring not to overcrowd the fryer or skillet. Fry for about 2-3 minutes per batch or until the fries are golden brown and crispy.\n7. Using a slotted spoon or a wire mesh strainer, remove the fries from the hot oil and place them on a plate lined with paper towels to drain excess oil.\n8. While the fries are still hot, season them with salt to taste.\n9. Serve the classic French fries hot and enjoy them with your favorite dipping sauce, such as ketchup or mayonnaise.",
+        "notes": "1. Begin by washing and peeling (optional) potatoes (russet or Yukon Gold). You can use russet or Yukon Gold potatoes for the best results.\n2. Cut the potatoes into even-sized strips or sticks, about 1/4 to 1/2 inch wide.\n3. Place the cut potatoes in a large bowl of cold water and let them soak for about 30 minutes. This helps remove excess starch and makes the fries crispier.\n4. Drain the potatoes and pat them dry with a clean kitchen towel or paper towels.\n5. Preheat a deep fryer or a large, deep skillet with vegetable oil to 350°F (175°C).\n6. Carefully add the dried potato strips to the hot oil in batches, ensuring not to overcrowd the fryer or skillet. Fry for about 2-3 minutes per batch or until the fries are golden brown and crispy.\n7. Using a slotted spoon or a wire mesh strainer, remove the fries from the hot oil and place them on a plate lined with paper towels to drain excess oil.\n8. While the fries are still hot, season them with salt to taste.\n9. Serve the classic French fries hot and enjoy them with your favorite dipping sauce, such as ketchup or mayonnaise.",
         "file": null,
         "ingredients": [
             {
                 "unitName": "potatoes",
                 "quantity": 4.0,
-                "ingredientName": "potatoes (russet or Yukon Gold)"
+                "ingredientName": "potatoes"
             },
             {
                 "unitName": "cup",
                 "quantity": 2.0,
-                "ingredientName": "vegetable oil (for frying)"
+                "ingredientName": "vegetable oil"
             },
             {
                 "unitName": "teaspoon",
                 "quantity": 1.0,
-                "ingredientName": "salt (or to taste)"
+                "ingredientName": "salt"
             }
         ],
         "calories": 300,

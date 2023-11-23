@@ -3,7 +3,6 @@ package project.mealPlan.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class Meal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mealId;
 
-    @Column(nullable = true)
+
     private String description;
 
     @ManyToMany
@@ -28,9 +27,7 @@ public class Meal {
             inverseJoinColumns = @JoinColumn(name="recipe_id"))
     private List<Recipe> mealRecipes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meal")  // Dodaj odpowiednią relację do MealPlan_Meal
+    @OneToMany(mappedBy = "meal")
     private List<MealPlan_Meal> mealPlanMeals;
-    public void addNewRecipe(Recipe recipe) {
-        this.mealRecipes.add(recipe);
-    }
+
 }

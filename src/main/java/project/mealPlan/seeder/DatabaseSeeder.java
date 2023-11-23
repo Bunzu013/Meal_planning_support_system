@@ -1,87 +1,69 @@
 package project.mealPlan.seeder;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
-import project.mealPlan.entity.InitializationStatus;
-import project.mealPlan.entity.Unit;
-import project.mealPlan.entity.User;
-import project.mealPlan.entity.WeekDay;
+import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
-
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.*;
 import project.mealPlan.service.RecipeService;
-import project.mealPlan.service.UnitService;
 import project.mealPlan.service.UserService;
-
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class DatabaseSeeder implements ApplicationRunner {
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
     @Autowired
-    private ResourceLoader resourceLoader;
-
+    ResourceLoader resourceLoader;
     @Autowired
-    private RecipeService recipeService;
+    RecipeService recipeService;
     @Autowired
-    private RecipeRepository recipeRepository;
-
+    UserService userService;
     @Autowired
-    private CategoryRepository categoryRepository;
-
+    UnitRepository unitRepository;
     @Autowired
-    private FilterRepository filterRepository;
-
+    WeekDayRepository weekDayRepository;
     @Autowired
-    private IngredientRepository ingredientRepository;
+    InitializationStatusRepository initializationStatusRepository;
     @Autowired
-    private UserService userService;
+    IngredientRepository ingredientRepository;
     @Autowired
-    private UnitRepository unitRepository;
-    @Autowired
-    private WeekDayRepository weekDayRepository;
-    @Autowired
-    private InitializationStatusRepository initializationStatusRepository;
-
+    UserRepository userRepository;
+@Autowired
+   RoleRepository roleRepository;
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         InitializationStatus status = initializationStatusRepository.findById(1L).orElse(new InitializationStatus());
-
+        initializationStatusRepository.save(status);
         if (!status.isOperationsExecuted()) {
             try {
                 addUserFile();
+                addRole();
                 addRecipeFile();
                 addWeekDaysFile();
                 addUnitFile();
+                addIngredientFile();
                 addImagesFile();
+                userService.setAdmin();
                 status.setOperationsExecuted(true);
                 initializationStatusRepository.save(status);
-
                 System.out.println("Data added successfully");
             } catch (IOException e) {
-
                 System.err.println("Error adding data");
             }
         }
@@ -112,6 +94,20 @@ public class DatabaseSeeder implements ApplicationRunner {
     }
 
     @Transactional
+    public ResponseEntity<?> addRole() {
+        try {
+            UserRole defaultRole = roleRepository.findByAuthority("ROLE_ADMIN");
+            if (defaultRole == null) {
+                defaultRole = new UserRole("ROLE_ADMIN");
+                roleRepository.save(defaultRole);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("Role added");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user roles");
+        }
+    }
+
+    @Transactional
     public ResponseEntity<?> addRecipeFile() throws IOException {
         try {
             Resource resource = resourceLoader.getResource("classpath:seeds/recipeSeed.json");
@@ -124,7 +120,7 @@ public class DatabaseSeeder implements ApplicationRunner {
                 );
             }
             if (recipeInputs != null && !recipeInputs.isEmpty()) {
-                for (Map<String, Object> recipeInput : recipeInputs) {
+               for (Map<String, Object> recipeInput : recipeInputs) {
                     recipeService.addRecipeAdmin(recipeInput);
                 }
             }
@@ -179,21 +175,21 @@ public class DatabaseSeeder implements ApplicationRunner {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding data");
         }
     }
-
     @Transactional
     public ResponseEntity<?> addImagesFile() {
         try {
             File imgFolder = ResourceUtils.getFile("classpath:images");
-            File[] imageFiles = imgFolder.listFiles();
-
-            if (imageFiles != null) {
-                for (int i = 0; i < imageFiles.length; i++) {
-                    Integer recipeId = i + 1; // Numeracja od 1
-                    String fileName = String.valueOf(i + 1);
-                    File imageFile = imageFiles[i];
+            File[] imageFilesArray = imgFolder.listFiles();
+            if (imageFilesArray != null && imageFilesArray.length > 0) {
+                Arrays.sort(imageFilesArray, Comparator.comparing(File::getName));
+                List<File> imageFiles = new ArrayList<>(List.of(imageFilesArray));
+                for (File imageFile : imageFiles) {
+                    String fileName = imageFile.getName();
+                    String recipeNumber = fileName.replaceAll("[^\\d]", "");
+                    Integer recipeId = Integer.parseInt(recipeNumber);
                     byte[] imageData = Files.readAllBytes(imageFile.toPath());
                     MultipartFile multipartFile = new MockMultipartFile("file", fileName, "image/jpg", imageData);
-                    ResponseEntity<?> response = recipeService.addRecipeImage(recipeId, multipartFile);
+                    recipeService.addRecipeImage(recipeId, multipartFile);
                 }
                 return ResponseEntity.status(HttpStatus.CREATED).body("Images added successfully");
             } else {
@@ -205,6 +201,28 @@ public class DatabaseSeeder implements ApplicationRunner {
         }
     }
 
+    @Transactional
+    public ResponseEntity<?> addIngredientFile() throws IOException {
+        try {
+            Resource resource = resourceLoader.getResource("classpath:seeds/ingredientSeed.json");
+            List<Ingredient> ingredients = null;
+            if (resource.exists()) {
+                File ingredientFile = resource.getFile();
+                ingredients = objectMapper.readValue(
+                        ingredientFile, new TypeReference<List<Ingredient>>() {
+                        }
+                );
+            }
+            if (ingredients != null && !ingredients.isEmpty()) {
+                for (Ingredient ingredient : ingredients) {
+                    ingredientRepository.save(ingredient);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body("Week days added successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding data");
+        }
+    }
 
 }
 

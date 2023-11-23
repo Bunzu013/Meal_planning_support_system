@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,21 +26,21 @@ public class Recipe {
     @Column(nullable = false, length = 2000)
     private String notes;
 
-    @Column(nullable = true)
+    @Column()
     private Integer calories;
 
     @Lob
-    @Column(name = "image_data",nullable = true,columnDefinition = "LONGBLOB")
+    @Column(name = "image_data",columnDefinition = "LONGBLOB")
     private byte[] recipeImageData;
 
-    @Column(name = "image_name", nullable = true)
+    @Column(name = "image_name")
     private String recipeImageName;
 
     @ManyToMany(mappedBy = "userFavouriteRecipes")
     List<User> userFavouriteLists;
 
     @ManyToOne
-    @JoinColumn(name="userId", nullable=true)
+    @JoinColumn(name="userId")
     private User user;
 
     @ManyToMany
@@ -65,30 +63,10 @@ public class Recipe {
     @ManyToMany(mappedBy = "mealRecipes")
     private List<Meal> recipeInMeals = new ArrayList<>();
 
-
     public Recipe(String name)
     {
         this.recipeName = name;
 
     }
 
-    public void addCategory(Category category) {
-        this.recipeCategories.add(category);
-      //  category.getRecipesInCategory().add(this);
-    }
-
-    public void removeCategory(Category category) {
-        this.recipeCategories.remove(category);
-         category.getRecipesInCategory().remove(this);
-    }
-
-    public void addFilter(Filter filter) {
-        this.recipeFilters.add(filter);
-      //  filter.getRecipesInFilter().add(this);
-    }
-
-    public void removeFilter(Filter filter) {
-        this.recipeFilters.remove(filter);
-       // filter.getRecipesInFilter().remove(this);
-    }
 }

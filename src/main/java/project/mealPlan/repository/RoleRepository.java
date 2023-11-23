@@ -7,4 +7,8 @@ import project.mealPlan.entity.UserRole; // Poprawny import
 @Repository
 public interface RoleRepository extends JpaRepository<UserRole, Long> {
     UserRole findByAuthority(String authority);
+
+    UserRole findUserRoleByAuthority(String roleAdmin);
+
+    UserRole findUserRoleById(long l);
 }

@@ -3,6 +3,7 @@ package project.mealPlan.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
@@ -29,44 +30,23 @@ public class MealPlanService {
     MealPlanRepository mealPlanRepository;
     @Autowired
     MealService mealService;
+    @Autowired
+    UserService userService;
 
-    /*
-        public ResponseEntity<?> addMealToMealPlan(Integer mealId, Integer weekDayId) {
-            try {
-                Meal meal = mealRepository.findByMealId(mealId);
-                if (meal != null) {
-                    User user = userRepository.findUserByName("test");
-                    if (user != null) {
-                        MealPlan mealPlan = user.getMealPlan();
-                        MealPlan_Meal newMealPlanMeal = new MealPlan_Meal();
-                        newMealPlanMeal.setMeal(meal);
-                        newMealPlanMeal.setMealPlan(mealPlan);
-                        WeekDay weekDay = weekDayRepository.findByWeekDayId(weekDayId);
-                        if(weekDay != null) {
-                            newMealPlanMeal.setWeekDay(weekDay);
-                        }
-                        mealPlanMealRepository.save(newMealPlanMeal);
-                        return ResponseEntity.status(HttpStatus.OK).body("Meal added to plan"); }
-                    else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user found");
-                    }
-                } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No meal found");
-                }
-            }
-            catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-            }
-        }
-    */
     @Transactional
-    public ResponseEntity<?> addRecipeToMealAndMealPlan(Map<String, Object> mealData) {
+    public ResponseEntity<?> addRecipeToMealAndMealPlan(Map<String, Object> mealData,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             Integer recipeId = (Integer) mealData.get("recipeId");
             Integer weekDayId = (Integer) mealData.get("weekDayId");
             Integer mealId = (Integer) mealData.get("mealId");
-
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             MealPlan mealPlan = user.getMealPlan();
             WeekDay weekDay = weekDayRepository.findByWeekDayId(weekDayId);
@@ -112,84 +92,24 @@ public class MealPlanService {
         }
     }
 
-    public ResponseEntity<?> removeRecipeFromMeal(Integer mealId, Integer recipeId) {
+
+    public ResponseEntity<?> getMealsByWeekDay(Authentication authentication) {
         try {
-            Meal meal = mealRepository.findByMealId(mealId);
-            Recipe recipe = recipeRepository.findByRecipeId(recipeId);
-            if (meal == null || recipe == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Meal or recipe not found");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
             }
-            if (!meal.getMealRecipes().contains(recipe)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Meal doesn't contain this recipe");
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
-            meal.getMealRecipes().remove(recipe);
-            mealRepository.save(meal);
-            if (meal.getMealRecipes().isEmpty()) {
-                User user = userRepository.findUserByName("test");
-                MealPlan_Meal mealPlanMeal = mealPlanMealRepository.findByMealAndMealPlan(meal, user.getMealPlan());
-
-                if (mealPlanMeal != null) {
-                    mealPlanMeal.setWeekDay(null);
-                    mealPlanMeal.setMealPlan(null);
-                    mealPlanMeal.setMeal(null);
-                    mealPlanMealRepository.delete(mealPlanMeal);
-                }
-                mealRepository.delete(meal);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("Recipe removed from the meal");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-        }
-    }
-
-    /*
-
-        public ResponseEntity<?> getMealPlanDetails() {
-            try {
-                User user = userRepository.findUserByName("test");
-
-                MealPlan mealPlan = user.getMealPlan();
-                if (mealPlan != null) {
-
-                    List<MealPlan_Meal> mealPlanMeals = mealPlan.getMealPlanMeals();
-
-                    List<Map<String, Object>> mealPlanDetails = new ArrayList<>();
-
-                    for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
-                        Map<String, Object> mealPlanMealDetails = new HashMap<>();
-                        mealPlanMealDetails.put("mealId", mealPlanMeal.getMeal().getMealId());
-                        mealPlanMealDetails.put("weekDay", mealPlanMeal.getWeekDay().getWeekDayName());
-
-                        List<Recipe> recipesInMeal = mealPlanMeal.getMeal().getMealRecipes();
-                        List<String> recipeNames = new ArrayList<>();
-                        for (Recipe recipe : recipesInMeal) {
-                            recipeNames.add(recipe.getRecipeName());
-                        }
-                        mealPlanMealDetails.put("recipes", recipeNames);
-                        mealPlanDetails.add(mealPlanMealDetails);
-                    }
-                    return ResponseEntity.status(HttpStatus.OK).body(mealPlanDetails);
-                } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Meal Plan not found");
-                }
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-            }
-        }*/
-    public ResponseEntity<?> getMealsByWeekDay() {
-        try {
-            User user = userRepository.findUserByName("test");
             MealPlan mealPlan = user.getMealPlan();
             if (mealPlan != null) {
                 List<MealPlan_Meal> mealPlanMeals = mealPlan.getMealPlanMeals();
-
                 Map<String, List<Map<String, Object>>> mealsByWeekDay = new HashMap<>();
-
                 for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
                     String weekDayName = mealPlanMeal.getWeekDay().getWeekDayName();
-
                     mealsByWeekDay.putIfAbsent(weekDayName, new ArrayList<>());
-
                     Map<String, Object> mealDetails = new HashMap<>();
                     mealDetails.put("mealId", mealPlanMeal.getMeal().getMealId());
 
@@ -213,9 +133,16 @@ public class MealPlanService {
         }
     }
 
-    public ResponseEntity<?> generateShoppingList() {
+    public ResponseEntity<?> generateShoppingList(Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            };
             MealPlan mealPlan = user.getMealPlan();
             if (mealPlan != null) {
                 List<MealPlan_Meal> mealPlanMeals = mealPlan.getMealPlanMeals();
@@ -230,7 +157,6 @@ public class MealPlanService {
                             if (shoppingList.containsKey(ingredientName)) {
                                 List<Map<String, Object>> existingIngredients = shoppingList.get(ingredientName);
                                 boolean ingredientUpdated = false;
-
                                 for (Map<String, Object> existingIngredient : existingIngredients) {
                                     if (ingredientUnit != null && ingredientUnit.equals(existingIngredient.get("unit"))) {
                                         Double existingQuantity = (Double) existingIngredient.get("quantity");
@@ -269,15 +195,21 @@ public class MealPlanService {
         }
     }
 
-    public ResponseEntity<?> shoppingListStatus(Boolean change) {
+    public ResponseEntity<?> shoppingListStatus(Boolean change,Authentication authentication) {
         try {
-            User user = userRepository.findUserByName("test");
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             MealPlan mealPlan = user.getMealPlan();
             if (mealPlan != null) {
-                boolean shoopingListStatus = mealPlan.getShoppingListStatus();
-                if (change == true) {
-                    mealPlan.setShoppingListStatus(!shoopingListStatus);
-
+                boolean shoppingListStatus = mealPlan.getShoppingListStatus();
+                if (change) {
+                    mealPlan.setShoppingListStatus(!shoppingListStatus);
                 }
                 mealPlanRepository.save(mealPlan);
                 return ResponseEntity.status(HttpStatus.OK).body(mealPlan.getShoppingListStatus());
@@ -285,6 +217,25 @@ public class MealPlanService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Shopping list not found");
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
+    }
+    public ResponseEntity<?> getShoppingListStatus(Authentication authentication) {
+        try {
+            User user = new User();
+            ResponseEntity<?> responseEntity = userService.foundUser(authentication);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                user = (User) responseEntity.getBody();
+            }
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            if(user != null) {
+                return new ResponseEntity<>(user.getMealPlan().getShoppingListStatus(), HttpStatus.OK);
+            }
+            else return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>
+                    ("Error receiving shopping list status ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

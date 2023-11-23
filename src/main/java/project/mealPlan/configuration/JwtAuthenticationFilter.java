@@ -1,7 +1,9 @@
 package project.mealPlan.configuration;
 
+// JwtAuthenticationFilter.java
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,14 +21,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String HEADER_STRING = "Authorization";
-    private static final String SECRET_KEY = "yourSecretKey"; // Replace with your actual secret key
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
         super(authenticationManager);
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @Override
@@ -46,36 +54,26 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
-
         if (token != null) {
-            // parse the token and validate it
             Claims claims = Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(jwtTokenUtil.getSecretKey())
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
-
-            // Extract user details from claims and create an Authentication object
-            String username = claims.get("username", String.class);
-
-            //Boolean isAdmin = claims.get("isAdmin", Boolean.class);
-
-            if (username != null) {
-                // Odczytaj role (authorities) z tokena JWT
+            String email = String.valueOf(claims.get("email"));
+            if (email != null) {
                 List<GrantedAuthority> authorities = new ArrayList<>();
-                List<String> roles = claims.get("roles", List.class); // Zakładając, że role są przechowywane jako lista
-
-                if (roles != null) {
-                    for (String role : roles) {
-                        // Twórz obiekty roli (authorities) na podstawie ról z tokena
-                        authorities.add(new SimpleGrantedAuthority(role));
+                Object rolesObject = claims.get("roles");
+                if (rolesObject instanceof List<?>) {
+                    List<?> rolesList = (List<?>) rolesObject;
+                    for (Object role : rolesList) {
+                        if (role instanceof String) {
+                            authorities.add(new SimpleGrantedAuthority((String) role));
+                        }
                     }
                 }
-
-                // Utwórz Authentication z odpowiednimi rolami (authorities)
-                return new UsernamePasswordAuthenticationToken(username, null, authorities);
+                return new UsernamePasswordAuthenticationToken(email, null, authorities);
             }
         }
-
         return null;
     }
 }

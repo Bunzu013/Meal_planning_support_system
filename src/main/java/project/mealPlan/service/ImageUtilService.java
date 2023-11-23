@@ -1,6 +1,8 @@
 package project.mealPlan.service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -21,8 +23,10 @@ public class ImageUtilService {
         }
         try {
             outputStream.close();
-        } catch (Exception e) {
+        } catch (IOException ioException) {
+            System.err.println("Compress image error: " + ioException.getMessage());
         }
+
         return outputStream.toByteArray();
     }
 
@@ -37,7 +41,10 @@ public class ImageUtilService {
                 outputStream.write(tmp, 0, count);
             }
             outputStream.close();
-        } catch (Exception exception) {
+        }  catch (DataFormatException exception) {
+            System.err.println("Error during decompression: " + exception.getMessage());
+        } catch (IOException ioException) {
+            System.err.println("Decompress image error: " + ioException.getMessage());
         }
         return outputStream.toByteArray();
     }
