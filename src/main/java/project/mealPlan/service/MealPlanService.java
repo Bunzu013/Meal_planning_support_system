@@ -59,7 +59,7 @@ public class MealPlanService {
                 meal = mealRepository.findByMealId(mealId);
             }
             if (weekDayId == null && meal != null) {
-                return mealService.addRecipeToMeal(mealData, authentication);
+                return mealService.addRecipeToMeal(mealData);
             }
             MealPlan_Meal existingMealPlanMeal = mealPlanMealRepository.findByMealAndWeekDayAndMealPlan(meal, weekDay, mealPlan);
             if (existingMealPlanMeal != null) {

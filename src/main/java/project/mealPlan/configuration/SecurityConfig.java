@@ -22,23 +22,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Enable CORS and disable CSRF
         http.cors().and().csrf().disable();
-
         // Set session management to stateless
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         // Set unauthorized requests exception handler
         http.exceptionHandling().authenticationEntryPoint(
                 (request, response, ex) -> {
@@ -49,16 +45,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 }
         );
 
-        // Endpoint authorization
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/guest/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
-
-        // Add JWT token filter
         http.addFilterBefore(
                 jwtAuthenticationFilter(authenticationManagerBean(), jwtTokenUtil),
                 UsernamePasswordAuthenticationFilter.class
@@ -66,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+    public JwtAuthenticationFilter jwtAuthenticationFilter(
+            AuthenticationManager authenticationManager,
+            JwtTokenUtil jwtTokenUtil) {
         return new JwtAuthenticationFilter(authenticationManager, jwtTokenUtil);
     }
 }

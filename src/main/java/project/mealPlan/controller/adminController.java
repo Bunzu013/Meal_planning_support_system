@@ -45,18 +45,7 @@ public class adminController {
         try {
             return recipeService.updateRecipe(requestData);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
-        }
-    }
-    @PostMapping("/addUnit")
-    public ResponseEntity<String> addUnit(@RequestBody Unit unit) {
-        try {
-            Unit newUnit = new Unit();
-            newUnit.setUnitName(unit.getUnitName());
-            unitRepository.save(newUnit);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Added new unit: " + unit.getUnitName());
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     @PostMapping("/addWeekDay")
@@ -171,9 +160,9 @@ public class adminController {
         }
     }
     @PostMapping("/deleteUser")
-    public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> userInput, Authentication authentication) {
+    public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> userInput) {
         try {
-            return userService.deleteUser(userInput,authentication);
+            return userService.deleteUser(userInput);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

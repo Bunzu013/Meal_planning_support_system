@@ -35,6 +35,8 @@ public class RecipeService {
     UserService userService;
     @Autowired
     InitializationStatusRepository initializationStatusRepository;
+    @Autowired
+    MealRepository mealRepository;
 
     @Transactional
     public ResponseEntity<?> addRecipe(Map<String, Object> recipeInput, Authentication authentication) {
@@ -310,6 +312,7 @@ public class RecipeService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
         }
     }
+    @Transactional
     public ResponseEntity<?> deleteRecipe(Integer recipeId) {
         try {
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
@@ -328,6 +331,11 @@ public class RecipeService {
                 ingredient.setIngredient(null);
                 ingredient.setUnit(null);
                 recipe.getRecipeIngredients().remove(ingredient);
+            }
+            List<Meal> meals = mealRepository.findByMealRecipes(recipe);
+            for(Meal meal : meals){
+                meal.getMealRecipes().remove(recipe);
+                mealRepository.save(meal);
             }
             recipeIngredientRepository.deleteAll(ingredientsToDelete);
             recipeRepository.delete(recipe);
@@ -545,7 +553,8 @@ public class RecipeService {
                     .body("Error adding recipe to favorites");
         }
     }
-    public ResponseEntity<?> deleteFromFavourites(Integer recipeId,Authentication authentication) {
+    public ResponseEntity<?> deleteFromFavourites(Integer recipeId,
+                                                  Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.foundUser(authentication);
@@ -555,7 +564,6 @@ public class RecipeService {
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
-
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             if (recipe != null) {
                 List<Recipe> userFavoriteRecipes = user.getUserFavouriteRecipes();
@@ -661,6 +669,7 @@ public class RecipeService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
         }
     }
+    @Transactional
     public ResponseEntity<?> deleteUserRecipe(Integer recipeId,Authentication authentication) {
         try {
             User user = new User();
@@ -678,11 +687,13 @@ public class RecipeService {
                     userRecipes.remove(recipe);
                     deleteRecipe(recipeId);
                     userRepository.save(user);
+
                 }
+
             }
-            return ResponseEntity.status(HttpStatus.OK).body("Recipe updated");
+            return ResponseEntity.status(HttpStatus.OK).body("Recipe deleted");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleted recipe");
         }
     }
 }

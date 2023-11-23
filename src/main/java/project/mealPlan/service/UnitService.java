@@ -30,6 +30,7 @@ public class UnitService {
             for(Unit unit : units)
             {
                 Map<String,Object> unitInfo = new HashMap<>();
+                unitInfo.put("unitId", unit.getUnitId());
                 unitInfo.put("unitName", unit.getUnitName());
                 unitInfoList.add(unitInfo);
             }

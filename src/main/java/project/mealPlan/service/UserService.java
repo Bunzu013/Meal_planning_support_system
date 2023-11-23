@@ -192,7 +192,8 @@ MealService mealService;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user data");
         }
     }
-    public ResponseEntity<String> editPassword(Map<String, Object> data,Authentication authentication) {
+    public ResponseEntity<String> editPassword(Map<String, Object> data,
+                                               Authentication authentication) {
         try {
             if (data.get("oldPassword") != null) {
                 String oldPassword = (String) data.get("oldPassword");
@@ -304,7 +305,7 @@ MealService mealService;
         }
     }
     @Transactional
-    public ResponseEntity<?> deleteUser(Map<String, Object> userInput,Authentication authentication) {
+    public ResponseEntity<?> deleteUser(Map<String, Object> userInput) {
         try {
             String email = (String) userInput.get("email");
             User user = userRepository.findUserByEmail(email);
@@ -344,7 +345,8 @@ MealService mealService;
             String email = (String) userInput.get("email");
             User user = userRepository.findUserByEmail(email);
             if(user == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user not found");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("user not found");
             }
             LocalDateTime currentTimestamp = LocalDateTime.now();
             LocalDateTime newTimestamp = currentTimestamp.plusMonths(2);
@@ -353,7 +355,8 @@ MealService mealService;
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.OK).body("User blocked");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error blocking user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error blocking user");
         }
     }
     @Transactional

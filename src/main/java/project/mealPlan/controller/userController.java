@@ -35,7 +35,8 @@ public class userController {
         }
     }
     @PostMapping("/updateUserData")
-    public ResponseEntity<?> editUserData(@RequestBody Map<String, Object> userInfo,Authentication authentication) {
+    public ResponseEntity<?> editUserData(@RequestBody Map<String, Object> userInfo,
+                                          Authentication authentication) {
         try {
             return userService.editUserData(userInfo,authentication);
         } catch (BadCredentialsException ex) {
@@ -43,7 +44,8 @@ public class userController {
         }
     }
     @PostMapping("/updatePassword")
-    public ResponseEntity<?> editPassword(@RequestBody Map<String, Object> data,Authentication authentication) {
+    public ResponseEntity<?> editPassword(@RequestBody Map<String, Object> data,
+                                          Authentication authentication) {
         try {
             return userService.editPassword(data,authentication);
         } catch (BadCredentialsException ex) {
@@ -51,11 +53,13 @@ public class userController {
         }
     }
     @PostMapping("/addRecipe")
-    public ResponseEntity<?> addRecipe(@RequestBody Map<String, Object> requestData,Authentication authentication) {
+    public ResponseEntity<?> addRecipe(@RequestBody Map<String, Object> requestData,
+                                       Authentication authentication) {
         try {
             return recipeService.addRecipe(requestData,authentication);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error adding recipe");
         }
     }
     @PostMapping("/recipes/image")
@@ -69,23 +73,28 @@ public class userController {
         }
     }
     @PostMapping("/updateUserRecipe")
-    public ResponseEntity<?> updateUserRecipe(@RequestBody Map<String, Object> requestData,Authentication authentication) {
+    public ResponseEntity<?> updateUserRecipe(@RequestBody Map<String, Object> requestData,
+                                              Authentication authentication) {
         try {
             return recipeService.updateUserRecipe(requestData,authentication);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error adding recipe");
         }
     }
     @PostMapping("/deleteUserRecipe")
-    public ResponseEntity<?> deleteUserRecipe(@RequestParam Integer recipeId,Authentication authentication) {
+    public ResponseEntity<?> deleteUserRecipe(@RequestParam Integer recipeId,
+                                              Authentication authentication) {
         try {
             return recipeService.deleteUserRecipe(recipeId,authentication);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error removing recipe");
         }
     }
     @PostMapping("/addToPreferred")
-    public ResponseEntity<?> addIngredientToPreferred(@RequestParam Integer ingredientId,Authentication authentication) {
+    public ResponseEntity<?> addIngredientToPreferred(@RequestParam Integer ingredientId,
+                                                      Authentication authentication) {
         try {
             return ingredientService.addToPreferred(ingredientId,authentication);
         } catch (Exception e) {
@@ -93,7 +102,8 @@ public class userController {
         }
     }
     @PostMapping("/deleteFromPreferredIngredients")
-    public ResponseEntity<?> deleteFromPreferredIngredients(@RequestParam Integer ingredientId,Authentication authentication) {
+    public ResponseEntity<?> deleteFromPreferredIngredients(@RequestParam Integer ingredientId,
+                                                            Authentication authentication) {
         try {
             return ingredientService.deleteFromPreferredIngredients(ingredientId,authentication);
         } catch (Exception e) {
@@ -109,7 +119,8 @@ public class userController {
         }
     }
     @PostMapping("/addToAllergenIngredients")
-    public ResponseEntity<?> addAllergenIngredients(@RequestParam Integer ingredientId,Authentication authentication) {
+    public ResponseEntity<?> addAllergenIngredients(@RequestParam Integer ingredientId,
+                                                    Authentication authentication) {
         try {
             return ingredientService.addToAllergens(ingredientId,authentication);
         } catch (Exception e) {
@@ -117,7 +128,8 @@ public class userController {
         }
     }
     @PostMapping("/deleteFromAllergenIngredients")
-    public ResponseEntity<?> deleteFromAllergenIngredients(@RequestParam Integer ingredientId,Authentication authentication) {
+    public ResponseEntity<?> deleteFromAllergenIngredients(@RequestParam Integer ingredientId,
+                                                           Authentication authentication) {
         try {
             return ingredientService.deleteFromUserAllergens(ingredientId,authentication);
         } catch (Exception e) {
@@ -133,7 +145,8 @@ public class userController {
         }
     }
     @PostMapping("/addRecipeToFavourites")
-    public ResponseEntity<?> addToFavourites(@RequestParam Integer recipeId,Authentication authentication) {
+    public ResponseEntity<?> addToFavourites(@RequestParam Integer recipeId,
+                                             Authentication authentication) {
         try {
             return recipeService.addToFavourites(recipeId,authentication);
         } catch (Exception e) {
@@ -141,7 +154,8 @@ public class userController {
         }
     }
     @PostMapping("/deleteFromFavourites")
-    public ResponseEntity<?> deleteFromFavourites(@RequestParam Integer recipeId,Authentication authentication) {
+    public ResponseEntity<?> deleteFromFavourites(@RequestParam Integer recipeId,
+                                                  Authentication authentication) {
         try {
             return recipeService.deleteFromFavourites(recipeId,authentication);
         } catch (Exception e) {
@@ -165,7 +179,8 @@ public class userController {
         }
     }
    @PostMapping("/addNewMeal")
-    public ResponseEntity<?> addNewMeal(@RequestParam Integer weekDayId,Authentication authentication) {
+    public ResponseEntity<?> addNewMeal(@RequestParam Integer weekDayId,
+                                        Authentication authentication) {
         try {
             return mealService.addNewMeal(weekDayId,authentication);
         } catch (Exception e) {
@@ -174,9 +189,9 @@ public class userController {
     }
     @PostMapping("/addRecipeToMeal")
     public ResponseEntity<?> addRecipeToMeal(
-            @RequestBody Map<String, Object> recipeData,Authentication authentication) {
+            @RequestBody Map<String, Object> recipeData) {
         try {
-            return mealService.addRecipeToMeal(recipeData,authentication);
+            return mealService.addRecipeToMeal(recipeData);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -190,7 +205,8 @@ public class userController {
         }
     }
     @PostMapping("/addRecipeToMealAndMealPlan")
-    public ResponseEntity<?> addRecipeToMealAndMealPlan(@RequestBody Map<String, Object> mealData,Authentication authentication) {
+    public ResponseEntity<?> addRecipeToMealAndMealPlan(@RequestBody Map<String, Object> mealData,
+                                                        Authentication authentication) {
         try {
             return mealPlanService.addRecipeToMealAndMealPlan(mealData,authentication);
         } catch (Exception e) {
@@ -199,7 +215,8 @@ public class userController {
     }
     @PostMapping("/deleteRecipeFromMealAndMealPlan")
     public ResponseEntity<?> deleteRecipeToMealAndMealPlan(@RequestParam Integer mealId,
-                                                           @RequestParam Integer recipeId,Authentication authentication) {
+                                                           @RequestParam Integer recipeId,
+                                                           Authentication authentication) {
         try {
             return mealService.removeRecipeFromMeal(mealId, recipeId,authentication);
         } catch (Exception e) {
@@ -223,7 +240,8 @@ public class userController {
         }
     }
     @PostMapping("/shoppingListStatus")
-    public ResponseEntity<?> shoppingListStatus(@RequestParam boolean change,Authentication authentication) {
+    public ResponseEntity<?> shoppingListStatus(@RequestParam boolean change,
+                                                Authentication authentication) {
         try {
             return mealPlanService.shoppingListStatus(change,authentication);
         } catch (Exception e) {
@@ -240,7 +258,8 @@ public class userController {
         }
     }
     @PostMapping("/hideCalories")
-    public ResponseEntity<?> hideCalories(@RequestParam Boolean hide,Authentication authentication) {
+    public ResponseEntity<?> hideCalories(@RequestParam Boolean hide,
+                                          Authentication authentication) {
         try {
             return userService.hideCalories(hide,authentication);
         } catch (Exception e) {

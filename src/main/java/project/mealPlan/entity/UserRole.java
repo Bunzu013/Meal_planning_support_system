@@ -10,18 +10,14 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class UserRole implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String authority;
-
     public UserRole(String authority) {
         this.authority = authority;
     }
-
     @Override
     public String getAuthority() {
         return authority;
