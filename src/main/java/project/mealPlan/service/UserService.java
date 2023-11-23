@@ -109,7 +109,7 @@ MealService mealService;
             LocalDateTime currentTimestamp = LocalDateTime.now();
             Timestamp timestampResult = Timestamp.valueOf(currentTimestamp);
             Timestamp block = existingUser.getBlockedTo();
-            if(block != null  && block.after(timestampResult)){
+            if (block != null && block.after(timestampResult)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User blocked till: " + block);
             }
             if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
@@ -120,6 +120,7 @@ MealService mealService;
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
     }
 
     @Transactional
