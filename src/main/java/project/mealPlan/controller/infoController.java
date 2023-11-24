@@ -93,7 +93,7 @@ public class infoController {
     }
 
     @GetMapping("/getAllRecipes")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+   // @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllRecipes() {
         try {
             return recipeService.getAllRecipes();
