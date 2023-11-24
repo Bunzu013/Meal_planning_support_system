@@ -22,8 +22,6 @@ public class MealService {
         @Autowired
         WeekDayRepository weekDayRepository;
         @Autowired
-        UserRepository userRepository;
-        @Autowired
         MealPlan_MealRepository  mealPlanMealRepository;
         @Autowired
         UserService userService;
@@ -109,6 +107,7 @@ public class MealService {
             }
             return ResponseEntity.status(HttpStatus.OK).body("New meal added");
         } catch (Exception e) {
+            e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }

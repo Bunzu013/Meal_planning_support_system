@@ -17,7 +17,9 @@ public class JwtTokenUtil {
 
     @Value("${app.jwt.secret:abcdefg}")
     private String SECRET_KEY;
-
+    public void setSecretKey(String secretKey) {
+        this.SECRET_KEY = secretKey;
+    }
     public String generateJwtToken(User user) {
         List<String> roleNames = user.getRoles()
                 .stream()
