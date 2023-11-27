@@ -30,7 +30,7 @@ public class AdminControllerIntegrationTesting {
     public void testAddFilter() throws Exception {
         User testUser = JwtTestUtils.createSampleUser();
         Map<String, Object> data = new HashMap<>();
-        data.put("filterName", "newName");
+        data.put("filterName", "Vegan");
         String validJwtToken = jwtTokenUtil.generateJwtToken(testUser);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);

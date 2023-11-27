@@ -61,6 +61,8 @@ public class UserControllerIntegrationTesting {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    //błąd bo user nie jest wlascicielem przepisu
     @Test
     public void testDeleteUserRecipe() throws Exception {
         User testUser = JwtTestUtils.createSampleUser();
