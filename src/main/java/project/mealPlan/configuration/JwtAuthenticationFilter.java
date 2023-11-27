@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
+        if (!token.contains("null")) {
             Claims claims = Jwts.parser()
                     .setSigningKey(jwtTokenUtil.getSecretKey())
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
