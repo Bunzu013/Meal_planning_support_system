@@ -691,11 +691,11 @@ public class RecipeService {
                     userRecipes.remove(recipe);
                     deleteRecipe(recipeId);
                     userRepository.save(user);
-
+                    return ResponseEntity.status(HttpStatus.OK).body("Recipe deleted");
                 }
-
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User is not the owner of the recipe");
             }
-            return ResponseEntity.status(HttpStatus.OK).body("Recipe deleted");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recipe not found");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleted recipe");
         }
