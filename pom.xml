@@ -97,6 +97,12 @@
 			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
 			<version>2.6.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 
 		<!-- Jackson for JSON processing -->
 		<dependency>
@@ -114,8 +120,13 @@
 		<artifactId>junit-jupiter-api</artifactId>
 		<scope>test</scope>
 	</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-</dependencies>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
