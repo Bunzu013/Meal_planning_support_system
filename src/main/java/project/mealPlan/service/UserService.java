@@ -214,7 +214,7 @@ MealService mealService;
                 if (data.get("newPassword") != null) {
                     String newPassword = (String) data.get("newPassword");
                     if (oldPassword.equals(newPassword)) {
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        return ResponseEntity.status(HttpStatus.CONFLICT)
                                 .body("New password must be different");
                     }
                     String hashedPassword = passwordEncoder.encode(newPassword);

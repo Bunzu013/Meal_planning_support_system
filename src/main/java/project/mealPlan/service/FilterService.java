@@ -71,7 +71,7 @@ public class FilterService {
                     }
                 }
             }else{
-                return new ResponseEntity<>("Filter with this name already exists", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>("Filter with this name already exists", HttpStatus.CONFLICT);
             }
             return new ResponseEntity<>("Error updating filter", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {

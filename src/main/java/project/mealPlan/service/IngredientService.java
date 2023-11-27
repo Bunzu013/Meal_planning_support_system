@@ -248,7 +248,7 @@ public class IngredientService {
                     }
                 }
             }else{
-                return new ResponseEntity<>("Ingredient with this name already exists", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>("Ingredient with this name already exists", HttpStatus.CONFLICT);
             }
             return new ResponseEntity<>("Error updating ingredient", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {

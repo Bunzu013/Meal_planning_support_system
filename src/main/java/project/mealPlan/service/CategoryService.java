@@ -65,7 +65,7 @@ public class CategoryService {
                     }
                 }
             }else{
-                return new ResponseEntity<>("Category with this name already exists", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>("Category with this name already exists", HttpStatus.CONFLICT);
             }
             return new ResponseEntity<>("Error updating category", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
