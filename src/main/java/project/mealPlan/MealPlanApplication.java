@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"project.mealPlan.controller", "project.mealPlan.configuration", "project.mealPlan.service", "project.mealPlan.repository"})
+@ComponentScan(basePackages = {"project.mealPlan.seeder","project.mealPlan.controller", "project.mealPlan.configuration", "project.mealPlan.service", "project.mealPlan.repository"})
 
 public class MealPlanApplication {
 
