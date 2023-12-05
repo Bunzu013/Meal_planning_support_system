@@ -38,7 +38,6 @@ class RecipeServiceTest {
         Recipe recipe = new Recipe();
         when(recipeRepository.findByRecipeId(any())).thenReturn(recipe);
         when(userRepository.findAllByUserFavouriteRecipesContains(any())).thenReturn(Collections.emptyList());
-        when(mealRepository.findByMealRecipes(any())).thenReturn(Collections.singletonList(new Meal()));
         ResponseEntity<?> response = recipeService.deleteRecipe(1);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Recipe deleted", response.getBody());

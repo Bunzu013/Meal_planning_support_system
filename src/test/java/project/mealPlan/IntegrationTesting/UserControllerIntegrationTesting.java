@@ -28,8 +28,10 @@ public class UserControllerIntegrationTesting {
     public void testGetMealPlanDetails() throws Exception {
         User testUser = JwtTestUtils.createSampleUser();
         String validJwtToken = jwtTokenUtil.generateJwtToken(testUser);
-        mockMvc.perform(MockMvcRequestBuilders.post("/user/getMealPlanDetails")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + validJwtToken)
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/user/getMealPlanDetails")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + validJwtToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

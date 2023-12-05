@@ -41,17 +41,10 @@ class IngredientServiceTest {
         Ingredient ingredient = new Ingredient();
         ingredient.setIngredientId(ingredientId);
         when(ingredientRepository.findByIngredientId(ingredientId)).thenReturn(ingredient);
-        List<Recipe_Ingredient> recipes = new ArrayList<>();
-        when(recipe_IngredientRepository.findByIngredient(ingredient)).thenReturn(recipes);
         ResponseEntity<?> responseEntity = ingredientService.deleteIngredient(ingredientInput);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("ingredient deleted", responseEntity.getBody());
         verify(ingredientRepository, times(1)).delete(ingredient);
-        for (Recipe_Ingredient recipe : recipes) {
-            assertEquals("deleted", recipe.getIngredient().getIngredientName());
-            assertNull(recipe.getUnit());
-            assertNull(recipe.getQuantity());
-        }
     }
 
     @Test
