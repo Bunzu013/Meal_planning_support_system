@@ -101,18 +101,19 @@ public class MealPlanService {
                 user = (User) responseEntity.getBody();
             }
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("User not found");
             }
             MealPlan mealPlan = user.getMealPlan();
             if (mealPlan != null) {
                 List<MealPlan_Meal> mealPlanMeals = mealPlan.getMealPlanMeals();
-                Map<String, List<Map<String, Object>>> mealsByWeekDay = new HashMap<>();
+                Map<String, List<Map<String, Object>>>
+                        mealsByWeekDay = new HashMap<>();
                 for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
                     String weekDayName = mealPlanMeal.getWeekDay().getWeekDayName();
                     mealsByWeekDay.putIfAbsent(weekDayName, new ArrayList<>());
                     Map<String, Object> mealDetails = new HashMap<>();
                     mealDetails.put("mealId", mealPlanMeal.getMeal().getMealId());
-
                     List<Recipe> recipesInMeal = mealPlanMeal.getMeal().getMealRecipes();
                     List<Map<String, Object>> recipeDetails = new ArrayList<>();
                     for (Recipe recipe : recipesInMeal) {
@@ -146,21 +147,30 @@ public class MealPlanService {
             MealPlan mealPlan = user.getMealPlan();
             if (mealPlan != null) {
                 List<MealPlan_Meal> mealPlanMeals = mealPlan.getMealPlanMeals();
-                Map<String, List<Map<String, Object>>> shoppingList = new HashMap<>();
+                Map<String, List<Map<String, Object>>>
+                        shoppingList = new HashMap<>();
                 for (MealPlan_Meal mealPlanMeal : mealPlanMeals) {
-                    List<Recipe> recipesInMeal = mealPlanMeal.getMeal().getMealRecipes();
+                    List<Recipe> recipesInMeal = mealPlanMeal.getMeal()
+                            .getMealRecipes();
                     for (Recipe recipe : recipesInMeal) {
-                        for (Recipe_Ingredient recipeIngredient : recipe.getRecipeIngredients()) {
-                            String ingredientName = recipeIngredient.getIngredient().getIngredientName();
+                        for (Recipe_Ingredient recipeIngredient :
+                                recipe.getRecipeIngredients()) {
+                            String ingredientName = recipeIngredient
+                                    .getIngredient().getIngredientName();
                             Double ingredientQuantity = recipeIngredient.getQuantity();
-                            String ingredientUnit = (recipeIngredient.getUnit() != null) ? recipeIngredient.getUnit().getUnitName() : null;
+                            String ingredientUnit = (recipeIngredient.getUnit() != null)
+                                    ? recipeIngredient.getUnit().getUnitName() : null;
                             if (shoppingList.containsKey(ingredientName)) {
-                                List<Map<String, Object>> existingIngredients = shoppingList.get(ingredientName);
+                                List<Map<String, Object>> existingIngredients =
+                                        shoppingList.get(ingredientName);
                                 boolean ingredientUpdated = false;
                                 for (Map<String, Object> existingIngredient : existingIngredients) {
-                                    if (ingredientUnit != null && ingredientUnit.equals(existingIngredient.get("unit"))) {
-                                        Double existingQuantity = (Double) existingIngredient.get("quantity");
-                                        existingIngredient.put("quantity", existingQuantity + ingredientQuantity);
+                                    if (ingredientUnit != null && ingredientUnit
+                                            .equals(existingIngredient.get("unit"))) {
+                                        Double existingQuantity = (Double) existingIngredient
+                                                .get("quantity");
+                                        existingIngredient.put("quantity",
+                                                existingQuantity + ingredientQuantity);
                                         ingredientUpdated = true;
                                         break;
                                     }

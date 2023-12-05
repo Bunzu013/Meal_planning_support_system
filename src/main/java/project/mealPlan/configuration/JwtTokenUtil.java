@@ -27,12 +27,15 @@ public class JwtTokenUtil {
                 .collect(Collectors.toList());
 
         return Jwts.builder()
-                .setSubject(String.format("%s,%s", user.getName(), user.getSurname()))
+                .setSubject(String.format("%s,%s",
+                        user.getName(),
+                        user.getSurname()))
                 .setIssuer("CodeJava")
                 .claim("email", user.getEmail())
                 .claim("roles", roleNames)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
+                .setExpiration(new Date(System.currentTimeMillis()
+                        + EXPIRE_DURATION))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }

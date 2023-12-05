@@ -92,7 +92,8 @@ public class MealService {
                 user = (User) responseEntity.getBody();
             }
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("User not found");
             }
             if (weekDay != null) {
                 Meal meal = new Meal();
@@ -103,12 +104,13 @@ public class MealService {
                 mealPlan_meal.setWeekDay(weekDay);
                 mealPlanMealRepository.save(mealPlan_meal);
             }else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No week day found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No week day found");
             }
             return ResponseEntity.status(HttpStatus.OK).body("New meal added");
         } catch (Exception e) {
-            e.getMessage();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred");
         }
     }
 

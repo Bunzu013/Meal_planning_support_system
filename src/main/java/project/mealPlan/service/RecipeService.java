@@ -89,7 +89,8 @@ public class RecipeService {
                 user = (User) responseEntity.getBody();
             }
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+                return ResponseEntity.status
+                        (HttpStatus.NOT_FOUND).body("User not found");
             }
             newRecipe.setUser(user);
             if(notes != null ){
@@ -99,16 +100,19 @@ public class RecipeService {
                 newRecipe.setCalories(calories);
             }
             if (file != null ) {
-                byte[] imageData = ImageUtilService.compressImage(file.getBytes());
+                byte[] imageData = ImageUtilService
+                        .compressImage(file.getBytes());
                 newRecipe.setRecipeImageData(imageData);
                 newRecipe.setRecipeImageName(file.getOriginalFilename());
             }
             recipeRepository.save(newRecipe);
             user.getUserRecipes().add(newRecipe);
             userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newRecipe.getRecipeId());
+            return ResponseEntity.status
+                    (HttpStatus.CREATED).body(newRecipe.getRecipeId());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
+            return ResponseEntity.status
+                    (HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
         }
     }
     @Transactional
@@ -210,10 +214,10 @@ public class RecipeService {
     public ResponseEntity<?> updateRecipe(Map<String, Object> recipeUpdate) {
         try {
             Integer recipeId = (Integer) recipeUpdate.get("recipeId");
-            MultipartFile file = (MultipartFile) recipeUpdate.get("file");
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             if (recipe == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recipe not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Recipe not found");
             }
             if (recipeUpdate.containsKey("recipeName")) {
                 String recipeName = (String) recipeUpdate.get("recipeName");
@@ -226,11 +230,6 @@ public class RecipeService {
             if (recipeUpdate.containsKey("notes")) {
                 String notes = (String) recipeUpdate.get("notes");
                 recipe.setNotes(notes);
-            }
-            if (file != null) {
-                byte[] imageData = ImageUtilService.compressImage(file.getBytes());
-                recipe.setRecipeImageData(imageData);
-                recipe.setRecipeImageName(file.getOriginalFilename());
             }
             if (recipeUpdate.containsKey("categories")) {
                 List<String> categoryNames = (List<String>) recipeUpdate.get("categories");
@@ -316,9 +315,11 @@ public class RecipeService {
         try {
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             if (recipe == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recipe not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Recipe not found");
             }
-            List<User> users = userRepository.findAllByUserFavouriteRecipesContains(recipe);
+            List<User> users = userRepository
+                    .findAllByUserFavouriteRecipesContains(recipe);
             for (User user : users) {
                 user.getUserFavouriteRecipes().remove(recipe);
                 userRepository.save(user);
@@ -349,23 +350,27 @@ public class RecipeService {
         }
     }
     @Transactional
-    public ResponseEntity<?> addRecipeImage(Integer recipeId, MultipartFile file) {
+    public ResponseEntity<?> addRecipeImage(Integer recipeId,
+                                            MultipartFile file) {
         try {
             Recipe recipe = recipeRepository.findByRecipeId(recipeId);
             if (recipe == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recipe not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Recipe not found");
             }
             if (!file.getContentType().startsWith("image/")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Uploaded file is not an image");
             }
-            byte[] imageData = ImageUtilService.compressImage(file.getBytes());
-            //byte[] imageData = file.getBytes();
+            byte[] imageData = ImageUtilService.compressImage
+                    (file.getBytes());
+
             recipe.setRecipeImageData(imageData);
             recipe.setRecipeImageName(file.getOriginalFilename());
             recipeRepository.save(recipe);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Image uploaded and compressed successfully." + recipeId + " " +file.getOriginalFilename());
+                    .body("Image uploaded and compressed successfully."
+                            + recipeId + " " +file.getOriginalFilename());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error uploading and compressing image.");
@@ -527,7 +532,8 @@ public class RecipeService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    public ResponseEntity<?> addToFavourites(Integer recipeId,Authentication authentication) {
+    public ResponseEntity<?> addToFavouriteRecipes(Integer recipeId,
+                                                   Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.findUser(authentication);
@@ -557,8 +563,8 @@ public class RecipeService {
                     .body("Error adding recipe to favorites");
         }
     }
-    public ResponseEntity<?> deleteFromFavourites(Integer recipeId,
-                                                  Authentication authentication) {
+    public ResponseEntity<?> deleteFromFavouriteRecipes(Integer recipeId,
+                                                        Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = userService.findUser(authentication);

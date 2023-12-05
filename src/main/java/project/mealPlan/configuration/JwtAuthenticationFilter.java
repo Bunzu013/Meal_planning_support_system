@@ -71,7 +71,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                         }
                     }
                 }
-                return new UsernamePasswordAuthenticationToken(email, null, authorities);
+                return new UsernamePasswordAuthenticationToken
+                        (email, null, authorities);
             }
         }
         return null;

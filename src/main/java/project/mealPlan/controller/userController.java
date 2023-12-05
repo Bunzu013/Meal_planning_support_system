@@ -145,19 +145,19 @@ public class userController {
         }
     }
     @PostMapping("/addRecipeToFavourites")
-    public ResponseEntity<?> addToFavourites(@RequestParam Integer recipeId,
+    public ResponseEntity<?> addToFavouriteRecipes(@RequestParam Integer recipeId,
                                              Authentication authentication) {
         try {
-            return recipeService.addToFavourites(recipeId,authentication);
+            return recipeService.addToFavouriteRecipes(recipeId,authentication);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     @PostMapping("/deleteFromFavourites")
-    public ResponseEntity<?> deleteFromFavourites(@RequestParam Integer recipeId,
+    public ResponseEntity<?> deleteFromFavouriteRecipes(@RequestParam Integer recipeId,
                                                   Authentication authentication) {
         try {
-            return recipeService.deleteFromFavourites(recipeId,authentication);
+            return recipeService.deleteFromFavouriteRecipes(recipeId,authentication);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
