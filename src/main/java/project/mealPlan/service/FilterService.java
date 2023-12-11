@@ -86,7 +86,7 @@ public class FilterService {
                 if (filter != null) {
                     List<Recipe> recipes = recipeRepository.findByRecipeFilters(filter);
                     for (Recipe recipe : recipes) {
-                        recipe.getRecipeCategories().remove(filter);
+                        recipe.getRecipeFilters().remove(filter);
                     }
                     filterRepository.delete(filter);
                     return new ResponseEntity<>("Filter deleted", HttpStatus.OK);
