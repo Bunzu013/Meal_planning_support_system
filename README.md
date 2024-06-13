@@ -2,10 +2,10 @@
 * [General info](#general-info)
 * [Functional Requirements](#functional-requirements)
 * [Technologies](#technologies)
+* [Project structure](#project-structure)
 * [Database preview](#database-preview)
 * [Aplication preview](#aplication-preview)
 * [Setup](#setup)
-
 
 # General info
 <div>
@@ -55,6 +55,12 @@
 # Technologies
 Java, JPA, Maven, REST API, Spring Boot, MySQL, InteliJ
 
+# Project structure
+<p align="center">    
+  <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/e50f03f2-81a9-459e-ad04-8d5f222eb200" alt="proj 1"/>
+  <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/c0ef118d-2fa3-4f8f-93e6-ea8802d56d04" alt="proj 2"/>
+</p>
+
 # Database preview
 ![1](https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/740e23d6-9b43-4a34-a127-1c0729577691)
 <p align="center">
@@ -63,8 +69,9 @@ Java, JPA, Maven, REST API, Spring Boot, MySQL, InteliJ
     <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/aed0a2ad-4ab2-4a52-8f6d-6a74b649e570" alt="database 3" width="400"/>
 </p>
 
-# Aplication preview (front-end made by co-autors)
 
+# Aplication preview 
+#### Front-end made by co-autors
 ### Home page for guest user
 ![2](https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/d3431434-273e-4267-ab57-7a8e00fa2cc8)
  
