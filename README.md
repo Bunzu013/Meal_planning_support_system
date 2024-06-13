@@ -62,7 +62,9 @@ Java, JPA, Maven, REST API, Spring Boot, MySQL, InteliJ
 </p>
 
 # Database preview
-![1](https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/740e23d6-9b43-4a34-a127-1c0729577691)
+<p align="center">
+   <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/740e23d6-9b43-4a34-a127-1c0729577691" alt="database 1" />
+ </p>
 <p align="center">
   <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/086184d6-cac2-41a4-b798-9b3e4064cae2" alt="database 1" width="250"/>
     <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/5fd7637d-2914-4fea-b385-49ee354cd8d7" alt="database 2" width="250"/>
@@ -172,12 +174,6 @@ database: 3306
 $ mvn clean install
 $ mvn spring-boot:run
 ```
-#### 3. Client side
-```
-$ npm install
-$ npm start
-```
-
 #### Test user login data:
 ```
 email: test@gmail.com
