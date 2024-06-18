@@ -58,7 +58,6 @@ Java, JPA, Maven, REST API, Spring Boot, MySQL, InteliJ
 # Project structure
 <p align="center">    
   <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/e50f03f2-81a9-459e-ad04-8d5f222eb200" alt="proj 1"/>
-  <img src="https://github.com/Bunzu013/Meal_planning_support_system/assets/83347605/c0ef118d-2fa3-4f8f-93e6-ea8802d56d04" alt="proj 2"/>
 </p>
 
 # Database preview
