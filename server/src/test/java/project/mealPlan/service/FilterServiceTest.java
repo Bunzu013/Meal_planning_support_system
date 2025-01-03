@@ -7,8 +7,6 @@ import static org.mockito.Mockito.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import project.mealPlan.entity.Filter;
 import project.mealPlan.repository.FilterRepository;
-import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 public class FilterServiceTest {
 

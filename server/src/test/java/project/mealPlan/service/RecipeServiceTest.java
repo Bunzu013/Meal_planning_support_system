@@ -8,7 +8,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import project.mealPlan.entity.Meal;
 import project.mealPlan.entity.Recipe;
 import project.mealPlan.repository.*;
 import java.util.Collections;

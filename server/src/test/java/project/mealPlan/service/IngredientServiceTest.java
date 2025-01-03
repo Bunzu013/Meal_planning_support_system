@@ -8,17 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import project.mealPlan.entity.Ingredient;
-import project.mealPlan.entity.Recipe_Ingredient;
 import project.mealPlan.repository.IngredientRepository;
 import project.mealPlan.repository.Recipe_IngredientRepository;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)

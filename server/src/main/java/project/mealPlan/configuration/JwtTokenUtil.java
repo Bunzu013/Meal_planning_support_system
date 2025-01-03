@@ -1,6 +1,4 @@
 package project.mealPlan.configuration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import project.mealPlan.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,7 +8,6 @@ import project.mealPlan.entity.UserRole;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class JwtTokenUtil {
     private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hours

@@ -293,9 +293,7 @@ MealService mealService;
                 Timestamp validityTime = new Timestamp(calendar.getTime().getTime());
                 user.setResetPasswordValidityTime(validityTime);
                 userRepository.save(user);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
-            }
+            } 
             return ResponseEntity.status(HttpStatus.OK).body("Token created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing calories visibility");
