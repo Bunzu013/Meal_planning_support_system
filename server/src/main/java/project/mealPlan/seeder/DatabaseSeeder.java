@@ -9,11 +9,15 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import project.mealPlan.entity.*;
 import project.mealPlan.repository.*;
 import java.io.*;
@@ -52,13 +56,13 @@ public class DatabaseSeeder implements ApplicationRunner {
         initializationStatusRepository.save(status);
         if (!status.isOperationsExecuted()) {
             try {
-                addUserFile();
                 addRole();
-                addRecipeFile();
+                addUserFile();
                 addWeekDaysFile();
                 addUnitFile();
                 addIngredientFile();
                 addImagesFile();
+                addRecipeFile();
                 userService.setAdmin();
                 status.setOperationsExecuted(true);
                 initializationStatusRepository.save(status);
@@ -200,6 +204,7 @@ public class DatabaseSeeder implements ApplicationRunner {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding images: " + e.getMessage());
         }
     }
+
 
     @Transactional
     public ResponseEntity<?> addIngredientFile() throws IOException {

@@ -70,36 +70,53 @@ MealService mealService;
     }
 
     public ResponseEntity<?> addUser(User user) {
+        System.out.println("Adding user: " + user);  // Add this log
+
         try {
+            // Checking if the email exists
             boolean emailExists = userRepository.existsByEmail(user.getEmail());
-            boolean phoneNumberExists = userRepository.existsByPhoneNumber(user.getPhoneNumber());
             if (emailExists) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("User with this email already exists");
             }
+
+            // Checking if the phone number exists
+            boolean phoneNumberExists = userRepository.existsByPhoneNumber(user.getPhoneNumber());
             if (phoneNumberExists) {
                 User userTemp = userRepository.findUserByPhoneNumber(user.getPhoneNumber());
-                if (userTemp.getPhonePrefix().equals(user.getPhonePrefix()))
-                  return ResponseEntity.status(HttpStatus.CONFLICT)
-                          .body("User with this phone number already exists");
+                if (userTemp != null && userTemp.getPhoneNumber().equals(user.getPhoneNumber())) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT)
+                            .body("User with this phone number already exists");
+                }
             }
+
+            // Set the meal plan for the new user
             user.setMealPlan(new MealPlan());
+
+            // Get or create the default role (ROLE_USER)
             UserRole defaultRole = roleRepository.findByAuthority("ROLE_USER");
             if (defaultRole == null) {
                 defaultRole = new UserRole("ROLE_USER");
                 roleRepository.save(defaultRole);
-                user.setRoles(Collections.singletonList(defaultRole));
-            }else {
-                user.setRoles(Collections.singletonList(defaultRole));
             }
+            user.setRoles(Collections.singletonList(defaultRole));
+
+            // Encode the password
             String hashedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(hashedPassword);
+
+            // Save the user
             userRepository.save(user);
+
             return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
+
         } catch (Exception e) {
+            // Log the error for debugging
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding user");
         }
     }
+
     public ResponseEntity<String> login(User user) {
         try {
             User existingUser = userRepository.findUserByEmail(user.getEmail());

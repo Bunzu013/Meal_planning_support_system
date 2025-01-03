@@ -3,10 +3,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -38,15 +35,13 @@ public class User {
     private String password;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Phone number is required")
-    @Size(min = 9,max =  9, message = "Phone number must be 9 characters long")
-    private Integer phoneNumber;
-
+    @NotNull(message = "Phone number is required")
+   private Integer phoneNumber;
 
     @Column(nullable = false)
-    @NotBlank(message = "Phone prefix is required")
-    @Size(max =  3, message = "Password must be max 3 characters long")
-    private Integer phonePrefix;
+    @NotNull(message = "Phone prefix is required")
+   private Integer phonePrefix;
+
 
     @Column
     private Boolean hiddenCalories;
