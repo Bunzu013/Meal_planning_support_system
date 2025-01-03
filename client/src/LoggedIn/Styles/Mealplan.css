@@ -1,0 +1,31 @@
+.days{
+    background-color: transparent !important;
+    border: 2px solid #ef6767;
+    border-radius: 10px !important;
+}
+.week{
+    color: #ef6767;
+    font-family: 'Tahoma';
+    letter-spacing: 0.04rem !important;
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+}
+.meals {
+    border-top: 2px solid #ef6767;
+}
+.meal{
+    background-color: rgba(251, 182, 170, 0.306);
+    margin-top: 2%;
+    padding: 1% 2%;
+    border-radius: 10px;
+}
+.meal-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #ef6767;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}

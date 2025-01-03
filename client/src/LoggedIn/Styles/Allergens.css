@@ -1,0 +1,11 @@
+.ingredient-button {
+  color: #ef6767;
+  border-color: #f79988;
+  margin: 0.3rem;
+  border-radius: 0.4rem;
+}
+  
+.ingredient-button.selected {
+  color: white;
+  background-color: #f79988;
+}

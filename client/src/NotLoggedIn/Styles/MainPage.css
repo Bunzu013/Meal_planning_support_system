@@ -1,0 +1,19 @@
+.body-content{
+    background-color: #fdf8f3;
+    margin-top: 5%;
+    border-radius: 2em;
+    padding: 2em;
+}
+
+.img-container{
+    flex: 1;
+    overflow: hidden;
+}
+
+.main-title{
+    padding-left: 0.3rem;
+}
+
+.text{
+    padding-left: 1rem;
+}

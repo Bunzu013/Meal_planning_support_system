@@ -1,0 +1,56 @@
+.heart-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    opacity: 85%;
+    border-radius: 15px;
+    border: 0;
+    margin: 5%;
+    width: 50px;
+    height: 50px;
+}
+
+.trash{
+    margin-left: 20px;
+}
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #ec8a8a;
+    border-radius: 50%;
+}
+
+.svg-icon {
+    width: 25px;
+    height: 25px;
+}
+
+@media (min-width: 300px) {
+    .svg-icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .circle {
+        margin-top: 5px;
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (min-width: 769px) {
+    .svg-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .circle {
+        width: 35px;
+        height: 35px;
+    }
+}

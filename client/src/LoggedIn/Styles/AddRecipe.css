@@ -1,0 +1,29 @@
+.units {
+  border-radius: 13px;
+  border: solid 2px #ef6767;
+  padding: 0.6% 0;
+  text-align: center;
+}
+.quantity {
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  .quantity {
+    font-size: 15px;
+  }
+  .units {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 426px) {
+
+  .quantity {
+    font-size: 12px;
+  }
+
+  .units {
+    font-size: 12px;
+  }
+}

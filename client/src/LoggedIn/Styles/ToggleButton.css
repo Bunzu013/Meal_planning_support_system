@@ -1,0 +1,12 @@
+button{
+    color: #ec8a8a;
+    background-color: white;
+    border-color: #ec8a8a;
+    padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+button.toggled{
+    background-color: #ec8a8a;
+    color: #ffff;
+    border-color: #ec8a8a;
+}

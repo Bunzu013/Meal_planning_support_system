@@ -1,0 +1,42 @@
+.page-link {
+    background: transparent;
+    color: #ef6767;
+    border: 0;
+    border-radius: 50%;
+}
+
+.page-link:hover {
+    background: #ef6767;
+    color: white;
+    border: 0;
+    border-radius: 50%;
+}
+
+.active>.page-link {
+    z-index: 3;
+    background-color: #ef6767;
+    border-color: #ef6767;
+}
+
+.page-link:focus {
+    box-shadow: unset;
+}
+
+.recipe {
+    text-align: center;
+    margin: 1rem 1.8rem;
+    position: relative;
+}
+.image-block{
+    position: relative;
+}
+
+.linia {
+    color: #ef6767;
+}
+
+@media (max-width: 426px) {
+    .page-link {
+        font-size: 9.5px;
+    }
+}

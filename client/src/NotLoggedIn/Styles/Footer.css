@@ -1,0 +1,52 @@
+.footer {
+  color: #ffffff;
+  background-color: #f79988;
+  width: 100%;
+  margin-top: auto;
+  padding: 1.5% 0;
+  font-family: 'Tahoma';
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.main-row {
+  font-weight: 600;
+
+}
+
+.footer-4, .footer-5{
+  display: flex;
+  flex-direction: column;
+}
+
+.row a {
+  padding-left: 40%;
+  color: #ffffff;
+  font-family: 'Tahoma';
+  text-decoration: none;
+  padding-bottom: 1%;
+}
+
+@media (max-width: 1091px) {
+  .footer{
+    padding-top: 2%;
+  }
+  .row a {
+    padding-left: 10%;
+  }
+  .footer-logo{
+    padding-left: 5%;
+  }
+}
+
+@media (max-width: 852px) {
+  .footer-logo{
+    padding-left: 0;
+  }
+  .row a {
+    padding-left: 35%;
+  }
+}

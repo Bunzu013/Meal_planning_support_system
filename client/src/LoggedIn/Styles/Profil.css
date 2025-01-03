@@ -1,0 +1,25 @@
+.profile-data{
+    border: 3px solid #f79988;
+    padding: 2rem;
+    border-radius: 2rem;
+}
+
+.button-redirect.btn,
+.button-redirect.btn:hover{
+    background-color: #f79988;
+    color:#fdf8f3;
+    text-align: left;
+    padding: 1% 5% 1% 5%;
+    border-radius: 0.8rem;
+    font-size: large;
+}
+
+.button-redirect.btn:active,
+.button-redirect.btn:focus{
+    background-color: #ef6767;
+    color:#fdf8f3;
+    text-align: left;
+    padding: 1% 5% 1% 5%;
+    border-radius: 0.8rem;
+    font-size: large;
+}

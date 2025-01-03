@@ -1,0 +1,158 @@
+.main-title{
+  margin-bottom: 3%;
+  margin-left: 1%;
+  margin-top: 3px;
+}
+
+.title-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.button{
+  background-color:#ef6767;
+  border-color: #ef6767;
+  color:#fdf8f3;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  padding: 0.5% 2%;
+  margin-top: 2%;
+}
+
+.button:hover{
+  background-color: #fdf8f3;
+  color:#ef6767;
+}
+
+.SignUpPage{
+  height: 100vh;
+}
+
+/*Nie działa ten odcinek dla focus, pózniej do tego wrócę*/
+.form-control:focus{
+  border-color:#ef6767;
+  box-shadow: 0 0 0 0 ;
+}
+
+@media (max-width: 1181px) {
+  .little-nav{
+    padding-top: 2%;
+    padding-left: 5.5%;
+  }
+}
+/*
+@media (max-width: 1091px) {
+  .svg-icon{
+    width: 20px;
+    height: 20px;
+  }
+  .circle {
+    width: 35px; 
+    height: 35px;
+  }
+  .little-nav{
+    padding-top: 2%;
+    padding-left: 6%;
+  }
+  .button{
+    margin-left: 37%;
+  }
+  .content{
+    margin-top: 5%;
+  }
+  
+}
+
+@media (max-width: 852px) {
+  .svg-icon{
+    width: 17px;
+    height: 17px;
+  }
+  .circle {
+    margin-top: 5px;
+    width: 30px; 
+    height: 30px;
+  }
+  .main-title{
+    font-size: 1.3rem;
+    margin-top: 7px;
+  }
+  .form-group label{
+    padding-top: 7px;
+    padding-left: 8%;
+    font-size: 15px;
+  }
+  .button{
+    margin-left: 35%;
+  }
+}
+
+@media (max-width: 426px) {
+  .svg-icon{
+    width: 14px;
+    height: 14px;
+  }
+  .circle {
+    margin-top: 5px;
+    width: 26px; 
+    height: 26px;
+  }
+  .main-title{
+    font-size: 1.1rem;
+    margin-left: 10px;
+    margin-top: 7px;
+    margin-bottom: 20px;
+  }
+  .little-nav{
+    padding-top: 3%;
+    padding-left: 12%;
+    font-size: 12px;
+  }
+  .form-group label{
+    padding-top: 3px;
+    padding-left: 10px;
+    font-size: 12px;
+  }
+  .form-group input{
+    margin-top: 3%;
+    margin-left: 0;
+    height: 30px;
+  }
+  .form-group{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5%;
+  }
+  .button{
+    font-size: 13px;
+    padding: 1% 4%;
+    margin-left: 30%;
+    margin-bottom: 5%;
+  }
+}
+
+@media (max-width: 376px) {
+  .little-nav{
+    padding-left: 13%;
+  }
+  .form-group label{
+    padding-left: 4px;
+  }
+  .button{
+    margin-left: 27%;
+  }
+}
+
+@media (max-width: 321px) {
+  .little-nav{
+    padding-left: 16%;
+  }
+  .form-group label{
+    padding-left: 2px;
+    font-size: 9px;
+  }
+  .button{
+    margin-left: 24%;
+  }
+}
+*/

@@ -1,0 +1,46 @@
+.menu {
+    border: 1px solid #ec8a8a;
+    border-radius: 10px;
+    padding: 3% 6%;
+    margin-bottom: 3%;
+}
+
+.menu h2 {
+    color: #ec8a8a;
+    letter-spacing: 0.08rem;
+    font-size: 1.1rem;
+}
+
+.menu h3 {
+    text-align: left;
+    color: #ec8a8a;
+    letter-spacing: 0.08rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.menu-text {
+    padding-left: 7%;
+    text-decoration: none;
+    text-align: left;
+    color: #ec8a8a;
+    letter-spacing: 0.08rem;
+    font-size: 0.9rem;
+    list-style-type: none;
+}
+
+.button-clear {
+    text-decoration: none;
+    background-color: #ef6767;
+    border-color: #ef6767;
+    color: #fdf8f3;
+    border-radius: 15px;
+    font-size: 1rem;
+    padding: 0.5% 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+.button-clear:hover {
+    background-color: #fdf8f3;
+    color: #ef6767;
+}
