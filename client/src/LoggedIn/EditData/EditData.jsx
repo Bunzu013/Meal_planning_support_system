@@ -157,11 +157,7 @@ function EditData() {
                         </div>
                     </form>
                     <br></br>
-                    <div>
-                        <Link to="/changepassword">
-                            <button className="btn button-redirect col-lg-4 col-md-5 col-9">CHANGE PASSWORD &gt;</button>
-                        </Link>
-                    </div>
+                    
                 </div>
             </div>
         </div>

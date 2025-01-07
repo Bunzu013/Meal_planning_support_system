@@ -99,9 +99,7 @@ function Form({ formData, handleSubmit, handleChange, errors, isSignIn }) {
                 </>
             )}
             <div className="item-center">
-                <div className='signUp_link'>
-                    {isSignIn ? <Link to="/forgotpassword">FORGOT PASSWORD</Link> : ''}
-                </div>
+               
                 <button type="submit" className="button">
                     {isSignIn ? 'SIGN IN' : 'CREATE ACCOUNT'}
                 </button>
