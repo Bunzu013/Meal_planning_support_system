@@ -16,23 +16,42 @@ function SignUpBody() {
     });
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
-
     const validateFormData = () => {
         const errors = {};
-        if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(formData.password)) {
-            errors.password = 'Password must be at least 8 characters and contain upper case (A-Z), lower case (a-z) and number (0-9)';
+    
+        // Password validation: at least 8 characters, contains uppercase, lowercase, and number
+        if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[a-z]).{8,}$/.test(formData.password)) {
+            errors.password = 'Password must be at least 8 characters and contain upper case (A-Z), lower case (a-z), and number (0-9)';
         }
+    
+        // Email validation: standard email format
+        if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+            errors.email = 'Invalid email format';
+        }
+    
+        // Name validation: only letters and spaces
         if (!/^[A-Za-z\s]+$/.test(formData.name)) {
             errors.name = 'Name can only contain letters and spaces';
         }
+    
+        // Surname validation: only letters, spaces, and hyphens
         if (!/^[A-Za-z\s-]+$/.test(formData.surname)) {
             errors.surname = 'Surname can only contain letters, spaces, and hyphens';
         }
+    
+        // Phone prefix validation: 1 to 3 digits
         if (!/^[0-9]{1,3}$/.test(formData.phonePrefix)) {
             errors.phonePrefix = 'Phone prefix can have 1 to 3 digits';
         }
+    
+        // Phone number validation: 7 to 10 digits
+        if (!/^[0-9]{7,10}$/.test(formData.phoneNumber)) {
+            errors.phoneNumber = 'Phone number must be 7 to 10 digits';
+        }
+    
         return errors;
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
