@@ -56,7 +56,7 @@ function SignInBody() {
                 localStorage.setItem('token', token);
                 navigate('/recipes');
                 toast.success('Login to your account was successful');
-                console.log(localStorage.getItem('token'));
+                window.location.reload(); 
             } else {
                 console.error('Login error:', response.data.message);
             }
