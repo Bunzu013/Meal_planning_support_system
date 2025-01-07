@@ -83,7 +83,7 @@ function RecipesContent({ noRecipesFound, setCurrentPage, isRecipeInFavorites, h
             <nav>
                 <ul className="pagination justify-content-center">
                     <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                        <span className="page-link" style={{ background: 'transparent', color: '#ef6767' }} onClick={() => paginate(currentPage - 1)}>&lt;</span>
+                        <span className="page-link" style={{ background: 'transparent', color: '#088F8F' }} onClick={() => paginate(currentPage - 1)}>&lt;</span>
                     </li>
                     {Array.from({ length: Math.ceil(recipesData.length / recipesPerPage) }, (_, i) => (
                         <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
@@ -91,7 +91,7 @@ function RecipesContent({ noRecipesFound, setCurrentPage, isRecipeInFavorites, h
                         </li>
                     ))}
                     <li className={`page-item ${currentPage === Math.ceil(recipesData.length / recipesPerPage) ? 'disabled' : ''}`}>
-                        <span className="page-link" style={{ background: 'transparent', color: '#ef6767' }} onClick={() => paginate(currentPage + 1)}>&gt;</span>
+                        <span className="page-link" style={{ background: 'transparent', color: '#088F8F' }} onClick={() => paginate(currentPage + 1)}>&gt;</span>
                     </li>
                 </ul>
             </nav>
