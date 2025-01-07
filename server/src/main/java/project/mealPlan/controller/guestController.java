@@ -16,7 +16,7 @@ public class guestController {
     @PostMapping("/signup")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         // Log the incoming user data
-        System.out.println("Received user data: " + user);
+    //    System.out.println("Received user data: " + user);
 
         try {
             return userService.addUser(user);
