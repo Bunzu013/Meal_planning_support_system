@@ -93,7 +93,7 @@ function MyRecipes() {
                                             <img className='recipe-img img-fluid' style={{ 'height': '185px' }} src={`data:image/jpeg;base64, ${recipe.imageData}`} alt={recipe.imageName} />
                                             <Link to={`/editrecipe/${recipe.recipeId}`}>
                                                 <button className="heart-icon" type="button">
-                                                    <Pencil size={30} color="#ef6767" />
+                                                    <Pencil size={30} color="#088F8F" />
                                                 </button>
                                             </Link>
                                         </div>
@@ -109,21 +109,25 @@ function MyRecipes() {
                         )}
                     </div>
                 </div>
-                <nav>
-                    <ul className="pagination justify-content-center">
-                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                            <Link className="page-link" style={{ background: 'transparent', color: '#ef6767' }} onClick={() => currPage(currentPage - 1)}>&lt;</Link>
-                        </li>
-                        {Array.from({ length: Math.ceil(userRecipes.length / recipesPerPage) }, (_, i) => (
-                            <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                                <Link className="page-link" style={{ boxShadow: 0 }} onClick={() => currPage(i + 1)}>{i + 1}</Link>
+                {userRecipes.length > 0 && (
+                    <nav>
+                        <ul className="pagination justify-content-center">
+                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                <Link className="page-link" style={{ background: 'transparent', color: '#088F8F' }} onClick={() => currPage(currentPage - 1)}>&lt;</Link>
                             </li>
-                        ))}
-                        <li className={`page-item ${currentPage === Math.ceil(userRecipes.length / recipesPerPage) ? 'disabled' : ''}`}>
-                            <Link className="page-link" style={{ background: 'transparent', color: '#ef6767' }} onClick={() => currPage(currentPage + 1)}>&gt;</Link>
-                        </li>
-                    </ul>
-                </nav>
+
+                            {Array.from({ length: Math.ceil(userRecipes.length / recipesPerPage) }, (_, i) => (
+                                <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                                    <Link className="page-link" style={{ boxShadow: 0 }} onClick={() => currPage(i + 1)}>{i + 1}</Link>
+                                </li>
+                            ))}
+                            <li className={`page-item ${currentPage === Math.ceil(userRecipes.length / recipesPerPage) ? 'disabled' : ''}`}>
+                                <Link className="page-link" style={{ background: 'transparent', color: '#088F8F' }} onClick={() => currPage(currentPage + 1)}>&gt;</Link>
+                            </li>
+                        </ul>
+                    </nav>
+                )}
+
             </div>
         </div>
     )
