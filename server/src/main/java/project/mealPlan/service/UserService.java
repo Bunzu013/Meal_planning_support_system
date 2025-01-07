@@ -1,4 +1,5 @@
 package project.mealPlan.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.Calendar;
+
 import org.springframework.security.core.Authentication;
 
 @Service
@@ -32,11 +33,12 @@ public class UserService implements UserDetailsService {
     MealPlan_MealRepository mealPlan_mealRepository;
     @Autowired
     MealPlanRepository mealPlanRepository;
-@Autowired
-MealService mealService;
+    @Autowired
+    MealService mealService;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder,JwtTokenUtil jwtTokenUtil ) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder,
+            JwtTokenUtil jwtTokenUtil) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -52,8 +54,7 @@ MealService mealService;
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                user.getRoles()
-        );
+                user.getRoles());
     }
 
     public ResponseEntity<?> findUser(Authentication authentication) {
@@ -70,24 +71,55 @@ MealService mealService;
     }
 
     public ResponseEntity<?> addUser(User user) {
-        System.out.println("Adding user: " + user);  // Add this log
+        System.out.println("Adding user: " + user); // Log for debugging
 
         try {
+            // Email validation
+            if (!isValidEmail(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Invalid email format");
+            }
+
+            // Password validation
+            if (!isValidPassword(user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Password must be at least 8 characters and contain upper case (A-Z), lower case (a-z), and a number (0-9)");
+            }
+
+            // Name validation
+            if (!isValidName(user.getName())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Name can only contain letters and spaces");
+            }
+
+            // Surname validation
+            if (!isValidSurname(user.getSurname())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Surname can only contain letters, spaces, and hyphens");
+            }
+
+            // Phone prefix validation (Convert phonePrefix to string)
+            if (!isValidPhonePrefix(String.valueOf(user.getPhonePrefix()))) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Phone prefix must be 1 to 3 digits");
+            }
+
+            // Phone number validation
+            if (!isValidPhoneNumber(String.valueOf(user.getPhoneNumber()))) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Phone number must be 7 to 10 digits");
+            }
+
             // Checking if the email exists
-            boolean emailExists = userRepository.existsByEmail(user.getEmail());
-            if (emailExists) {
+            if (userRepository.existsByEmail(user.getEmail())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("User with this email already exists");
             }
 
             // Checking if the phone number exists
-            boolean phoneNumberExists = userRepository.existsByPhoneNumber(user.getPhoneNumber());
-            if (phoneNumberExists) {
-                User userTemp = userRepository.findUserByPhoneNumber(user.getPhoneNumber());
-                if (userTemp != null && userTemp.getPhoneNumber().equals(user.getPhoneNumber())) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT)
-                            .body("User with this phone number already exists");
-                }
+            if (userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("User with this phone number already exists");
             }
 
             // Set the meal plan for the new user
@@ -102,8 +134,7 @@ MealService mealService;
             user.setRoles(Collections.singletonList(defaultRole));
 
             // Encode the password
-            String hashedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(hashedPassword);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             // Save the user
             userRepository.save(user);
@@ -111,7 +142,6 @@ MealService mealService;
             return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
 
         } catch (Exception e) {
-            // Log the error for debugging
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding user");
         }
@@ -119,6 +149,11 @@ MealService mealService;
 
     public ResponseEntity<String> login(User user) {
         try {
+            if (!isValidEmail(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Invalid email format");
+            }
+
             User existingUser = userRepository.findUserByEmail(user.getEmail());
             if (existingUser == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: user not found");
@@ -140,6 +175,33 @@ MealService mealService;
 
     }
 
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        return email != null && email.matches(emailRegex);
+    }
+
+    private boolean isValidPassword(String password) {
+        return password != null && password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[a-z]).{8,}$");
+    }
+
+    private boolean isValidName(String name) {
+        return name != null && name.matches("^[A-Za-z\\s]+$");
+    }
+
+    private boolean isValidSurname(String surname) {
+        return surname != null && surname.matches("^[A-Za-z\\s-]+$");
+    }
+
+    // Validates if the phone prefix contains between 1 and 3 digits
+    private boolean isValidPhonePrefix(String phonePrefix) {
+        return phonePrefix != null && phonePrefix.matches("^[0-9]{1,3}$");
+    }
+
+    // Validates if the phone number contains between 7 and 10 digits
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber != null && phoneNumber.matches("^[0-9]{7,10}$");
+    }
+
     @Transactional
     public ResponseEntity<?> getUserData(Authentication authentication) {
         try {
@@ -159,7 +221,7 @@ MealService mealService;
             userInfo.put("phoneNumber", user.getPhoneNumber());
             userInfo.put("phonePrefix", user.getPhonePrefix());
             userInfo.put("hiddenCalories", user.getHiddenCalories());
-           // userInfo.put("roles", user.getRoles());
+            // userInfo.put("roles", user.getRoles());
             List<String> preferredIngredients = new ArrayList<>();
             for (Ingredient ingredient : user.getUserPreferredIngredients()) {
                 preferredIngredients.add(ingredient.getIngredientName());
@@ -178,7 +240,7 @@ MealService mealService;
         }
     }
 
-    public  ResponseEntity<?> editUserData(Map<String, Object> userInfo,Authentication authentication) {
+    public ResponseEntity<?> editUserData(Map<String, Object> userInfo, Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = findUser(authentication);
@@ -190,14 +252,24 @@ MealService mealService;
             }
             if (userInfo.get("userName") != null) {
                 String userName = (String) userInfo.get("userName");
+                if (userName == null || userName.trim().isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User name cannot be empty");
+                }
                 user.setName(userName);
             }
             if (userInfo.get("userSurname") != null) {
                 String surname = (String) userInfo.get("userSurname");
+                if (surname == null || surname.trim().isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Surname cannot be empty");
+                }
                 user.setSurname(surname);
             }
             if (userInfo.get("phoneNumber") != null) {
                 Integer phoneNumber = (Integer) userInfo.get("phoneNumber");
+                if (phoneNumber == null || phoneNumber <= 0) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Phone number must be a positive integer");
+                }
                 user.setPhoneNumber(phoneNumber);
             }
             if (userInfo.get("phonePrefix") != null) {
@@ -210,8 +282,9 @@ MealService mealService;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user data");
         }
     }
+
     public ResponseEntity<String> editPassword(Map<String, Object> data,
-                                               Authentication authentication) {
+            Authentication authentication) {
         try {
             if (data.get("oldPassword") != null) {
                 String oldPassword = (String) data.get("oldPassword");
@@ -251,7 +324,7 @@ MealService mealService;
         }
     }
 
-    public ResponseEntity<?> hideCalories(Boolean hide,Authentication authentication) {
+    public ResponseEntity<?> hideCalories(Boolean hide, Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = findUser(authentication);
@@ -263,20 +336,17 @@ MealService mealService;
             }
             if (hide != null) {
                 if (user.getHiddenCalories() == hide)
-                    return new ResponseEntity<>
-                            ("Calorie visibility is already set this way ", HttpStatus.OK);
+                    return new ResponseEntity<>("Calorie visibility is already set this way ", HttpStatus.OK);
                 user.setHiddenCalories(hide);
                 userRepository.save(user);
             }
-            return new ResponseEntity<>
-                    ("Calories visibility changed successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Calories visibility changed successfully", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>
-                    ("Error changing calories visibility ", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error changing calories visibility ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<?> updateResetPasswordToken(String token, String email,Authentication authentication) {
+    public ResponseEntity<?> updateResetPasswordToken(String token, String email, Authentication authentication) {
         try {
             User user = new User();
             ResponseEntity<?> responseEntity = findUser(authentication);
@@ -293,13 +363,12 @@ MealService mealService;
                 Timestamp validityTime = new Timestamp(calendar.getTime().getTime());
                 user.setResetPasswordValidityTime(validityTime);
                 userRepository.save(user);
-            } 
+            }
             return ResponseEntity.status(HttpStatus.OK).body("Token created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing calories visibility");
         }
     }
-
 
     public User getByResetPasswordToken(String token) {
         return userRepository.findByResetPasswordLink(token);
@@ -320,6 +389,7 @@ MealService mealService;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing password");
         }
     }
+
     @Transactional
     public ResponseEntity<?> deleteUser(Map<String, Object> userInput) {
         try {
@@ -355,12 +425,13 @@ MealService mealService;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting user");
         }
     }
+
     @Transactional
     public ResponseEntity<?> blockUser(Map<String, Object> userInput) {
         try {
             String email = (String) userInput.get("email");
             User user = userRepository.findUserByEmail(email);
-            if(user == null) {
+            if (user == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("user not found");
             }
@@ -375,6 +446,7 @@ MealService mealService;
                     .body("Error blocking user");
         }
     }
+
     @Transactional
     public ResponseEntity<?> setAdmin() {
         try {
