@@ -26,7 +26,7 @@ function EditRecipeBody() {
         Axios.get(`http://localhost:8080/getRecipeData/${recipeId}`) 
             .then((response) => {
                 setFormData(response.data);
-                console.log(response.data);
+  
             })
             .catch((error) => {
                 console.error('Error fetching recipe data', error);
@@ -49,20 +49,17 @@ function EditRecipeBody() {
         e.preventDefault();
         Axios.post('http://localhost:8080/user/updateUserRecipe', formData)
             .then((response) => {
-                console.log('Recipe update successfully:', response.data);
-                console.log(formData);
                 if (formData.imageFile) {
                     const imageFormData = new FormData();
                     imageFormData.append('file', formData.imageFile);
-
+    
                     Axios.post(`http://localhost:8080/user/recipes/image?recipeId=${recipeId}`, imageFormData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
                     })
                         .then((imageResponse) => {
-                            console.log('Image uploaded successfully:', imageResponse.data);
-                            console.log(formData);
+                    
                             navigate(`/recipe/${recipeId}`);
                             toast.success('Recipe was successfully edited');
                         })
@@ -70,18 +67,17 @@ function EditRecipeBody() {
                             console.error('Error uploading image', imageError);
                         });
                 } else {
-                    console.log('No image selected');
-                    console.log(formData);
+             
                     navigate(`/recipe/${recipeId}`);
                     toast.success('Recipe was successfully edited');
                 }
             })
             .catch((error) => {
                 console.error('Error edit recipe', error);
-                console.log(formData);
                 toast.error('Error edit recipe');
             });
     };
+    
 
     return (
         <div className="Page">

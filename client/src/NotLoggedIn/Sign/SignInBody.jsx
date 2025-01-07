@@ -32,17 +32,14 @@ function SignInBody() {
                 toast.success('Login to your account was successful');
                 console.log(localStorage.getItem('token'));
             } else {
-                console.error('Błąd logowania:', response.data.message);
-                console.log(localStorage.getItem('token'));
+                console.error('Login error:', response.data.message);
             }
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 401) {
                     setErrors({ password: 'Email or password entered incorrectly' });
-                    console.log(localStorage.getItem('token'));
                 } else {
-                    console.error('Błąd podczas komunikacji z serwerem', error);
-                    console.log(localStorage.getItem('token'));
+                    console.error('Error communicating with server', error);
                 }
             }
         }

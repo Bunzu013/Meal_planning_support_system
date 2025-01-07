@@ -35,20 +35,18 @@ function AddRecipeBody() {
         e.preventDefault();
         Axios.post('http://localhost:8080/user/addRecipe', formData)
             .then((response) => {
-                console.log('Recipe added successfully:', response.data);
-                console.log(formData);
+          
                 if (formData.imageFile) {
                     const imageFormData = new FormData();
                     imageFormData.append('file', formData.imageFile);
-
+    
                     Axios.post(`http://localhost:8080/user/recipes/image?recipeId=${response.data}`, imageFormData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
                     })
                         .then((imageResponse) => {
-                            console.log('Image uploaded successfully:', imageResponse.data);
-                            console.log(formData);
+                        
                             navigate(`/recipe/${response.data}`);
                             toast.success('Recipe was successfully added');
                         })
@@ -56,8 +54,6 @@ function AddRecipeBody() {
                             console.error('Error uploading image', imageError);
                         });
                 } else {
-                    console.log('No image selected');
-                    console.log(formData);
                     navigate(`/recipe/${response.data}`);
                     toast.success('Recipe was successfully added');
                 }

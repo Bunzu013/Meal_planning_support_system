@@ -17,7 +17,6 @@ function MyRecipes() {
             try {
                 const response = await axios.get(`http://localhost:8080/user/getUserRecipes`);
                 setUserRecipes(response.data);
-                console.log(response.data);
                 if (response.data.length === 0) {
                     setNoUserRecipes(true);
                 }
@@ -37,7 +36,6 @@ function MyRecipes() {
                 .then((response) => {
                     if (response.status === 200) {
                         setUserRecipes(userRecipes.filter((recipe) => recipe.recipeId !== recipeId));
-                        console.log("Recipe removed successfully");
                         toast.success('Recipe removed successfuly', {
                             icon: "🗑️"
                         });

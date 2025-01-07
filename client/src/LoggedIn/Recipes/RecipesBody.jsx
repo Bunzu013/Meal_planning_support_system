@@ -148,7 +148,7 @@ function RecipesBody() {
             Axios.post(`http://localhost:8080/user/deleteFromFavourites?recipeId=${recipeId}`)
                 .then((response) => {
                     if (response.status === 200) {
-                        console.log("Recipe removed from favorites");
+          
                         toast.success(`Recipe removed from favorites`, {
                             icon: "🗑️"
                         });
@@ -164,7 +164,7 @@ function RecipesBody() {
             Axios.post(`http://localhost:8080/user/addRecipeToFavourites?recipeId=${recipeId}`)
                 .then((response) => {
                     if (response.status === 200) {
-                        console.log("Recipe added to favorites");
+                
                         toast.success(`Recipe added to favorites`);
                         setFavoriteRecipesData([...favoriteRecipesData, { recipeId }]);
                     } else {
@@ -192,15 +192,14 @@ function RecipesBody() {
     const handleCategorySubmit = () => {
         Axios.post('http://localhost:8080/admin/addNewCategory', formData)
             .then((response) => {
-                console.log('Category added successfully:', response.data);
-                console.log(formData);
+           
                 toast.success('Category was successfully added');
                 toggleAddNewCategoryOverlay();
                 fetchFilters();
             })
             .catch((error) => {
                 console.error('Error adding category', error);
-                console.log(formData);
+          
                 toast.error('Error adding category');
             });
     };
@@ -208,15 +207,14 @@ function RecipesBody() {
     const handleFilterSubmit = () => {
         Axios.post('http://localhost:8080/admin/addNewFilter', formData)
             .then((response) => {
-                console.log('Filter added successfully:', response.data);
-                console.log(formData);
+              
                 toast.success('Filter was successfully added');
                 toggleAddNewFilterOverlay();
                 fetchFilters();
             })
             .catch((error) => {
                 console.error('Error adding filter', error);
-                console.log(formData);
+  
                 toast.error('Error adding filter');
             });
     };
@@ -225,15 +223,14 @@ function RecipesBody() {
         formData.categoryId = categoryId;
         Axios.post('http://localhost:8080/admin/updateCategory', formData)
             .then((response) => {
-                console.log('Category edited successfully:', response.data);
-                console.log(formData);
+     
                 toast.success('Category was successfully edited');
                 toggleEditCategoryOverlay();
                 fetchFilters();
             })
             .catch((error) => {
                 console.error('Error editing category', error);
-                console.log(formData);
+     
                 toast.error('Error editing category');
             });
     };
@@ -242,48 +239,45 @@ function RecipesBody() {
         formData.filterId = filterId;
         Axios.post('http://localhost:8080/admin/updateFilter', formData)
             .then((response) => {
-                console.log('Category edited successfully:', response.data);
-                console.log(formData);
+         
                 toast.success('Category was successfully edited');
                 toggleEditFilterOverlay();
                 fetchFilters();
             })
             .catch((error) => {
                 console.error('Error editing category', error);
-                console.log(formData);
+
                 toast.error('Error editing category');
             });
     };
 
     const handleDeleteCategory = (categoryId) => {
         formData.categoryId = categoryId;
-        console.log(categoryId);
+  
         Axios.post('http://localhost:8080/admin/deleteCategory', formData)
             .then((response) => {
-                console.log('Category deleted successfully:', response.data);
-                console.log(formData);
+           
                 toast.success('Category was successfully deleted');
                 fetchFilters();
             })
             .catch((error) => {
                 console.error('Error delete category', error);
-                console.log(formData);
+       
             });
     };
 
     const handleDeleteFilter = (filterId) => {
         formData.filterId = filterId;
-        console.log(filterId);
+      
         Axios.post('http://localhost:8080/admin/deleteFilter', formData)
             .then((response) => {
-                console.log('Filter deleted successfully:', response.data);
-                console.log(formData);
+          
                 toast.success('Filter was successfully deleted');
                 fetchFilters();
             })
             .catch((error) => {
                 console.error('Error delete filter', error);
-                console.log(formData);
+         
             });
     };
 

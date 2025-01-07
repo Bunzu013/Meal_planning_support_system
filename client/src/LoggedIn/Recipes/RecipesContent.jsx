@@ -26,13 +26,12 @@ function RecipesContent({ noRecipesFound, setCurrentPage, isRecipeInFavorites, h
             };
             Axios.post('http://localhost:8080/user/addRecipeToMealAndMealPlan', mealData)
                 .then((response) => {
-                    console.log(response.data);
-                    console.log(mealData);
+                 
                     toast.success('Recipe was successfully added to mealplan');
                 })
                 .catch((error) => {
                     console.error('Error adding recipe to meal and meal plan', error);
-                    console.log(mealData);
+                
                     toast.error('Failed to add a recipe because it had been added previously');
                 });
         } else {
