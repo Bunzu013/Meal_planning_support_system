@@ -59,11 +59,11 @@ export default function LoggedInHeader() {
             <header className="header">
                 <nav className="navbar navbar-expand-lg">
                     <div className="container">
-                    {isLoggedIn ?
-                        <Link to="/" className="logo">MEALPLANNER</Link>
-                        :
-                        <Link to="/notloggedin" className="logo">MEALPLANNER</Link>
-                    }
+                        {isLoggedIn ?
+                            <Link to="/" className="logo">MEALPLANNER</Link>
+                            :
+                            <Link to="/notloggedin" className="logo">MEALPLANNER</Link>
+                        }
                         <IconButton
                             className="navbar-toggler"
                             color="inherit"
@@ -77,16 +77,19 @@ export default function LoggedInHeader() {
                         {isLoggedIn ?
                             <ul className={`navbar-nav ${isSmallScreen ? 'd-none' : ''}`}>
                                 <li className="nav-item">
-                                    <Link to="/mealplan" className="nav-link">mealplan</Link>
+                                    <Link to="/mealplan" className="nav-link">Mealplan</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/recipes" className="nav-link">recipes</Link>
+                                    <Link to="/recipes" className="nav-link">Recipes</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/profile" className="nav-link">profile</Link>
+                                    <Link to="/profile" className="nav-link">Profile</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/signin" className="nav-link" style={{ color: '#ec8a8a' }} onClick={handleLogout}>
+                                    <Link to="/myrecipes" className="nav-link">My recipes</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/signin" className="nav-link"  onClick={handleLogout}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                                             <polyline points="16 17 21 12 16 7" />
@@ -98,10 +101,10 @@ export default function LoggedInHeader() {
                             :
                             <ul className={`navbar-nav ${isSmallScreen ? 'd-none' : ''}`}>
                                 <li class="nav-item">
-                                    <Link to="/signup" class="nav-link">sign up</Link>
+                                    <Link to="/signup" class="nav-link">Sign up</Link>
                                 </li>
                                 <li class="nav-item">
-                                    <Link to="/signin" class="nav-link">sign in</Link>
+                                    <Link to="/signin" class="nav-link">Sign in</Link>
                                 </li>
                             </ul>
                         }
@@ -126,15 +129,19 @@ export default function LoggedInHeader() {
                     </DrawerHeader>
                     {isLoggedIn ?
                         <List sx={{ display: 'flex', flexDirection: 'column' }}>
-                            <Link to="/" className='small-nav'>mealplan</Link>
-                            <Link to="/recipes" className='small-nav'>recipes</Link>
-                            <Link to="/profile" className='small-nav'>profile</Link>
-                            <Link to="/" className='small-nav'>logout</Link>
+                            <Link to="/" className='small-nav'>Mealplan</Link>
+                            <Link to="/recipes" className='small-nav'>Recipes</Link>
+                            <Link to="/profile" className='small-nav'>Profile</Link>
+                            <Link to="/myrecipes" className="small-nav">My recipes</Link>
+                            <Link to="/" className='small-nav'>Logout</Link>
+
+                            
+
                         </List>
                         :
                         <List sx={{ display: 'flex', flexDirection: 'column' }}>
-                            <Link to="/signup" className='small-nav'>sign up</Link>
-                            <Link to="/signin" className='small-nav'>sign in</Link>
+                            <Link to="/signup" className='small-nav'>Sign up</Link>
+                            <Link to="/signin" className='small-nav'>Sign in</Link>
                         </List>
                     }
                 </Drawer>
