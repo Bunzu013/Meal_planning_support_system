@@ -33,6 +33,19 @@ function AddRecipeBody() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+    
+        // Frontend validation for quantity
+        for (const ingredient of formData.ingredients) {
+            const { quantity, ingredientName } = ingredient;
+    
+            if (!quantity || quantity <= 0) {
+                toast.error(`Quantity for ingredient "${ingredientName}" must be a positive number.`);
+                return; // Prevent form submission if validation fails
+            }
+            
+        }
+    
+        // If all validations pass, send the data to the backend
         Axios.post('http://localhost:8080/user/addRecipe', formData)
             .then((response) => {
           
@@ -60,10 +73,28 @@ function AddRecipeBody() {
             })
             .catch((error) => {
                 console.error('Error adding recipe', error);
-                console.log(formData);
-                toast.error('Error adding recipe');
+    
+                // Check if the error response contains a message
+                const errorMessage = error?.response?.data;
+    
+                if (errorMessage) {
+                    if (Array.isArray(errorMessage)) {
+                        // If there are multiple errors, display each one
+                        errorMessage.forEach((msg) => {
+                            toast.error(msg);
+                        });
+                    } else {
+                        // If it's a single error message, display it
+                        toast.error(errorMessage);
+                    }
+                } else {
+                    // Fallback for unexpected errors
+                    toast.error('An unknown error occurred while adding the recipe.');
+                }
+    
             });
     };
+    
 
     return (
         <div className="Page">
