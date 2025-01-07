@@ -47,6 +47,26 @@ function EditRecipeBody() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+    
+        // Walidacja recipeName
+        if (!formData.recipeName || formData.recipeName.trim() === '') {
+            toast.error('Recipe name cannot be empty');
+            return;
+        }
+    
+        // Walidacja notes
+        if (formData.notes === null || formData.notes.trim() === '') {
+            toast.error('Notes cannot be empty');
+            return;
+        }
+    
+        // Walidacja ingredients
+        if (formData.ingredients.length === 0) {
+            toast.error('At least one ingredient is required');
+            return;
+        }
+    
+        // Jeśli wszystkie warunki walidacji są spełnione
         Axios.post('http://localhost:8080/user/updateUserRecipe', formData)
             .then((response) => {
                 if (formData.imageFile) {

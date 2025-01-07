@@ -13,12 +13,38 @@ function SignInBody() {
     });
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.email) {
+            newErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = 'Invalid email format';
+        }
+
+        if (!formData.password) {
+            newErrors.password = 'Password is required';
+        } else if (formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 8 characters long';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            toast.error('Please fix the errors in the form');
+            return;
+        }
+
         try {
             const response = await axios.post('http://localhost:8080/guest/login', formData, {
                 headers: {
