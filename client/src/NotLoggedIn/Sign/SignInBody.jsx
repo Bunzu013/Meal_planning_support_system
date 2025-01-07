@@ -76,12 +76,12 @@ function SignInBody() {
             <div className='body'>
                 <div className='container body-content col-10'>
                     <div className="little-nav col-lg-3 col-md-4 col-8">
-                        <Link to="/">home</Link>
+                        <Link to="/notloggedin">home</Link>
                         <span><code>&gt;</code></span>
                         <Link to="/signin">sign in</Link>
                     </div>
                     <div className="title-row">
-                        <BackIcon to="/" />
+                        <BackIcon to="/notloggedin" />
                         <h1 className='main-title'>SIGN IN</h1>
                     </div>
                     <Form formData={formData} errors={errors} handleChange={handleChange} handleSubmit={handleSubmit} isSignIn={true} />

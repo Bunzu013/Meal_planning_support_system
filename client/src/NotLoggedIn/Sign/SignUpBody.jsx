@@ -81,12 +81,12 @@ function SignUpBody() {
             <div className='body'>
                 <div className='container body-content col-10'>
                     <div className="little-nav col-lg-3 col-md-4 col-8">
-                        <Link to="/">home</Link>
+                         <Link to="/notloggedin">home</Link>
                         <span><code>&gt;</code></span>
                         <Link to="/signup">sign up</Link>
                     </div>
                     <div className="title-row">
-                        <BackIcon to="/" />
+                        <BackIcon to="/notloggedin" />
                         <h1 className='main-title'>SIGN UP</h1>
                     </div>
                     <Form 
