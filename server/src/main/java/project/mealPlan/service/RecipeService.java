@@ -40,31 +40,45 @@ public class RecipeService {
     @Transactional
     public ResponseEntity<?> addRecipe(Map<String, Object> recipeInput, Authentication authentication) {
         try {
+            // Validate recipe name
             String recipeName = (String) recipeInput.get("recipeName");
-            Integer calories = (Integer) recipeInput.get("calories");
+            if (recipeName == null || recipeName.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Recipe name cannot be empty");
+            }
+    
+            // Validate categories
             List<String> categoryNames = (List<String>) recipeInput.get("categories");
+        
+            // Validate filters
             List<String> filterNames = (List<String>) recipeInput.get("filters");
+        
+    
+            // Validate ingredients
             List<Map<String, Object>> ingredientInputs = (List<Map<String, Object>>) recipeInput.get("ingredients");
-            String notes = (String) recipeInput.get("notes");
-            Recipe newRecipe = new Recipe(recipeName);
-            MultipartFile file =  (MultipartFile) recipeInput.get("file");
-            for (String categoryName : categoryNames) {
-                Category existingCategory = categoryRepository.findByRecipeCategoryName(categoryName);
-                if (existingCategory != null) {
-                    newRecipe.getRecipeCategories().add(existingCategory);
-                }
+            if (ingredientInputs == null || ingredientInputs.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("At least one ingredient is required");
             }
-            for (String filterName : filterNames) {
-                Filter existingFilter = filterRepository.findByRecipeFilterName(filterName);
-                if (existingFilter != null) {
-                    newRecipe.getRecipeFilters().add(existingFilter);
-                }
-            }
+    
+            // Process ingredients
             List<Recipe_Ingredient> recipeIngredients = new ArrayList<>();
             for (Map<String, Object> ingredientInput : ingredientInputs) {
                 String ingredientName = (String) ingredientInput.get("ingredientName");
-                String unitName = (String) ingredientInput.get("unitName");
+                if (ingredientName == null || ingredientName.trim().isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Ingredient name cannot be empty");
+                }
+    
+    
                 Double quantity = Double.parseDouble(ingredientInput.get("quantity").toString());
+                if (quantity == null || quantity <= 0) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Ingredient quantity must be a positive number and not null");
+                }
+    
+                String unitName = (String) ingredientInput.get("unit");
+             
                 Ingredient existingIngredient = ingredientRepository.findByIngredientName(ingredientName);
                 if (existingIngredient != null) {
                     Recipe_Ingredient newRecipeIngredient = new Recipe_Ingredient();
@@ -76,83 +90,146 @@ public class RecipeService {
                         unit = unitRepository.findByUnitName("notKnow");
                         newRecipeIngredient.setUnit(unit);
                     }
-                    if(quantity != null) {
+                    if (quantity != null && quantity > 0) {
                         newRecipeIngredient.setQuantity(quantity);
                     }
                     recipeIngredients.add(newRecipeIngredient);
                 }
             }
-            newRecipe.setRecipeIngredients(recipeIngredients);
+           
+            // Validate user authentication
             User user = new User();
             ResponseEntity<?> responseEntity = userService.findUser(authentication);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 user = (User) responseEntity.getBody();
             }
             if (user == null) {
-                return ResponseEntity.status
-                        (HttpStatus.NOT_FOUND).body("User not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
+    
+            // Prepare recipe
+            Recipe newRecipe = new Recipe(recipeName);
+            newRecipe.setRecipeIngredients(recipeIngredients);
             newRecipe.setUser(user);
-            if(notes != null ){
+            String notes = (String) recipeInput.get("notes");
+
+            // Validate notes to ensure it's not null or empty
+            if (notes == null || notes.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Notes cannot be empty");
+            } else {
                 newRecipe.setNotes(notes);
             }
-            if(calories != null) {
-                newRecipe.setCalories(calories);
+    
+            // Validate calories (optional)
+            Integer calories = (Integer) recipeInput.get("calories");
+            if (calories != null && calories < 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Calories cannot be negative");
             }
-            if (file != null ) {
-                byte[] imageData = ImageUtilService
-                        .compressImage(file.getBytes());
+            newRecipe.setCalories(calories);
+    
+            // Process file (image)
+            MultipartFile file = (MultipartFile) recipeInput.get("file");
+            if (file != null) {
+                // Validate file type (optional)
+                if (!file.getContentType().startsWith("image/")) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Invalid file type. Only image files are allowed.");
+                }
+    
+                byte[] imageData = ImageUtilService.compressImage(file.getBytes());
                 newRecipe.setRecipeImageData(imageData);
                 newRecipe.setRecipeImageName(file.getOriginalFilename());
             }
+    
+            // Save recipe and associate it with the user
             recipeRepository.save(newRecipe);
             user.getUserRecipes().add(newRecipe);
             userRepository.save(user);
-            return ResponseEntity.status
-                    (HttpStatus.CREATED).body(newRecipe.getRecipeId());
+    
+            return ResponseEntity.status(HttpStatus.CREATED).body(newRecipe.getRecipeId());
+    
         } catch (Exception e) {
-            return ResponseEntity.status
-                    (HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
         }
     }
+    
     @Transactional
     public ResponseEntity<?> addRecipeAdmin(Map<String, Object> recipeInput) {
         try {
+            // Validate recipe name
             String recipeName = (String) recipeInput.get("recipeName");
+            if (recipeName == null || recipeName.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Recipe name cannot be empty");
+            }
+    
+            // Validate calories (optional, but can be an integer or null)
             Integer calories = (Integer) recipeInput.get("calories");
+    
+
             List<String> categoryNames = (List<String>) recipeInput.get("categories");
             List<String> filterNames = (List<String>) recipeInput.get("filters");
+           
+    
+            // Validate ingredients
             List<Map<String, Object>> ingredientInputs = (List<Map<String, Object>>) recipeInput.get("ingredients");
-            String notes = (String) recipeInput.get("notes");
+            if (ingredientInputs == null || ingredientInputs.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("At least one ingredient is required");
+            }
+    
+            for (Map<String, Object> ingredientInput : ingredientInputs) {
+                String ingredientName = (String) ingredientInput.get("ingredientName");
+                if (ingredientName == null || ingredientName.trim().isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Ingredient name cannot be empty");
+                }
+    
+                String unitName = (String) ingredientInput.get("unit");
+           
+    
+                Double quantity = Double.parseDouble(ingredientInput.get("quantity").toString());
+                if (quantity == null || quantity <= 0) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Ingredient quantity must be a positive number");
+                }
+            }
+    
+            // Proceed with recipe creation
             Recipe newRecipe = new Recipe(recipeName);
+            
+            // Categories handling (save or link to existing categories)
             for (String categoryName : categoryNames) {
                 Category existingCategory = categoryRepository.findByRecipeCategoryName(categoryName);
                 if (existingCategory != null) {
                     newRecipe.getRecipeCategories().add(existingCategory);
-                }
-                else{
+                } else {
                     Category newCategory = new Category(categoryName);
                     categoryRepository.save(newCategory);
                     newRecipe.getRecipeCategories().add(newCategory);
                 }
             }
+    
+            // Filters handling (save or link to existing filters)
             for (String filterName : filterNames) {
                 Filter existingFilter = filterRepository.findByRecipeFilterName(filterName);
                 if (existingFilter != null) {
                     newRecipe.getRecipeFilters().add(existingFilter);
-                }
-                else{
+                } else {
                     Filter newFilter = new Filter(filterName);
                     filterRepository.save(newFilter);
                     newRecipe.getRecipeFilters().add(newFilter);
                 }
             }
+    
+            // Ingredients handling (save or link to existing ingredients)
             List<Recipe_Ingredient> recipeIngredients = new ArrayList<>();
             for (Map<String, Object> ingredientInput : ingredientInputs) {
                 String ingredientName = (String) ingredientInput.get("ingredientName");
-                String unitName = (String) ingredientInput.get("unitName");
+                String unitName = (String) ingredientInput.get("unit");
                 Double quantity = Double.parseDouble(ingredientInput.get("quantity").toString());
-
+    
                 Ingredient existingIngredient = ingredientRepository.findByIngredientName(ingredientName);
                 if (existingIngredient != null) {
                     Recipe_Ingredient newRecipeIngredient = new Recipe_Ingredient();
@@ -163,14 +240,13 @@ public class RecipeService {
                     } else {
                         Unit newUnit = new Unit(unitName);
                         newRecipeIngredient.setUnit(newUnit);
+                        unitRepository.save(newUnit);
                     }
-                    if(quantity != null) {
+                    if (quantity != null && quantity > 0) {
                         newRecipeIngredient.setQuantity(quantity);
                     }
                     recipeIngredients.add(newRecipeIngredient);
-
-                }
-                else{
+                } else {
                     Ingredient newIngredient = new Ingredient(ingredientName);
                     ingredientRepository.save(newIngredient);
                     Recipe_Ingredient newRecipeIngredient = new Recipe_Ingredient();
@@ -183,34 +259,43 @@ public class RecipeService {
                         newRecipeIngredient.setUnit(newUnit);
                         unitRepository.save(newUnit);
                     }
-                    if(quantity != null) {
+                    if (quantity != null && quantity > 0) {
                         newRecipeIngredient.setQuantity(quantity);
                     }
                     recipeIngredients.add(newRecipeIngredient);
                 }
             }
             newRecipe.setRecipeIngredients(recipeIngredients);
-
+    
+            // Set user and other properties
             User user = userRepository.findUserByName("ADMIN");
-
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
-            newRecipe.setUser(user);
-            if(notes != null ){
+                newRecipe.setUser(user);
+            String notes = (String) recipeInput.get("notes");
+    
+            // Validate notes to ensure it's not null or empty
+            if (notes == null || notes.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Notes cannot be empty");
+            } else {
                 newRecipe.setNotes(notes);
             }
-            if(calories != null) {
+            if (calories != null) {
                 newRecipe.setCalories(calories);
             }
+    
+            // Save the new recipe
             recipeRepository.save(newRecipe);
-
             return ResponseEntity.status(HttpStatus.OK).body(newRecipe.getRecipeId());
+    
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding recipe");
         }
     }
-
+    
+    
+    @Transactional
     public ResponseEntity<?> updateRecipe(Map<String, Object> recipeUpdate) {
         try {
             Integer recipeId = (Integer) recipeUpdate.get("recipeId");
@@ -219,53 +304,88 @@ public class RecipeService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Recipe not found");
             }
-            if (recipeUpdate.containsKey("recipeName")) {
+    
+            // Validate and update recipeName
+         
                 String recipeName = (String) recipeUpdate.get("recipeName");
+                if (recipeName == null || recipeName.trim().isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Recipe name cannot be empty");
+                }
                 recipe.setRecipeName(recipeName);
-            }
+            
+    
+            // Validate and update calories
             if (recipeUpdate.containsKey("calories")) {
                 Integer calories = (Integer) recipeUpdate.get("calories");
+                if (calories != null && calories < 0) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Calories cannot be negative");
+                }
                 recipe.setCalories(calories);
             }
-            if (recipeUpdate.containsKey("notes")) {
-                String notes = (String) recipeUpdate.get("notes");
-                recipe.setNotes(notes);
+    
+            // Validate and update notes
+            String notes = (String) recipeUpdate.get("notes");
+            if (notes == null || notes.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Notes cannot be empty");
             }
+            recipe.setNotes(notes);
+    
+            
+    
+            // Validate and update categories
             if (recipeUpdate.containsKey("categories")) {
                 List<String> categoryNames = (List<String>) recipeUpdate.get("categories");
                 List<Category> updatedCategories = new ArrayList<>();
                 for (String categoryName : categoryNames) {
+                    if (categoryName == null || categoryName.trim().isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category name cannot be empty");
+                    }
                     Category existingCategory = categoryRepository.findByRecipeCategoryName(categoryName);
                     if (existingCategory != null) {
                         updatedCategories.add(existingCategory);
                     }
                 }
-                List<Category> categoriesToRemove = new ArrayList<>(recipe.getRecipeCategories());
-                categoriesToRemove.removeAll(updatedCategories);
                 recipe.setRecipeCategories(updatedCategories);
             }
+    
+            // Validate and update filters
             if (recipeUpdate.containsKey("filters")) {
                 List<String> filterNames = (List<String>) recipeUpdate.get("filters");
                 List<Filter> updatedFilters = new ArrayList<>();
-
                 for (String filterName : filterNames) {
+                    if (filterName == null || filterName.trim().isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Filter name cannot be empty");
+                    }
                     Filter existingFilter = filterRepository.findByRecipeFilterName(filterName);
                     if (existingFilter != null) {
                         updatedFilters.add(existingFilter);
                     }
                 }
-                List<Filter> filtersToRemove = new ArrayList<>(recipe.getRecipeFilters());
-                filtersToRemove.removeAll(updatedFilters);
-                recipe.getRecipeFilters().removeAll(filtersToRemove);
                 recipe.setRecipeFilters(updatedFilters);
             }
-            if (recipeUpdate.containsKey("ingredients")) {
+    
+            
                 List<Map<String, Object>> ingredientInputs = (List<Map<String, Object>>) recipeUpdate.get("ingredients");
+                if (ingredientInputs == null || ingredientInputs.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("At least one ingredient is required");
+                }
+    
                 List<Recipe_Ingredient> updatedIngredients = new ArrayList<>();
                 for (Map<String, Object> ingredientInput : ingredientInputs) {
                     String ingredientName = (String) ingredientInput.get("ingredientName");
-                    String unitName = (String) ingredientInput.get("unit");
+                    if (ingredientName == null || ingredientName.trim().isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ingredient name cannot be empty");
+                    }
+    
                     Double quantity = Double.parseDouble(ingredientInput.get("quantity").toString());
+                    if (quantity == null || quantity <= 0) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ingredient quantity must be a positive number and not null");
+                    }
+    
+                    String unitName = (String) ingredientInput.get("unit");
+                    if (unitName == null || unitName.trim().isEmpty()) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ingredient unit cannot be empty");
+                    }
                     Ingredient existingIngredient = ingredientRepository.findByIngredientName(ingredientName);
                     if (existingIngredient != null) {
                         Recipe_Ingredient updatedRecipeIngredient = null;
@@ -279,37 +399,46 @@ public class RecipeService {
                             updatedRecipeIngredient = new Recipe_Ingredient();
                             updatedRecipeIngredient.setIngredient(existingIngredient);
                         }
-                        if (unitName != null) {
-                            Unit unit = unitRepository.findByUnitName(unitName);
-                            if (unit != null) {
-                                updatedRecipeIngredient.setUnit(unit);
-                            }
+    
+                        Unit unit = unitRepository.findByUnitName(unitName);
+                        if (unit != null) {
+                            updatedRecipeIngredient.setUnit(unit);
                         } else {
-                            Unit unit = unitRepository.findByUnitName("notKnow");
+                            unit = unitRepository.findByUnitName("notKnow");
                             updatedRecipeIngredient.setUnit(unit);
                         }
-                        if(quantity != null) {
-                            updatedRecipeIngredient.setQuantity(quantity);
-                        }
+    
+                        updatedRecipeIngredient.setQuantity(quantity);
                         updatedIngredients.add(updatedRecipeIngredient);
                     }
                 }
+    
+                // Remove old ingredients
                 List<Recipe_Ingredient> ingredientsToRemove = new ArrayList<>(recipe.getRecipeIngredients());
                 ingredientsToRemove.removeAll(updatedIngredients);
+                
                 for (Recipe_Ingredient ingredientToRemove : ingredientsToRemove) {
                     ingredientToRemove.setIngredient(null);
                     ingredientToRemove.setUnit(null);
                 }
-                recipe.getRecipeIngredients().removeAll(ingredientsToRemove);
+                
+                // Usuwanie składników z bazy danych
                 recipeIngredientRepository.deleteAll(ingredientsToRemove);
+                // Usuwamy składniki z listy w pamięci
+                recipe.getRecipeIngredients().removeAll(ingredientsToRemove);
+                
+                // Dodanie nowych składników do listy
                 recipe.getRecipeIngredients().addAll(updatedIngredients);
-                recipeRepository.save(recipe);
-            }
+            
+    
+            // Save the updated recipe
+            recipeRepository.save(recipe);
             return ResponseEntity.status(HttpStatus.OK).body("Recipe updated");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating recipe");
         }
     }
+    
     @Transactional
     public ResponseEntity<?> deleteRecipe(Integer recipeId) {
         try {
