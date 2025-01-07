@@ -11,7 +11,6 @@ function SignInBody() {
         email: '',
         password: '',
     });
-    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
@@ -37,6 +36,7 @@ function SignInBody() {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -84,11 +84,17 @@ function SignInBody() {
                         <BackIcon to="/notloggedin" />
                         <h1 className='main-title'>SIGN IN</h1>
                     </div>
-                    <Form formData={formData} errors={errors} handleChange={handleChange} handleSubmit={handleSubmit} isSignIn={true} />
+                    <Form 
+                        formData={formData} 
+                        errors={errors} 
+                        handleChange={handleChange} 
+                        handleSubmit={handleSubmit} 
+                        isSignIn={true} 
+                    />
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default SignInBody;
