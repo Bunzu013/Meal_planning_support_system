@@ -10,8 +10,8 @@
 }
 
 .button{
-  background-color:#ef6767;
-  border-color: #ef6767;
+  background-color:#088F8F;
+  border-color: #088F8F;
   color:#fdf8f3;
   border-radius: 0.5rem;
   font-size: 1.2rem;
@@ -21,7 +21,7 @@
 
 .button:hover{
   background-color: #fdf8f3;
-  color:#ef6767;
+  color:#088F8F;
 }
 
 .SignUpPage{
@@ -30,7 +30,7 @@
 
 /*Nie działa ten odcinek dla focus, pózniej do tego wrócę*/
 .form-control:focus{
-  border-color:#ef6767;
+  border-color:#088F8F;
   box-shadow: 0 0 0 0 ;
 }
 
