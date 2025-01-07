@@ -1,12 +1,12 @@
 .page-link {
     background: transparent;
-    color: #ef6767;
+    color: #088F8F;
     border: 0;
     border-radius: 50%;
 }
 
 .page-link:hover {
-    background: #ef6767;
+    background: #088F8F;
     color: white;
     border: 0;
     border-radius: 50%;
@@ -14,8 +14,8 @@
 
 .active>.page-link {
     z-index: 3;
-    background-color: #ef6767;
-    border-color: #ef6767;
+    background-color: #088F8F;
+    border-color: #088F8F;
 }
 
 .page-link:focus {
@@ -32,7 +32,7 @@
 }
 
 .linia {
-    color: #ef6767;
+    color: #088F8F;
 }
 
 @media (max-width: 426px) {

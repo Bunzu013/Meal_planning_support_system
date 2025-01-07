@@ -6,14 +6,14 @@
 }
 
 .header a{
-  color: #ef6767;
+  color: #088F8F;
   text-decoration: none;
 }
 
 .logo {
   font-size: 2.2rem;
   font-weight: bold;
-  color: #ef6767;
+  color: #088F8F;
 }
 .css-18sg6k4-MuiPaper-root-MuiDrawer-paper {
   background-color: #fbebde !important;
@@ -21,17 +21,31 @@
   padding-bottom: 2rem;
 }
 .css-i4bv87-MuiSvgIcon-root {
-  fill: #ef6767 !important;
+  fill: #088F8F !important;
 }
 
-.navbar-nav .nav-link {
+.navbar-nav {
   font-size: 1.3rem;
-  color: #ec8a8a;
+  color: #088F8F;
 }
+ .nav-link {
+  font-size: 1.5rem; /* Zwiększenie rozmiaru czcionki */
+  color: #088F8F; /* Kolor tekstu */
+  background-color: #e0f7fa; /* Dodanie tła */
+  padding: 10px 15px; /* Dodanie odstępów wewnętrznych */
+  border-radius: 10px; /* Zaokrąglone rogi */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Efekt przejścia przy hover */
+}
+
+.navbar-nav:hover .nav-link:hover {
+  background-color: #088F8F; /* Zmiana koloru tła przy najechaniu */
+  color: #fff; /* Zmiana koloru tekstu przy najechaniu */
+}
+
 
 .small-nav {
   font-size: 1.5rem;
-  color: #ec8a8a;
+  color: #088F8F;
   text-decoration: none;
   text-align: start;
   padding-left: 2rem;
@@ -42,7 +56,7 @@
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active,
 .navbar-nav .nav-link:focus {
-  color: #ef6767;
+  color: #088F8F;
 }
 
 .nav-item{
@@ -70,8 +84,8 @@
     position: absolute;
     top: 60px;
     right: 0;
-    background-color: #fbebde;
-    border: 1px solid #ef6767;
+    background-color: #e6f7f7;
+    border: 1px solid #088F8F;
     border-radius: 10px;
     padding: 10px;
   }

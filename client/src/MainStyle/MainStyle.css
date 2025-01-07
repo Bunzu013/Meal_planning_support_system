@@ -1,5 +1,5 @@
 body {
-    background-color: #fbebde;
+    background-color: #b1c9c9;
     width: 100%;
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 .main-title {
-    color: #ef6767;
+    color: #088F8F;
     font-family: 'Tahoma';
     letter-spacing: 0.04rem;
     font-size: 1.8rem;
@@ -46,7 +46,7 @@ body {
 }
 
 .text {
-    color: #f89786;
+    color: #088F8F;
     font-family: 'Segoe UI';
     font-weight: 400;
     font-size: 1.2rem;
@@ -62,7 +62,7 @@ body {
 }
 
 .main-text {
-    color: #f89786;
+    color: #088F8F;
     font-family: 'Segoe UI';
     font-weight: bold;
 }
@@ -83,7 +83,7 @@ body {
     margin-top: 0.5rem;
     font-size: 1.2rem;
     font-family: 'Segoe UI';
-    color: #f89786;
+    color: #088F8F;
     padding-bottom: 1rem;
     text-align: center;
     text-decoration: none;
@@ -96,7 +96,7 @@ body {
 }
 
 .pink-title {
-    color: #f79988;
+    color: #088F8F;
 }
 
 .item-right {
@@ -116,14 +116,14 @@ body {
 
 .little-nav a,
 .little-nav code {
-    color: #ec8a8a;
+    color: #088F8F;
 }
 
 .button-main.btn,
 .button-main.btn:hover {
     margin-bottom: 1rem;
-    background-color: #f79988;
-    border-color: #f79988;
+    background-color: #088F8F;
+    border-color: #088F8F;
     color: #fdf8f3;
     padding: 1.5% 4% 1.5% 4%;
     border-radius: 1.2rem;
@@ -132,16 +132,16 @@ body {
 
 .button-main.btn:active,
 .button-main.btn:focus {
-    color: #ef6767 !important;
-    border-color: #f79988;
+    color: #088F8F !important;
+    border-color: #088F8F;
     background-color: #fdf8f3;
 }
 
 .button-maindark.btn,
 .button-maindark.btn:hover {
     margin-bottom: 1rem;
-    background-color: #ef6767;
-    border-color: #ef6767;
+    background-color: #088F8F;
+    border-color: #088F8F;
     color: #fdf8f3;
     padding: 7% 12% 7% 12%;
     border-radius: 0.8rem;
@@ -151,15 +151,15 @@ body {
 .button-maindark.btn:active,
 .button-maindark.btn:focus {
     color: #fdf8f3 !important;
-    border-color: #f79988;
-    background-color: #f79988;
+    border-color: #088F8F;
+    background-color: #088F8F;
 }
 
 .button-add.btn,
 .button-add.btn:hover {
     margin-bottom: 1rem;
-    background-color: #ef6767;
-    border-color: #ef6767;
+    background-color: #088F8F;
+    border-color: #088F8F;
     color: #fdf8f3;
     padding: 2% 5% 2% 5%;
     border-radius: 0.5rem;
@@ -168,14 +168,14 @@ body {
 
 .button-add.btn:active {
     color: #fdf8f3 !important;
-    background-color: #ef6767;
-    border-color: #f79988;
+    background-color: #088F8F;
+    border-color: #088F8F;
     font-size: 0.85rem;
 }
 
 .button {
-    background-color: #ef6767;
-    border-color: #ef6767;
+    background-color: #088F8F;
+    border-color: #088F8F;
     color: #fdf8f3;
     text-decoration: none;
     border-width: 2px;
@@ -188,7 +188,7 @@ body {
 
 .button:hover {
     background-color: #fdf8f3;
-    color: #ef6767;
+    color: #088F8F;
 }
 
 

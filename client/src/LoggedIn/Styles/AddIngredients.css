@@ -1,11 +1,11 @@
 .content-border {
-    border: 2px solid #e89a8c;
+    border: 2px solid #088F8F;
     padding: 2rem;
     border-radius: 1rem;
 }
 
 .search-button.btn:active {
-    border-color: #ef6767;
+    border-color: #088F8F;
 }
 
 .customcheckbox {
@@ -16,14 +16,14 @@
     text-align: center;
     line-height: 30px;
     background-color: whitesmoke;
-    border: 1px solid #e89a8c;
-    color: #e89a8c;
+    border: 1px solid #088F8F;
+    color: #088F8F;
     font-size: large;
 }
 
 .customcheckbox:checked {
     background-color: whitesmoke;
-    border: 1px solid #e89a8c;
+    border: 1px solid #088F8F;
 }
 
 .overlay {
