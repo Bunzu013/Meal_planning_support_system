@@ -38,7 +38,7 @@ function Menu({ selectedCategories, fetchFilters, categoriesData, filtersData, s
         <div className="col-lg-3 col-12">
             <div className="menu">
                 <h2>CATEGORIES</h2>
-                <h3>Recipes</h3>
+            
                 <ul className='menu-text'>
                     {categoriesData.map((category, index) => (
                         <li key={index} className='d-flex flex-row justify-content-between'>
